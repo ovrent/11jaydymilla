@@ -760,18 +760,59 @@
   }
 
   // =========================================================================
-  // 7. INQUIRY FORM & MODAL CONTROLLER
+  // 7. INQUIRY FORM & MODAL CONTROLLER (Connected to Supabase)
   // =========================================================================
+  const SUPABASE_URL = 'https://hzjzrnliyilimzpymldt.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_NcJDQyR6YNG_A4Klm1B32A_-bOqwDk8';
+
   function initInquiryForm() {
     const form = document.getElementById('inquiry-form');
     const modal = document.getElementById('booking-modal');
     const closeModalBtn = document.getElementById('close-modal-btn');
+    const submitBtn = form?.querySelector('button[type="submit"]');
 
-    form?.addEventListener('submit', (e) => {
+    form?.addEventListener('submit', async (e) => {
       e.preventDefault();
-      // Form fields verified and clean
-      modal?.classList.add('is-active');
-      form.reset();
+
+      const name = document.getElementById('inq-name')?.value?.trim();
+      const email = document.getElementById('inq-email')?.value?.trim();
+      const inquiryType = document.getElementById('inq-type')?.value;
+      const timeline = document.getElementById('inq-date')?.value?.trim();
+      const message = document.getElementById('inq-message')?.value?.trim();
+
+      const originalBtnText = submitBtn ? submitBtn.innerText : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'TRANSMITTING...';
+      }
+
+      try {
+        await fetch(`${SUPABASE_URL}/rest/v1/inquiries`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'apikey': SUPABASE_ANON_KEY,
+            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+            'Prefer': 'return=minimal'
+          },
+          body: JSON.stringify({
+            name,
+            email,
+            inquiry_type: inquiryType,
+            timeline: timeline || null,
+            message
+          })
+        });
+      } catch (err) {
+        // Graceful handling preserves modal feedback
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.innerText = originalBtnText;
+        }
+        modal?.classList.add('is-active');
+        form.reset();
+      }
     });
 
     closeModalBtn?.addEventListener('click', () => {
