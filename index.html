@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-[#000000]">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JayDyMilla | Official Artist Platform — 5-String Banjo & Modern Rhythm</title>
+  <meta name="description" content="Official website of JayDyMilla (Jay Miller) — Asheville, NC songwriter and 5-string banjo artist fusing Appalachian roots, shamanic power songs, and modern rhythmic production with JAH KNEE DEE.">
+
+  <!-- Open Graph / Meta -->
+  <meta property="og:title" content="JayDyMilla | Appalachian Roots & Modern Pulse">
+  <meta property="og:description" content="Explore the verified 2026 discography, cinematic visual showcases, and global rhythm movement of JayDyMilla.">
+  <meta property="og:image" content="photes/image_0ca22.JPG">
+  <!-- Favicon -->
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪕</text></svg>">
+
+  <!-- Asset Preloads -->
+  <link rel="preload" as="image" href="photes/image_0ca22.JPG">
+  <link rel="preload" as="image" href="vides/hero-poster.jpg">
+
+  <!-- Resource Preconnects -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,600;1,800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+
+  <!-- 3. TAILWIND CSS CDN + EXTENDED THEME CONFIG -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            darkBg: '#000000',
+            darkSurface: '#050507',
+            darkCard: '#0A0A0D',
+            darkCardHover: '#111116',
+            neon: '#CBFE00',
+            'accent-lime': '#CBFE00',
+            'accent-magenta': '#FF007F',
+            'accent-cyan': '#00E5FF',
+            'accent-amber': '#FFB300'
+          },
+          fontFamily: {
+            kanit: ['Kanit', 'sans-serif'],
+            serifItalic: ['Instrument Serif', 'Georgia', 'serif'],
+            space: ['Space Grotesk', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- 4. LENIS SMOOTH SCROLL ENGINE -->
+  <script src="https://unpkg.com/lenis@1.1.9/dist/lenis.min.js"></script>
+
+  <!-- 5. MASTER DESIGN SYSTEM STYLESHEET -->
+  <link rel="stylesheet" href="style.css?v=4">
+</head>
+
+<body class="bg-[#000000] text-[#E2E8F0] font-kanit antialiased relative selection:bg-[#CBFE00] selection:text-[#000000]">
+
+  <!-- SVG Hardware Black-Level Filter for 3D Video Scrubbing (crushes #080808 to pure #000000) -->
+  <svg class="absolute w-0 h-0 pointer-events-none opacity-0" aria-hidden="true">
+    <filter id="video-black-level" color-interpolation-filters="sRGB">
+      <feComponentTransfer>
+        <feFuncR type="linear" slope="1.09" intercept="-0.082"/>
+        <feFuncG type="linear" slope="1.09" intercept="-0.082"/>
+        <feFuncB type="linear" slope="1.09" intercept="-0.082"/>
+      </feComponentTransfer>
+    </filter>
+  </svg>
+
+  <!-- Ambient Subtle Grid Overlay -->
+  <div class="stealth-ambient-grid" aria-hidden="true"></div>
+
+  <!-- ========================================================================
+       01. HEADER NAVIGATION
+       ======================================================================== -->
+  <header id="main-header" class="hero-active transition-all duration-300">
+    <div class="inner-container">
+      <div class="flex items-center justify-between h-20 sm:h-24">
+        
+        <!-- Brand Logo -->
+        <a href="#hero" class="flex items-center group text-decoration-none">
+          <span class="font-kanit font-black text-2xl tracking-tight text-white lowercase">
+            jaydymilla<span class="text-[#CBFE00]">.</span>
+          </span>
+        </a>
+
+        <!-- Desktop Navigation Links -->
+        <nav class="hidden lg:flex items-center gap-7 font-kanit font-semibold text-xs tracking-[0.08em] uppercase">
+          <a href="#music" class="nav-link">Music</a>
+          <a href="#cinematic-motion" class="nav-link">Experience</a>
+          <a href="#story" class="nav-link">Story</a>
+          <a href="#catalog" class="nav-link">Releases</a>
+          <a href="#studio" class="nav-link">Studio</a>
+          <a href="#global-dance" class="nav-link">Global Rhythm</a>
+          <a href="#collaborators" class="nav-link">Collaborators</a>
+          <a href="#booking" class="nav-link">Connect</a>
+        </nav>
+
+        <!-- Header CTA & Mobile Hamburger -->
+        <div class="flex items-center gap-3 sm:gap-4">
+          <a href="https://open.spotify.com/artist/1dKmGMjzhXQZrcYhKDgWRB" target="_blank" rel="noopener noreferrer" class="btn-lime btn-compact hidden sm:inline-flex items-center gap-1.5">
+            <span>STREAM ON SPOTIFY</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <button id="mobile-menu-btn" class="lg:hidden p-2 rounded-lg text-white hover:text-[#CBFE00] hover:bg-white/10 transition-colors" aria-label="Toggle Navigation Menu">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+          </button>
+        </div>
+
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div id="drawer-overlay" aria-hidden="true"></div>
+  <aside id="mobile-drawer" aria-label="Mobile Navigation">
+    <div class="flex items-center justify-between pb-6 border-b border-white/10">
+      <span class="font-kanit font-black text-xl text-white lowercase">
+        jaydymilla<span class="text-[#CBFE00]">.</span>
+      </span>
+      <button id="close-drawer-btn" class="p-2 text-white/70 hover:text-white" aria-label="Close Menu">
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <nav class="flex flex-col gap-5 py-8 font-kanit font-bold text-lg tracking-wide uppercase">
+      <a href="#music" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">01 / Music</a>
+      <a href="#cinematic-motion" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">02 / Experience</a>
+      <a href="#story" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">03 / Artist Story</a>
+      <a href="#catalog" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">04 / Release Catalog</a>
+      <a href="#studio" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">05 / Studio & Gear</a>
+      <a href="#global-dance" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">06 / Global Rhythm</a>
+      <a href="#collaborators" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">07 / Collaborators</a>
+      <a href="#booking" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">08 / Booking & Sync</a>
+    </nav>
+    <div class="mt-auto pt-6 border-t border-white/10 flex flex-col gap-3">
+      <a href="https://open.spotify.com/artist/1dKmGMjzhXQZrcYhKDgWRB" target="_blank" rel="noopener noreferrer" class="btn-lime w-full text-center">
+        STREAM ON SPOTIFY ↗
+      </a>
+      <div class="text-center font-space text-[11px] text-white/40 tracking-wider">
+        ASHEVILLE, NC • 5-STRING BANJO
+      </div>
+    </div>
+  </aside>
+
+  <!-- ========================================================================
+       02. HERO SECTION — CINEMATIC VIDEO 1
+       ======================================================================== -->
+  <section id="hero" class="hero-container">
+    
+    <!-- Hero Video 1 Layer (animo-sphere-wall-720p.mp4) -->
+    <div class="hero-video-layer">
+      <video class="hero-video-element" poster="vides/hero-poster.jpg" autoplay muted loop playsinline preload="auto">
+        <source src="vides/animo-sphere-wall-720p.mp4" type="video/mp4">
+      </video>
+    </div>
+
+    <!-- Tri-Vignette System for Guaranteed Text Contrast -->
+    <div class="hero-vignette-top" aria-hidden="true"></div>
+    <div class="hero-vignette-bottom" aria-hidden="true"></div>
+    <div class="hero-vignette-text" aria-hidden="true"></div>
+
+    <!-- Hero Content Layer -->
+    <div class="hero-content inner-container">
+      <div class="max-w-4xl">
+        
+        <!-- Identity Eyebrow Chip -->
+        <div class="mb-4 sm:mb-6">
+          <div class="identity-chip">
+            <span class="live-pulse"></span>
+            <span>ASHEVILLE, NC 📍 • 5-STRING BANJO • CONSCIOUS ROOTS</span>
+          </div>
+        </div>
+
+        <!-- Monumental Brushed Chrome Headline -->
+        <h1 class="hero-main-title mb-3 sm:mb-4">
+          jaydymilla
+        </h1>
+
+        <!-- Supporting Headline with Italic Accent -->
+        <p class="font-kanit font-bold text-xl sm:text-2xl md:text-3xl text-white tracking-tight leading-tight mb-6 sm:mb-8 max-w-2xl">
+          Appalachian banjo meets modern pulse. <span class="serif-accent">Transformative</span> songs of raw truth, deep presence, and electric soul.
+        </p>
+
+        <!-- CTAs (Strict 8px radius) -->
+        <div class="flex flex-wrap items-center gap-4 mb-8 sm:mb-10">
+          <a href="https://open.spotify.com/artist/1dKmGMjzhXQZrcYhKDgWRB" target="_blank" rel="noopener noreferrer" class="btn-lime">
+            <span>LISTEN ON SPOTIFY</span>
+            <span aria-hidden="true">↗</span>
+          </a>
+          <a href="#catalog" class="btn-glass">
+            <span>EXPLORE CATALOG</span>
+            <span aria-hidden="true">↓</span>
+          </a>
+        </div>
+
+        <!-- Verified Authority Signals -->
+        <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 sm:gap-6 pt-6 border-t border-white/10 font-space">
+          <div>
+            <div class="text-[#CBFE00] font-bold text-lg sm:text-xl tracking-tight">7 RELEASES</div>
+            <div class="text-white/50 text-[11px] tracking-wider uppercase">Verified 2026 Catalog</div>
+          </div>
+          <div>
+            <div class="text-[#CBFE00] font-bold text-lg sm:text-xl tracking-tight">720K+ VIEWS</div>
+            <div class="text-white/50 text-[11px] tracking-wider uppercase">Global Dance Reels</div>
+          </div>
+          <div class="col-span-2 sm:col-span-1">
+            <div class="text-white font-bold text-lg sm:text-xl tracking-tight">JAH KNEE DEE</div>
+            <div class="text-white/50 text-[11px] tracking-wider uppercase">Producer Alliance</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       03. MUSIC / RELEASE INTRO — SONIC ALCHEMY
+       ======================================================================== -->
+  <section id="music-intro" class="py-20 sm:py-28 bg-[#000000] border-t border-white/10 relative z-10" aria-label="Music and Sound Introduction">
+    <div class="inner-container">
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
+        
+        <!-- Left: Artistic Musical Positioning -->
+        <div class="lg:col-span-7">
+          <div class="inline-flex items-center gap-2 font-space text-xs text-[#CBFE00] font-semibold tracking-widest uppercase mb-4">
+            <span class="w-1.5 h-1.5 rounded-full bg-[#CBFE00] animate-pulse"></span>
+            <span>01 / SONIC ALCHEMY • 2026 DISCOGRAPHY</span>
+          </div>
+          <h2 class="stealth-heading text-3xl sm:text-4xl md:text-5xl uppercase leading-tight mb-6">
+            WHERE APPALACHIAN WOOD<br>MEETS URBAN PULSE
+          </h2>
+          <p class="font-kanit text-white/70 text-base sm:text-lg leading-relaxed max-w-2xl mb-8">
+            JayDyMilla redefines the five-string banjo. Replacing historical bluegrass nostalgia with hypnotic clawhammer rolls, punchy 808 sub-bass, and transformative lyrical soul alongside Asheville producer <span class="text-white font-bold">JAH KNEE DEE</span>.
+          </p>
+          
+          <div class="flex flex-wrap items-center gap-4">
+            <button class="btn-lime track-play-btn-inline" data-track-id="if_you_miss_me">
+              <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+              <span>PLAY FEATURED: IF YOU MISS ME</span>
+            </button>
+            <a href="#catalog" class="btn-glass">
+              <span>EXPLORE ALL 7 SINGLES ↓</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Featured Spotlight Card -->
+        <div class="lg:col-span-5">
+          <div class="stealth-card p-6 border-white/15 bg-[#0A0A0D] relative group">
+            <div class="flex items-center justify-between mb-4">
+              <span class="font-space text-xs text-[#CBFE00] tracking-widest uppercase font-bold">SPOTLIGHT RELEASE</span>
+              <span class="font-space text-xs text-white/40">2026 OFFICIAL</span>
+            </div>
+            <div class="aspect-video rounded-xl overflow-hidden relative mb-4 bg-black">
+              <img src="photes/image_b38c6.JPG" alt="If You Miss Me single artwork" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+              <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+              <div class="absolute bottom-3 left-3 right-3 flex items-center justify-between">
+                <div>
+                  <div class="font-kanit font-bold text-white text-base">If You Miss Me 🎨</div>
+                  <div class="font-space text-xs text-white/60">DJ Epps Priority Song</div>
+                </div>
+                <button class="track-play-btn shadow-lg" data-track-id="if_you_miss_me" aria-label="Play If You Miss Me">
+                  <svg class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                </button>
+              </div>
+            </div>
+            <div class="grid grid-cols-2 gap-3 pt-3 border-t border-white/10 font-space text-xs text-white/60">
+              <div>
+                <span class="block text-white/40 uppercase text-[10px]">SOUND IDENTITY</span>
+                <span class="text-white font-medium">Banjo Folk-Hop</span>
+              </div>
+              <div>
+                <span class="block text-white/40 uppercase text-[10px]">PRODUCTION</span>
+                <span class="text-[#CBFE00] font-medium">JAH KNEE DEE</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       04. SCROLL-DRIVEN OPPOSING MARQUEE
+       ======================================================================== -->
+  <section id="scroll-marquee-section" class="marquee-container" aria-label="Credentials and Keywords">
+    <div id="marquee-row-1" class="marquee-track mb-3">
+      <div class="marquee-item">5-STRING BANJO <span class="marquee-dot"></span></div>
+      <div class="marquee-item">ASHEVILLE SOUNDSCAPES <span class="marquee-dot"></span></div>
+      <div class="marquee-item">SOUL CREATURE <span class="marquee-dot"></span></div>
+      <div class="marquee-item">MODERN BEATS <span class="marquee-dot"></span></div>
+      <div class="marquee-item">BY THE WINDOW <span class="marquee-dot"></span></div>
+      <div class="marquee-item">CONSCIOUS SHAMANIC ROOTS <span class="marquee-dot"></span></div>
+      <div class="marquee-item">LOST IT <span class="marquee-dot"></span></div>
+      <div class="marquee-item">FIRE HORSE <span class="marquee-dot"></span></div>
+      <div class="marquee-item">5-STRING BANJO <span class="marquee-dot"></span></div>
+      <div class="marquee-item">ASHEVILLE SOUNDSCAPES <span class="marquee-dot"></span></div>
+      <div class="marquee-item">SOUL CREATURE <span class="marquee-dot"></span></div>
+      <div class="marquee-item">MODERN BEATS <span class="marquee-dot"></span></div>
+    </div>
+    <div id="marquee-row-2" class="marquee-track">
+      <div class="marquee-item text-white/30">COOL&YKIT <span class="marquee-dot"></span></div>
+      <div class="marquee-item text-white/30">JAH KNEE DEE PRODUCTIONS <span class="marquee-dot"></span></div>
+      <div class="marquee-item text-white/30">720K+ VIRAL DANCE VIEWS <span class="marquee-dot"></span></div>
+      <div class="marquee-item text-white/30">IF YOU MISS ME <span class="marquee-dot"></span></div>
+      <div class="marquee-item text-white/30">NEON LIMELIGHT <span class="marquee-dot"></span></div>
+      <div class="marquee-item text-white/30">DISTROKID WORLDWIDE RELEASE <span class="marquee-dot"></span></div>
+      <div class="marquee-item text-white/30">COOL&YKIT <span class="marquee-dot"></span></div>
+      <div class="marquee-item text-white/30">JAH KNEE DEE PRODUCTIONS <span class="marquee-dot"></span></div>
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       04. CINEMATIC 3D CYLINDER MOTION SHOWCASE (VIDEO 2)
+       ======================================================================== -->
+  <section id="cinematic-motion" aria-label="Cinematic Motion Showcase">
+    
+    <!-- Pinned 100vh Sticky Viewport Frame -->
+    <div class="motion-sticky-frame">
+      
+      <!-- Stationary Typography Header Layer (Z-Index 20) -->
+      <div class="motion-header-layer inner-container">
+        <div class="inline-flex items-center gap-2 font-space text-xs text-[#CBFE00] font-semibold tracking-widest uppercase mb-2">
+          <span>01</span>
+          <span class="w-6 h-[1px] bg-[#CBFE00]"></span>
+          <span>CINEMATIC MOTION SHOWCASE</span>
+        </div>
+        <h2 class="stealth-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl uppercase">
+          THE VISUAL FREQUENCY
+        </h2>
+        <p class="font-kanit text-white/60 text-sm sm:text-base mt-2 max-w-xl mx-auto">
+          Where ancient acoustic vibration manifests in <span class="serif-accent text-white">spatial modern rhythm</span>.
+        </p>
+      </div>
+
+      <!-- Ambient Volumetric Glow Behind Cylinder -->
+      <div class="motion-ambient-glow" aria-hidden="true"></div>
+
+      <!-- 3D Perspective Stage -->
+      <div class="motion-visual-stage">
+        <div class="motion-stage-scaler" id="motion-cylinder-scaler">
+          
+          <!-- Hardware-Accelerated Video Cylinder Scrubber (animo-showcase-stream-1280p.mp4) -->
+          <video 
+            id="cylinder-video-element"
+            class="motion-ring-video" 
+            poster="vides/cylinder-poster.jpg"
+            muted 
+            playsinline 
+            preload="auto">
+            <source src="vides/animo-showcase-stream-1280p.mp4" type="video/mp4">
+          </video>
+
+        </div>
+      </div>
+
+      <!-- Stationary Bottom Metadata Layer (Z-Index 20) -->
+      <div class="motion-footer-layer inner-container">
+        <div class="flex items-center gap-6 font-space text-xs text-white/40 tracking-wider uppercase">
+          <span class="flex items-center gap-2">
+            <span class="w-2 h-2 rounded-full bg-[#CBFE00]"></span>
+            <span>AUDIO-DRIVEN DYNAMICS</span>
+          </span>
+          <span class="hidden sm:inline">•</span>
+          <span class="hidden sm:inline">HARMONIC RESONANCE 432HZ</span>
+          <span class="hidden sm:inline">•</span>
+          <span class="hidden sm:inline">ASHEVILLE MASTER RECORDING</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       05. ARTIST STORY & DUAL-LAYER IMAGE REVEAL
+       ======================================================================== -->
+  <section id="story" class="py-24 sm:py-32 bg-[#000000] border-t border-white/10 relative">
+    <div class="inner-container">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
+        
+        <!-- Left Column: Editorial Biography Narrative -->
+        <div class="lg:col-span-7">
+          
+          <div class="inline-flex items-center gap-2 font-space text-xs text-[#CBFE00] font-semibold tracking-widest uppercase mb-3">
+            <span>02 / THE PATH OF THE BANJO</span>
+          </div>
+
+          <h2 class="stealth-heading text-3xl sm:text-4xl md:text-5xl uppercase mb-6">
+            FROM LOSS TO STILLNESS, STILLNESS TO FIRE
+          </h2>
+
+          <div class="space-y-4 font-kanit text-white/70 text-base sm:text-lg leading-relaxed max-w-2xl">
+            <p>
+              Pronounced <strong class="text-white">Jay “Di”</strong> (diamond 💎) or <strong class="text-white">“D”</strong> (dragon 🐉) <strong class="text-white">Millah</strong>, Jay began writing songs on guitar at nineteen following the tragic loss of his father. What began as grief quickly crystallized into an obsession with musical expression, sound architecture, and early electronic production on a Yamaha RS7000 groovebox.
+            </p>
+            <p>
+              Then came fifteen years of intentional silence. Stepping away from the commercial music industry, Jay dedicated a decade and a half to raising his two daughters and deepening a rigorous daily meditation practice in the Blue Ridge mountains.
+            </p>
+            <p>
+              Around 2020, immersion in shamanic traditions introduced the discipline of <strong class="text-white">“power songs”</strong>—hypnotic sonic structures engineered to cultivate energy, presence, and inner strength. Armed with a Remo buffalo drum, whistles, breath rhythms, and primal vocalizations, he composed seventeen sacred power songs that anchored his morning rituals.
+            </p>
+            <p class="text-white font-medium">
+              In 2025, Jay picked up the five-string banjo. Fusing Appalachian folk-inspired fingerpicking with modern urban pocket beats alongside Asheville producer <span class="text-[#CBFE00] font-bold">JAH KNEE DEE</span>, JayDyMilla emerged: music of radical authenticity, inner discovery, and infectious dance.
+            </p>
+          </div>
+
+          <!-- Direct Quote Callout -->
+          <div class="mt-8 p-6 bg-[#0A0A0D] border-l-2 border-[#CBFE00] rounded-r-xl">
+            <p class="font-serifItalic text-xl sm:text-2xl text-white leading-snug">
+              “His songs explore authenticity, imagination, inner worlds, freedom, and the strange glow that appears when creativity is fully embraced.”
+            </p>
+            <div class="mt-3 font-space text-xs text-[#CBFE00] tracking-wider uppercase">
+              — Official Spotify Artist Biography
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Right Column: Interactive Dual-Layer Image Reveal -->
+        <div class="lg:col-span-5">
+          <div class="relative">
+            
+            <!-- Reveal Component Box -->
+            <div id="producer-reveal-container" class="reveal-container">
+              
+              <!-- Layer 1: Base Image (Default Initial Image) -->
+              <img 
+                src="photes/ChatGPT%20Image%20Sep%2012,%202026,%2001_46_45%20PM.png" 
+                alt="JayDyMilla — Appalachian roots and modern rhythm" 
+                class="reveal-base-img"
+                loading="lazy"
+                decoding="async">
+              
+              <!-- Layer 2: Discovered Image (Hover Reveal) -->
+              <div class="reveal-mask-layer" id="reveal-mask" style="opacity: 0;">
+                <img 
+                  id="reveal-discovered-img"
+                  src="photes/image_0ca22.JPG" 
+                  alt="Jay Miller portrait with 5-string banjo in Asheville, NC" 
+                  class="reveal-discovered-img"
+                  loading="lazy"
+                  decoding="async">
+              </div>
+
+              <!-- Interactive Badge -->
+              <div class="reveal-badge">
+                <span class="text-[#CBFE00] font-bold">STUDIO DISCOVERY</span> • HOVER TO REVEAL
+              </div>
+
+            </div>
+
+            <!-- Supporting Caption -->
+            <div class="mt-4 flex items-center justify-between font-space text-xs text-white/40">
+              <span>PHOTO: ASHEVILLE STREETS</span>
+              <span>REVEAL: TRACKING SESSION</span>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       06. THREE FOUNDATIONAL PRINCIPLES
+       ======================================================================== -->
+  <section id="principles" class="py-24 sm:py-32 bg-[#050507] border-t border-white/10" aria-label="Foundational Principles">
+    <div class="inner-container">
+      
+      <div class="max-w-3xl mb-14">
+        <div class="inline-flex items-center gap-2 font-space text-xs text-[#CBFE00] font-semibold tracking-widest uppercase mb-3">
+          <span>03 / THE TRINITY OF SOUND</span>
+        </div>
+        <h2 class="stealth-heading text-3xl sm:text-4xl md:text-5xl uppercase">
+          THREE CORE PILLARS OF JAYDYMILLA
+        </h2>
+        <p class="font-kanit text-white/60 text-base mt-3">
+          The artistic foundation that sets this music apart from any traditional category.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8">
+        
+        <!-- Principle 01 -->
+        <div class="stealth-card group flex flex-col justify-between">
+          <div class="stealth-card-glow"></div>
+          <div>
+            <div class="flex items-center justify-between mb-8">
+              <span class="monumental-number">01</span>
+              <span class="font-space text-xs text-[#CBFE00] px-2.5 py-1 bg-white/5 rounded border border-white/10 uppercase">Acoustic</span>
+            </div>
+            <h3 class="font-kanit font-black text-2xl text-white uppercase tracking-tight mb-3">
+              Appalachian Claw & Roll
+            </h3>
+            <p class="font-kanit text-white/70 text-sm leading-relaxed">
+              Liberating the five-string banjo from museum nostalgia. Fast, syncopated clawhammer rolls and intricate melodic fingerpicking become the percussive pulse driving contemporary indie songwriting.
+            </p>
+          </div>
+          <div class="mt-8 pt-4 border-t border-white/10 font-space text-xs text-white/40">
+            HERO INSTRUMENT: 5-STRING OPEN BACK
+          </div>
+        </div>
+
+        <!-- Principle 02 -->
+        <div class="stealth-card group flex flex-col justify-between">
+          <div class="stealth-card-glow"></div>
+          <div>
+            <div class="flex items-center justify-between mb-8">
+              <span class="monumental-number">02</span>
+              <span class="font-space text-xs text-[#CBFE00] px-2.5 py-1 bg-white/5 rounded border border-white/10 uppercase">Soul</span>
+            </div>
+            <h3 class="font-kanit font-black text-2xl text-white uppercase tracking-tight mb-3">
+              Shamanic Power Songs
+            </h3>
+            <p class="font-kanit text-white/70 text-sm leading-relaxed">
+              Rooted in seventeen daily ritual power songs created with a Remo buffalo drum, whistles, and deep breathwork. Songs explore soul retrieval, shadow companions, and the raw ecstasy of feeling alive again.
+            </p>
+          </div>
+          <div class="mt-8 pt-4 border-t border-white/10 font-space text-xs text-white/40">
+            ROOT: 17 DRUM & BREATH EXPERIMENTS
+          </div>
+        </div>
+
+        <!-- Principle 03 -->
+        <div class="stealth-card group flex flex-col justify-between">
+          <div class="stealth-card-glow"></div>
+          <div>
+            <div class="flex items-center justify-between mb-8">
+              <span class="monumental-number">03</span>
+              <span class="font-space text-xs text-[#CBFE00] px-2.5 py-1 bg-white/5 rounded border border-white/10 uppercase">Production</span>
+            </div>
+            <h3 class="font-kanit font-black text-2xl text-white uppercase tracking-tight mb-3">
+              JAH KNEE DEE Alliance
+            </h3>
+            <p class="font-kanit text-white/70 text-sm leading-relaxed">
+              Produced entirely in Asheville alongside John (JAH KNEE DEE). Deep 808 bass, urban drum grooves, and searing electric guitar solos create the infectious rhythm that caught fire across international dance creators.
+            </p>
+          </div>
+          <div class="mt-8 pt-4 border-t border-white/10 font-space text-xs text-white/40">
+            ALLIANCE: PRODUCTION & GUITAR BY JAH KNEE DEE
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       07. VERIFIED 2026 RELEASE CATALOG
+       ======================================================================== -->
+  <section id="catalog" class="py-24 sm:py-32 bg-[#000000] border-t border-white/10" aria-label="Release Catalog">
+    <div class="inner-container">
+      
+      <!-- Section Header -->
+      <div class="flex flex-col md:flex-row md:items-end justify-between mb-14 gap-6">
+        <div>
+          <div class="inline-flex items-center gap-2 font-space text-xs text-[#CBFE00] font-semibold tracking-widest uppercase mb-3">
+            <span>04 / OFFICIAL DISCOGRAPHY</span>
+          </div>
+          <h2 class="stealth-heading text-3xl sm:text-4xl md:text-5xl uppercase">
+            THE 2026 STUDIO SINGLES
+          </h2>
+          <p class="font-kanit text-white/60 text-base mt-2">
+            Every release verified via ISRC & DistroKid distribution records.
+          </p>
+        </div>
+        <div>
+          <a href="https://open.spotify.com/artist/1dKmGMjzhXQZrcYhKDgWRB" target="_blank" rel="noopener noreferrer" class="btn-lime btn-compact">
+            OPEN FULL SPOTIFY CATALOG ↗
+          </a>
+        </div>
+      </div>
+
+      <!-- Featured Artwork Grid (Top 3 Visual Highlights) -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+        
+        <!-- Artwork Card 1: Soul Creature -->
+        <div class="stealth-card p-4 group">
+          <div class="aspect-square rounded-xl overflow-hidden mb-4 relative bg-[#050507]">
+            <img src="photes/image_094e5.JPG" alt="Soul Creature single cover art by Lightning Serpent" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+            <span class="absolute top-3 left-3 bg-black/80 backdrop-blur px-2.5 py-1 rounded text-[10px] font-space text-[#CBFE00] uppercase tracking-wider">
+              Single • 2026
+            </span>
+            <button class="track-play-btn absolute bottom-3 right-3 shadow-lg" data-track-id="soul_creature" aria-label="Play Soul Creature preview">
+              <svg class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <h4 class="font-kanit font-bold text-lg text-white group-hover:text-[#CBFE00] transition-colors">Soul Creature 👹</h4>
+          <p class="font-space text-xs text-white/50 mt-1">Art by @lightning_serpent • Prod. JAH KNEE DEE</p>
+        </div>
+
+        <!-- Artwork Card 2: If You Miss Me -->
+        <div class="stealth-card p-4 group">
+          <div class="aspect-square rounded-xl overflow-hidden mb-4 relative bg-[#050507]">
+            <img src="photes/image_b38c6.JPG" alt="If You Miss Me single cover art showing neon portal" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+            <span class="absolute top-3 left-3 bg-black/80 backdrop-blur px-2.5 py-1 rounded text-[10px] font-space text-[#FF007F] uppercase tracking-wider">
+              1,094+ Streams
+            </span>
+            <button class="track-play-btn absolute bottom-3 right-3 shadow-lg" data-track-id="if_you_miss_me" aria-label="Play If You Miss Me preview">
+              <svg class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+          </div>
+          <h4 class="font-kanit font-bold text-lg text-white group-hover:text-[#CBFE00] transition-colors">If You Miss Me 🎨</h4>
+          <p class="font-space text-xs text-white/50 mt-1">DJ Epps Priority Song • Prod. JAH KNEE DEE</p>
+        </div>
+
+        <!-- Artwork Card 3: Cool&YkIt -->
+        <div class="stealth-card p-4 group">
+          <div class="aspect-square rounded-xl overflow-hidden mb-4 relative bg-[#050507]">
+            <img src="photes/image_83ada.JPG" alt="Cool&YkIt single cover art drawn by Iris Miller" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+            <span class="absolute top-3 left-3 bg-black/80 backdrop-blur px-2.5 py-1 rounded text-[10px] font-space text-[#CBFE00] uppercase tracking-wider">
+              Aug 29, 2026
+            </span>
+            <a href="https://open.spotify.com/track/1kdngrDXrSC5oqeUPEHLY2" target="_blank" rel="noopener noreferrer" class="track-play-btn absolute bottom-3 right-3 shadow-lg" aria-label="Stream Cool&YkIt on Spotify">
+              <svg class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.216.353-.674.467-1.027.251-2.813-1.718-6.354-2.107-10.523-1.155-.404.092-.81-.161-.902-.564-.092-.403.161-.81.564-.902 4.568-1.042 8.483-.6 11.637 1.343.353.216.467.674.251 1.027zm1.467-3.262c-.272.443-.85.584-1.293.312-3.22-1.979-8.129-2.551-11.939-1.395-.499.151-1.033-.133-1.184-.632-.151-.499.133-1.033.632-1.184 4.356-1.321 9.774-.683 13.472 1.594.443.272.584.85.312 1.293zm.126-3.41c-3.861-2.293-10.231-2.505-13.916-1.387-.593.18-1.222-.162-1.402-.755-.18-.593.162-1.222.755-1.402 4.234-1.285 11.272-1.039 15.707 1.593.533.316.708 1.01.392 1.543-.316.533-1.01.708-1.543.392z"/></svg>
+            </a>
+          </div>
+          <h4 class="font-kanit font-bold text-lg text-white group-hover:text-[#CBFE00] transition-colors">Cool&YkIt 😎</h4>
+          <p class="font-space text-xs text-white/50 mt-1">Art by Iris Miller • Dedicated to Dr. Simon Senzon</p>
+        </div>
+
+      </div>
+
+      <!-- Complete 7-Track Interactive Ledger -->
+      <div class="space-y-3" id="catalog-ledger">
+        
+        <!-- Track 01: Fire Horse -->
+        <div class="track-card group">
+          <div class="flex items-center gap-4">
+            <span class="font-space text-xs text-white/40 w-6">01</span>
+            <a href="https://open.spotify.com/track/2f87tDHg2jjIomkkCna1q6" target="_blank" rel="noopener noreferrer" class="track-play-btn" aria-label="Stream Fire Horse on Spotify">
+              <svg class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.216.353-.674.467-1.027.251-2.813-1.718-6.354-2.107-10.523-1.155-.404.092-.81-.161-.902-.564-.092-.403.161-.81.564-.902 4.568-1.042 8.483-.6 11.637 1.343.353.216.467.674.251 1.027zm1.467-3.262c-.272.443-.85.584-1.293.312-3.22-1.979-8.129-2.551-11.939-1.395-.499.151-1.033-.133-1.184-.632-.151-.499.133-1.033.632-1.184 4.356-1.321 9.774-.683 13.472 1.594.443.272.584.85.312 1.293zm.126-3.41c-3.861-2.293-10.231-2.505-13.916-1.387-.593.18-1.222-.162-1.402-.755-.18-.593.162-1.222.755-1.402 4.234-1.285 11.272-1.039 15.707 1.593.533.316.708 1.01.392 1.543-.316.533-1.01.708-1.543.392z"/></svg>
+            </a>
+            <div>
+              <div class="font-kanit font-bold text-base text-white group-hover:text-[#CBFE00] transition-colors flex items-center gap-2">
+                <span>Fire Horse</span>
+                <span class="text-[10px] font-space text-[#CBFE00] bg-white/5 px-2 py-0.5 rounded border border-[#CBFE00]/30">LATEST RELEASE</span>
+              </div>
+              <div class="font-space text-xs text-white/50">August 28, 2026 • 6:03 • Extended Journey • Prod. JAH KNEE DEE</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <a href="https://open.spotify.com/track/2f87tDHg2jjIomkkCna1q6" target="_blank" rel="noopener noreferrer" class="btn-glass btn-compact text-xs hidden sm:inline-flex items-center gap-1.5">
+              <span>STREAM ON SPOTIFY</span>
+              <span>↗</span>
+            </a>
+            <a href="https://open.spotify.com/track/2f87tDHg2jjIomkkCna1q6" target="_blank" rel="noopener noreferrer" class="text-white/40 hover:text-white transition-colors sm:hidden" title="Listen on Spotify">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.216.353-.674.467-1.027.251-2.813-1.718-6.354-2.107-10.523-1.155-.404.092-.81-.161-.902-.564-.092-.403.161-.81.564-.902 4.568-1.042 8.483-.6 11.637 1.343.353.216.467.674.251 1.027zm1.467-3.262c-.272.443-.85.584-1.293.312-3.22-1.979-8.129-2.551-11.939-1.395-.499.151-1.033-.133-1.184-.632-.151-.499.133-1.033.632-1.184 4.356-1.321 9.774-.683 13.472 1.594.443.272.584.85.312 1.293zm.126-3.41c-3.861-2.293-10.231-2.505-13.916-1.387-.593.18-1.222-.162-1.402-.755-.18-.593.162-1.222.755-1.402 4.234-1.285 11.272-1.039 15.707 1.593.533.316.708 1.01.392 1.543-.316.533-1.01.708-1.543.392z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Track 02: Cool&YkIt -->
+        <div class="track-card group">
+          <div class="flex items-center gap-4">
+            <span class="font-space text-xs text-white/40 w-6">02</span>
+            <a href="https://open.spotify.com/track/1kdngrDXrSC5oqeUPEHLY2" target="_blank" rel="noopener noreferrer" class="track-play-btn" aria-label="Stream Cool&YkIt on Spotify">
+              <svg class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.216.353-.674.467-1.027.251-2.813-1.718-6.354-2.107-10.523-1.155-.404.092-.81-.161-.902-.564-.092-.403.161-.81.564-.902 4.568-1.042 8.483-.6 11.637 1.343.353.216.467.674.251 1.027zm1.467-3.262c-.272.443-.85.584-1.293.312-3.22-1.979-8.129-2.551-11.939-1.395-.499.151-1.033-.133-1.184-.632-.151-.499.133-1.033.632-1.184 4.356-1.321 9.774-.683 13.472 1.594.443.272.584.85.312 1.293zm.126-3.41c-3.861-2.293-10.231-2.505-13.916-1.387-.593.18-1.222-.162-1.402-.755-.18-.593.162-1.222.755-1.402 4.234-1.285 11.272-1.039 15.707 1.593.533.316.708 1.01.392 1.543-.316.533-1.01.708-1.543.392z"/></svg>
+            </a>
+            <div>
+              <div class="font-kanit font-bold text-base text-white group-hover:text-[#CBFE00] transition-colors flex items-center gap-2">
+                <span>Cool&YkIt</span>
+                <span class="text-[10px] font-space text-white/60 bg-white/5 px-2 py-0.5 rounded border border-white/10">SINGLE</span>
+              </div>
+              <div class="font-space text-xs text-white/50">August 29, 2026 • 4:38 • Electric Guitar by JAH KNEE DEE • Art by Iris Miller</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <a href="https://open.spotify.com/track/1kdngrDXrSC5oqeUPEHLY2" target="_blank" rel="noopener noreferrer" class="btn-glass btn-compact text-xs hidden sm:inline-flex items-center gap-1.5">
+              <span>STREAM ON SPOTIFY</span>
+              <span>↗</span>
+            </a>
+            <a href="https://open.spotify.com/track/1kdngrDXrSC5oqeUPEHLY2" target="_blank" rel="noopener noreferrer" class="text-white/40 hover:text-white transition-colors sm:hidden" title="Listen on Spotify">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.216.353-.674.467-1.027.251-2.813-1.718-6.354-2.107-10.523-1.155-.404.092-.81-.161-.902-.564-.092-.403.161-.81.564-.902 4.568-1.042 8.483-.6 11.637 1.343.353.216.467.674.251 1.027zm1.467-3.262c-.272.443-.85.584-1.293.312-3.22-1.979-8.129-2.551-11.939-1.395-.499.151-1.033-.133-1.184-.632-.151-.499.133-1.033.632-1.184 4.356-1.321 9.774-.683 13.472 1.594.443.272.584.85.312 1.293zm.126-3.41c-3.861-2.293-10.231-2.505-13.916-1.387-.593.18-1.222-.162-1.402-.755-.18-.593.162-1.222.755-1.402 4.234-1.285 11.272-1.039 15.707 1.593.533.316.708 1.01.392 1.543-.316.533-1.01.708-1.543.392z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Track 03: Lost It -->
+        <div class="track-card group" data-track-id="lost_it">
+          <div class="flex items-center gap-4">
+            <span class="font-space text-xs text-white/40 w-6">03</span>
+            <button class="track-play-btn" data-track-id="lost_it" aria-label="Play Lost It preview">
+              <svg class="w-4 h-4 ml-0.5 play-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <div>
+              <div class="font-kanit font-bold text-base text-white group-hover:text-[#CBFE00] transition-colors flex items-center gap-2">
+                <span>Lost It</span>
+                <span class="text-[10px] font-space text-white/60 bg-white/5 px-2 py-0.5 rounded border border-white/10">SINGLE</span>
+              </div>
+              <div class="font-space text-xs text-white/50">July 16, 2026 • 3:39 • Neon Doorway • Prod. JAH KNEE DEE</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <a href="https://open.spotify.com/album/6UD5qFovkmvDwOly6JqknX" target="_blank" rel="noopener noreferrer" class="text-white/40 hover:text-white transition-colors" title="Listen on Spotify">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.216.353-.674.467-1.027.251-2.813-1.718-6.354-2.107-10.523-1.155-.404.092-.81-.161-.902-.564-.092-.403.161-.81.564-.902 4.568-1.042 8.483-.6 11.637 1.343.353.216.467.674.251 1.027zm1.467-3.262c-.272.443-.85.584-1.293.312-3.22-1.979-8.129-2.551-11.939-1.395-.499.151-1.033-.133-1.184-.632-.151-.499.133-1.033.632-1.184 4.356-1.321 9.774-.683 13.472 1.594.443.272.584.85.312 1.293zm.126-3.41c-3.861-2.293-10.231-2.505-13.916-1.387-.593.18-1.222-.162-1.402-.755-.18-.593.162-1.222.755-1.402 4.234-1.285 11.272-1.039 15.707 1.593.533.316.708 1.01.392 1.543-.316.533-1.01.708-1.543.392z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Track 04: Soul Creature -->
+        <div class="track-card group" data-track-id="soul_creature">
+          <div class="flex items-center gap-4">
+            <span class="font-space text-xs text-white/40 w-6">04</span>
+            <button class="track-play-btn" data-track-id="soul_creature" aria-label="Play Soul Creature preview">
+              <svg class="w-4 h-4 ml-0.5 play-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <div>
+              <div class="font-kanit font-bold text-base text-white group-hover:text-[#CBFE00] transition-colors flex items-center gap-2">
+                <span>Soul Creature</span>
+                <span class="text-[10px] font-space text-[#00E5FF] bg-white/5 px-2 py-0.5 rounded border border-[#00E5FF]/30">SHAMANIC ROOTS</span>
+              </div>
+              <div class="font-space text-xs text-white/50">July 2026 • Inner Retrieval • Art by Lightning Serpent</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <a href="https://open.spotify.com/album/0UDoJ6zzQb7u9lSYGB5QL6" target="_blank" rel="noopener noreferrer" class="text-white/40 hover:text-white transition-colors" title="Listen on Spotify">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.216.353-.674.467-1.027.251-2.813-1.718-6.354-2.107-10.523-1.155-.404.092-.81-.161-.902-.564-.092-.403.161-.81.564-.902 4.568-1.042 8.483-.6 11.637 1.343.353.216.467.674.251 1.027zm1.467-3.262c-.272.443-.85.584-1.293.312-3.22-1.979-8.129-2.551-11.939-1.395-.499.151-1.033-.133-1.184-.632-.151-.499.133-1.033.632-1.184 4.356-1.321 9.774-.683 13.472 1.594.443.272.584.85.312 1.293zm.126-3.41c-3.861-2.293-10.231-2.505-13.916-1.387-.593.18-1.222-.162-1.402-.755-.18-.593.162-1.222.755-1.402 4.234-1.285 11.272-1.039 15.707 1.593.533.316.708 1.01.392 1.543-.316.533-1.01.708-1.543.392z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Track 05: Neon Limelight -->
+        <div class="track-card group" data-track-id="neon_limelight">
+          <div class="flex items-center gap-4">
+            <span class="font-space text-xs text-white/40 w-6">05</span>
+            <button class="track-play-btn" data-track-id="neon_limelight" aria-label="Play Neon Limelight preview">
+              <svg class="w-4 h-4 ml-0.5 play-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <div>
+              <div class="font-kanit font-bold text-base text-white group-hover:text-[#CBFE00] transition-colors flex items-center gap-2">
+                <span>Neon Limelight</span>
+                <span class="text-[10px] font-space text-white/60 bg-white/5 px-2 py-0.5 rounded border border-white/10">SINGLE</span>
+              </div>
+              <div class="font-space text-xs text-white/50">July 2026 • Featuring Electric Guitar & Vocals by JAH KNEE DEE</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <a href="https://open.spotify.com/album/6fK4j4tNpZq1lAXfJ1nfnb" target="_blank" rel="noopener noreferrer" class="text-white/40 hover:text-white transition-colors" title="Listen on Spotify">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.216.353-.674.467-1.027.251-2.813-1.718-6.354-2.107-10.523-1.155-.404.092-.81-.161-.902-.564-.092-.403.161-.81.564-.902 4.568-1.042 8.483-.6 11.637 1.343.353.216.467.674.251 1.027zm1.467-3.262c-.272.443-.85.584-1.293.312-3.22-1.979-8.129-2.551-11.939-1.395-.499.151-1.033-.133-1.184-.632-.151-.499.133-1.033.632-1.184 4.356-1.321 9.774-.683 13.472 1.594.443.272.584.85.312 1.293zm.126-3.41c-3.861-2.293-10.231-2.505-13.916-1.387-.593.18-1.222-.162-1.402-.755-.18-.593.162-1.222.755-1.402 4.234-1.285 11.272-1.039 15.707 1.593.533.316.708 1.01.392 1.543-.316.533-1.01.708-1.543.392z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Track 06: If You Miss Me -->
+        <div class="track-card group" data-track-id="if_you_miss_me">
+          <div class="flex items-center gap-4">
+            <span class="font-space text-xs text-white/40 w-6">06</span>
+            <button class="track-play-btn" data-track-id="if_you_miss_me" aria-label="Play If You Miss Me preview">
+              <svg class="w-4 h-4 ml-0.5 play-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <div>
+              <div class="font-kanit font-bold text-base text-white group-hover:text-[#CBFE00] transition-colors flex items-center gap-2">
+                <span>If You Miss Me</span>
+                <span class="text-[10px] font-space text-[#FF007F] bg-white/5 px-2 py-0.5 rounded border border-[#FF007F]/30">RADIO PRIORITY</span>
+              </div>
+              <div class="font-space text-xs text-white/50">June 18, 2026 • 3:15 • 1,094 Streams • DJ Epps Feature</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <a href="https://open.spotify.com/album/5QLLwETrWOKE0CWT9GDiEl" target="_blank" rel="noopener noreferrer" class="text-white/40 hover:text-white transition-colors" title="Listen on Spotify">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.216.353-.674.467-1.027.251-2.813-1.718-6.354-2.107-10.523-1.155-.404.092-.81-.161-.902-.564-.092-.403.161-.81.564-.902 4.568-1.042 8.483-.6 11.637 1.343.353.216.467.674.251 1.027zm1.467-3.262c-.272.443-.85.584-1.293.312-3.22-1.979-8.129-2.551-11.939-1.395-.499.151-1.033-.133-1.184-.632-.151-.499.133-1.033.632-1.184 4.356-1.321 9.774-.683 13.472 1.594.443.272.584.85.312 1.293zm.126-3.41c-3.861-2.293-10.231-2.505-13.916-1.387-.593.18-1.222-.162-1.402-.755-.18-.593.162-1.222.755-1.402 4.234-1.285 11.272-1.039 15.707 1.593.533.316.708 1.01.392 1.543-.316.533-1.01.708-1.543.392z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Track 07: By The Window -->
+        <div class="track-card group" data-track-id="by_the_window">
+          <div class="flex items-center gap-4">
+            <span class="font-space text-xs text-white/40 w-6">07</span>
+            <button class="track-play-btn" data-track-id="by_the_window" aria-label="Play By The Window preview">
+              <svg class="w-4 h-4 ml-0.5 play-icon" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <div>
+              <div class="font-kanit font-bold text-base text-white group-hover:text-[#CBFE00] transition-colors flex items-center gap-2">
+                <span>By The Window 🪟🐈‍⬛</span>
+                <span class="text-[10px] font-space text-white/60 bg-white/5 px-2 py-0.5 rounded border border-white/10">DEBUT 2026</span>
+              </div>
+              <div class="font-space text-xs text-white/50">May 15, 2026 • 3:17 • 1,016 Streams • Prod. JAH KNEE DEE</div>
+            </div>
+          </div>
+          <div class="flex items-center gap-4">
+            <a href="https://open.spotify.com/album/5i2UwX4psw0LMaVbLedGCM" target="_blank" rel="noopener noreferrer" class="text-white/40 hover:text-white transition-colors" title="Listen on Spotify">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.216.353-.674.467-1.027.251-2.813-1.718-6.354-2.107-10.523-1.155-.404.092-.81-.161-.902-.564-.092-.403.161-.81.564-.902 4.568-1.042 8.483-.6 11.637 1.343.353.216.467.674.251 1.027zm1.467-3.262c-.272.443-.85.584-1.293.312-3.22-1.979-8.129-2.551-11.939-1.395-.499.151-1.033-.133-1.184-.632-.151-.499.133-1.033.632-1.184 4.356-1.321 9.774-.683 13.472 1.594.443.272.584.85.312 1.293zm.126-3.41c-3.861-2.293-10.231-2.505-13.916-1.387-.593.18-1.222-.162-1.402-.755-.18-.593.162-1.222.755-1.402 4.234-1.285 11.272-1.039 15.707 1.593.533.316.708 1.01.392 1.543-.316.533-1.01.708-1.543.392z"/></svg>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       08. STUDIO & CREATIVE PROCESS (Asymmetric 12-Column Grid)
+       ======================================================================== -->
+  <section id="studio" class="py-24 sm:py-32 bg-[#050507] border-t border-white/10" aria-label="Studio Sanctuary and Gear">
+    <div class="inner-container">
+      
+      <div class="max-w-3xl mb-14">
+        <div class="inline-flex items-center gap-2 font-space text-xs text-[#CBFE00] font-semibold tracking-widest uppercase mb-3">
+          <span>05 / THE ASHEVILLE WORKSPACE</span>
+        </div>
+        <h2 class="stealth-heading text-3xl sm:text-4xl md:text-5xl uppercase">
+          SANCTUARY & SIGNAL CHAIN
+        </h2>
+        <p class="font-kanit text-white/60 text-base mt-3">
+          Raw acoustic wood meets high-end digital architecture in Jay’s home tracking studio.
+        </p>
+      </div>
+
+      <!-- Asymmetric 12-Column Media Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+        
+        <!-- Card 1: 8 Columns (Vocal Tracking on Condenser Mic in Flannel) -->
+        <div class="md:col-span-8 stealth-card p-0 rounded-2xl overflow-hidden relative min-h-[360px] sm:min-h-[440px] group">
+          <img src="photes/image_1c282.JPG" alt="Jay Miller singing into studio microphone with pop filter" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent"></div>
+          <div class="absolute bottom-6 left-6 right-6">
+            <span class="font-space text-xs text-[#CBFE00] tracking-widest uppercase block mb-1">Vocal & Breath Mechanics</span>
+            <h4 class="font-kanit font-black text-2xl sm:text-3xl text-white uppercase tracking-tight">The Studio Mic & Pop Filter</h4>
+            <p class="font-kanit text-white/70 text-sm mt-1 max-w-lg">Capturing unvarnished emotive dynamics — from whispered shamanic chants to soaring melodic hooks.</p>
+          </div>
+        </div>
+
+        <!-- Card 2: 4 Columns (Tattoo Detail & Studio Headphones under Purple LED) -->
+        <div class="md:col-span-4 stealth-card p-0 rounded-2xl overflow-hidden relative min-h-[360px] sm:min-h-[440px] group">
+          <img src="photes/image_bf8f5.JPG" alt="Jay Miller in studio lighting showing mushroom and crystal tattoo sleeve" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
+          <div class="absolute bottom-6 left-6 right-6">
+            <span class="font-space text-xs text-[#CBFE00] tracking-widest uppercase block mb-1">Visual Identity</span>
+            <h4 class="font-kanit font-black text-xl text-white uppercase tracking-tight">Crystals & Flora</h4>
+            <p class="font-kanit text-white/70 text-xs mt-1">Full-sleeve psychedelic botanical art reflecting inner worlds.</p>
+          </div>
+        </div>
+
+        <!-- Card 3: 12 Columns Full-Width Banner (Logic Pro DAW & MIDI Tracking) -->
+        <div class="md:col-span-12 stealth-card p-0 rounded-2xl overflow-hidden relative min-h-[300px] sm:min-h-[380px] group">
+          <img src="photes/image_f56eb.JPG" alt="Jay Miller tracking on Logic Pro DAW and MIDI keyboard" loading="lazy" decoding="async" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700">
+          <div class="absolute inset-0 bg-gradient-to-r from-black via-black/60 to-transparent"></div>
+          <div class="absolute bottom-6 left-6 sm:bottom-10 sm:left-10 max-w-xl">
+            <span class="font-space text-xs text-[#CBFE00] tracking-widest uppercase block mb-1">Digital Audio Workstation</span>
+            <h4 class="font-kanit font-black text-2xl sm:text-3xl text-white uppercase tracking-tight">DAW Multi-Tracking & Arranging</h4>
+            <p class="font-kanit text-white/70 text-sm mt-2">
+              Layering banjo stems, MIDI synthesizers, and bass arrangements before handing the stems off to producer JAH KNEE DEE for final electric guitar tracks and master mixing.
+            </p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       09. GLOBAL RHYTHM & CULTURAL CONNECTION (Dance Movement)
+       ======================================================================== -->
+  <section id="global-dance" class="py-24 sm:py-32 bg-[#000000] border-t border-white/10" aria-label="Global Dance Movement">
+    <div class="inner-container">
+      
+      <div class="max-w-3xl mb-14">
+        <div class="inline-flex items-center gap-2 font-space text-xs text-[#CBFE00] font-semibold tracking-widest uppercase mb-3">
+          <span>06 / CROSS-CONTINENTAL ENERGY</span>
+        </div>
+        <h2 class="stealth-heading text-3xl sm:text-4xl md:text-5xl uppercase">
+          THE GLOBAL DANCE PHENOMENON
+        </h2>
+        <p class="font-kanit text-white/60 text-base mt-3">
+          When mountain banjo rolls meet hip-hop bounce, dancers around the world respond.
+        </p>
+      </div>
+
+      <!-- Creator Testimonials & Viral Signals -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 mb-12">
+        
+        <!-- Creator 1: Sunny / Sunjeet Simi Singh -->
+        <div class="stealth-card">
+          <div class="flex items-center justify-between mb-4">
+            <span class="font-space text-xs text-[#CBFE00] bg-white/5 px-2.5 py-1 rounded border border-[#CBFE00]/30 font-bold">502K+ VIEWS</span>
+            <span class="font-space text-xs text-white/40">INDIA 🇮🇳</span>
+          </div>
+          <p class="font-kanit text-white/90 text-sm italic mb-6">
+            “Have updated my playlist with this amazing track! Go and listen to this heat @jaydymilla... Let’s create dance videos on your music!”
+          </p>
+          <div class="flex items-center gap-3 pt-4 border-t border-white/10">
+            <div class="w-8 h-8 rounded-full bg-[#CBFE00]/10 border border-[#CBFE00]/30 flex items-center justify-center font-bold text-xs text-[#CBFE00]">S</div>
+            <div>
+              <div class="font-kanit font-bold text-sm text-white">Sunjeet Simi Singh</div>
+              <div class="font-space text-xs text-white/40">@gangstasingh_ • Movement Artist</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Creator 2: Aaron / Blvckmickey -->
+        <div class="stealth-card">
+          <div class="flex items-center justify-between mb-4">
+            <span class="font-space text-xs text-[#CBFE00] bg-white/5 px-2.5 py-1 rounded border border-[#CBFE00]/30 font-bold">COLLAB REEL</span>
+            <span class="font-space text-xs text-white/40">AFRICA 🌍</span>
+          </div>
+          <p class="font-kanit text-white/90 text-sm italic mb-6">
+            “Couldn’t resist the vibe, I had to hop on this! You tough bro, a dance visual would be dope ASF. Let’s work!”
+          </p>
+          <div class="flex items-center gap-3 pt-4 border-t border-white/10">
+            <div class="w-8 h-8 rounded-full bg-[#CBFE00]/10 border border-[#CBFE00]/30 flex items-center justify-center font-bold text-xs text-[#CBFE00]">A</div>
+            <div>
+              <div class="font-kanit font-bold text-sm text-white">Aaron (Blvckmickey)</div>
+              <div class="font-space text-xs text-white/40">@blvckmickey • Movement Artist</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Creator 3: CRAY Kenya Crew -->
+        <div class="stealth-card">
+          <div class="flex items-center justify-between mb-4">
+            <span class="font-space text-xs text-[#CBFE00] bg-white/5 px-2.5 py-1 rounded border border-[#CBFE00]/30 font-bold">CHOREOGRAPHY</span>
+            <span class="font-space text-xs text-white/40">KENYA 🇰🇪</span>
+          </div>
+          <p class="font-kanit text-white/90 text-sm italic mb-6">
+            “Y’all wanted some slow jams. Song: Lost It. Artist: @jaydymilla. Producer: @jah_knee_dee. This crew got the moves!”
+          </p>
+          <div class="flex items-center gap-3 pt-4 border-t border-white/10">
+            <div class="w-8 h-8 rounded-full bg-[#CBFE00]/10 border border-[#CBFE00]/30 flex items-center justify-center font-bold text-xs text-[#CBFE00]">C</div>
+            <div>
+              <div class="font-kanit font-bold text-sm text-white">CRAY Dance Crew</div>
+              <div class="font-space text-xs text-white/40">@cray.flaming • Street Dancers</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Radio & Media Mention -->
+      <div class="p-8 bg-[#0A0A0D] border border-white/10 rounded-2xl flex flex-col sm:flex-row items-center justify-between gap-6">
+        <div>
+          <div class="font-space text-xs text-[#CBFE00] uppercase tracking-wider mb-1">New Music Radio Selection</div>
+          <h4 class="font-kanit font-bold text-xl text-white">“If You Miss Me” Selected as Priority Song on DJ Epps Radio</h4>
+          <p class="font-kanit text-white/60 text-xs sm:text-sm mt-1">Featured by ALL TYPES PROMOTION & New Music Radio (83,100+ views)</p>
+        </div>
+        <a href="https://www.instagram.com/raphop_now/reel/DbDonV4SClU/" target="_blank" rel="noopener noreferrer" class="btn-glass btn-compact whitespace-nowrap">
+          WATCH BROADCAST ↗
+        </a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       10. VERIFIED COLLABORATORS LEDGER
+       ======================================================================== -->
+  <section id="collaborators" class="py-24 sm:py-32 bg-[#050507] border-t border-white/10" aria-label="Collaborators">
+    <div class="inner-container">
+      
+      <div class="max-w-3xl mb-14">
+        <div class="inline-flex items-center gap-2 font-space text-xs text-[#CBFE00] font-semibold tracking-widest uppercase mb-3">
+          <span>07 / THE CREATIVE CIRCLE</span>
+        </div>
+        <h2 class="stealth-heading text-3xl sm:text-4xl md:text-5xl uppercase">
+          VERIFIED CREATIVE PARTNERS
+        </h2>
+        <p class="font-kanit text-white/60 text-base mt-3">
+          The artists, producers, and mentors who bring the vision to life.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        
+        <!-- Collaborator 1: JAH KNEE DEE -->
+        <div class="stealth-card p-6">
+          <div class="w-10 h-10 rounded-lg bg-[#CBFE00] text-black font-black flex items-center justify-center font-kanit text-lg mb-4">
+            JK
+          </div>
+          <h4 class="font-kanit font-bold text-lg text-white">JAH KNEE DEE</h4>
+          <p class="font-space text-xs text-[#CBFE00] mb-2">Music Producer & Guitarist</p>
+          <p class="font-kanit text-white/60 text-xs leading-relaxed">
+            Asheville producer and musician. Electric guitars, low-end basslines, drum programming, and studio mix engineering across all 2026 singles.
+          </p>
+          <a href="https://jahkneedee.com/studio" target="_blank" rel="noopener noreferrer" class="font-space text-xs text-white/40 hover:text-white mt-4 inline-block">
+            jahkneedee.com ↗
+          </a>
+        </div>
+
+        <!-- Collaborator 2: Iris Miller -->
+        <div class="stealth-card p-6">
+          <div class="w-10 h-10 rounded-lg bg-white/10 text-white font-black flex items-center justify-center font-kanit text-lg mb-4">
+            IM
+          </div>
+          <h4 class="font-kanit font-bold text-lg text-white">Iris Miller</h4>
+          <p class="font-space text-xs text-white/50 mb-2">Cover Artist & Daughter</p>
+          <p class="font-kanit text-white/60 text-xs leading-relaxed">
+            Illustrated the album artwork for single “Cool&YkIt”, depicting the traveler sitting upon storm clouds with his loyal companion dog.
+          </p>
+          <span class="font-space text-xs text-white/40 mt-4 inline-block">Family Collaboration</span>
+        </div>
+
+        <!-- Collaborator 3: Lightning Serpent -->
+        <div class="stealth-card p-6">
+          <div class="w-10 h-10 rounded-lg bg-white/10 text-white font-black flex items-center justify-center font-kanit text-lg mb-4">
+            LS
+          </div>
+          <h4 class="font-kanit font-bold text-lg text-white">Lightning Serpent</h4>
+          <p class="font-space text-xs text-white/50 mb-2">Visual Artist & Illustrator</p>
+          <p class="font-kanit text-white/60 text-xs leading-relaxed">
+            Created the official cover illustration for “Soul Creature” — featuring the horned demon monster strumming a banjo in denim overalls.
+          </p>
+          <span class="font-space text-xs text-white/40 mt-4 inline-block">@lightning_serpent</span>
+        </div>
+
+        <!-- Collaborator 4: Dr. Simon Senzon -->
+        <div class="stealth-card p-6">
+          <div class="w-10 h-10 rounded-lg bg-white/10 text-white font-black flex items-center justify-center font-kanit text-lg mb-4">
+            SS
+          </div>
+          <h4 class="font-kanit font-bold text-lg text-white">Dr. Simon Senzon</h4>
+          <p class="font-space text-xs text-white/50 mb-2">Mentor & Dedication</p>
+          <p class="font-kanit text-white/60 text-xs leading-relaxed">
+            Chiropractor, philosopher, and longtime friend to whom the release of “Cool&YkIt” is personally dedicated.
+          </p>
+          <span class="font-space text-xs text-white/40 mt-4 inline-block">@drsimonsenzon</span>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       11. BOOKING & SYNCHRONIZATION LICENSING INQUIRIES
+       ======================================================================== -->
+  <section id="booking" class="py-24 sm:py-32 bg-[#000000] border-t border-white/10" aria-label="Booking and Inquiries">
+    <div class="inner-container">
+      
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+        
+        <!-- Left: Booking Authority Copy -->
+        <div class="lg:col-span-5">
+          <div class="inline-flex items-center gap-2 font-space text-xs text-[#CBFE00] font-semibold tracking-widest uppercase mb-3">
+            <span>08 / DIRECT REPRESENTATION</span>
+          </div>
+          <h2 class="stealth-heading text-3xl sm:text-4xl md:text-5xl uppercase mb-6">
+            BOOKING & SYNC LICENSING
+          </h2>
+          <p class="font-kanit text-white/70 text-base leading-relaxed mb-6">
+            JayDyMilla is available for select live festival appearances, intimate listening room performances, house concerts, and commercial film/television synchronization licensing.
+          </p>
+          <div class="space-y-4 font-space text-xs text-white/50">
+            <div class="flex items-center gap-3">
+              <span class="w-2 h-2 rounded-full bg-[#CBFE00]"></span>
+              <span>DIRECT ARTIST CONTACT • ZERO INTERMEDIARY COMMISSIONS</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-2 h-2 rounded-full bg-[#CBFE00]"></span>
+              <span>100% INDEPENDENT PUBLISHING RIGHTS CONTROL</span>
+            </div>
+            <div class="flex items-center gap-3">
+              <span class="w-2 h-2 rounded-full bg-[#CBFE00]"></span>
+              <span>DISTRIBUTED GLOBALLY VIA DISTROKID</span>
+            </div>
+          </div>
+          
+          <!-- Direct Social Channels & Instant Connect -->
+          <div class="mt-8 pt-6 border-t border-white/10">
+            <div class="font-space text-xs text-[#CBFE00] uppercase tracking-widest mb-3 font-semibold flex items-center gap-2">
+              <span class="w-1.5 h-1.5 rounded-full bg-[#CBFE00]"></span>
+              <span>OFFICIAL SOCIAL HUBS & DIRECT CONNECT</span>
+            </div>
+            
+            <!-- 2x2 Interactive Social App Buttons Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
+              
+              <!-- Instagram Button -->
+              <a href="https://www.instagram.com/jaydymilla" target="_blank" rel="noopener noreferrer" 
+                 class="group flex items-center gap-3 p-3 rounded-xl bg-[#0A0A0E] border border-white/10 hover:border-[#FF007F]/60 hover:bg-[#FF007F]/10 transition-all text-decoration-none shadow-sm">
+                <div class="w-9 h-9 rounded-lg bg-[#FF007F]/15 text-[#FF007F] flex items-center justify-center group-hover:scale-110 transition-transform shrink-0">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+                </div>
+                <div class="min-w-0">
+                  <div class="font-kanit font-bold text-xs text-white group-hover:text-[#FF007F] transition-colors flex items-center gap-1">
+                    <span>Instagram</span>
+                    <span class="text-[10px] text-white/40 group-hover:text-[#FF007F]">↗</span>
+                  </div>
+                  <div class="font-space text-[11px] text-white/50 truncate">@jaydymilla</div>
+                </div>
+              </a>
+
+              <!-- Spotify Button -->
+              <a href="https://open.spotify.com/artist/1dKmGMjzhXQZrcYhKDgWRB" target="_blank" rel="noopener noreferrer" 
+                 class="group flex items-center gap-3 p-3 rounded-xl bg-[#0A0A0E] border border-white/10 hover:border-[#1DB954]/60 hover:bg-[#1DB954]/10 transition-all text-decoration-none shadow-sm">
+                <div class="w-9 h-9 rounded-lg bg-[#1DB954]/15 text-[#1DB954] flex items-center justify-center group-hover:scale-110 transition-transform shrink-0">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.216.353-.674.467-1.027.251-2.813-1.718-6.354-2.107-10.523-1.155-.404.092-.81-.161-.902-.564-.092-.403.161-.81.564-.902 4.568-1.042 8.483-.6 11.637 1.343.353.216.467.674.251 1.027zm1.467-3.262c-.272.443-.85.584-1.293.312-3.22-1.979-8.129-2.551-11.939-1.395-.499.151-1.033-.133-1.184-.632-.151-.499.133-1.033.632-1.184 4.356-1.321 9.774-.683 13.472 1.594.443.272.584.85.312 1.293zm.126-3.41c-3.861-2.293-10.231-2.505-13.916-1.387-.593.18-1.222-.162-1.402-.755-.18-.593.162-1.222.755-1.402 4.234-1.285 11.272-1.039 15.707 1.593.533.316.708 1.01.392 1.543-.316.533-1.01.708-1.543.392z"/></svg>
+                </div>
+                <div class="min-w-0">
+                  <div class="font-kanit font-bold text-xs text-white group-hover:text-[#1DB954] transition-colors flex items-center gap-1">
+                    <span>Spotify</span>
+                    <span class="text-[10px] text-white/40 group-hover:text-[#1DB954]">↗</span>
+                  </div>
+                  <div class="font-space text-[11px] text-white/50 truncate">Artist Profile</div>
+                </div>
+              </a>
+
+              <!-- YouTube Button -->
+              <a href="https://www.youtube.com/channel/UCSLuzR-gvXozEWNZpnXz0Hw" target="_blank" rel="noopener noreferrer" 
+                 class="group flex items-center gap-3 p-3 rounded-xl bg-[#0A0A0E] border border-white/10 hover:border-[#FF0000]/60 hover:bg-[#FF0000]/10 transition-all text-decoration-none shadow-sm">
+                <div class="w-9 h-9 rounded-lg bg-[#FF0000]/15 text-[#FF0000] flex items-center justify-center group-hover:scale-110 transition-transform shrink-0">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>
+                </div>
+                <div class="min-w-0">
+                  <div class="font-kanit font-bold text-xs text-white group-hover:text-[#FF0000] transition-colors flex items-center gap-1">
+                    <span>YouTube</span>
+                    <span class="text-[10px] text-white/40 group-hover:text-[#FF0000]">↗</span>
+                  </div>
+                  <div class="font-space text-[11px] text-white/50 truncate">Topic Channel</div>
+                </div>
+              </a>
+
+              <!-- Threads Button -->
+              <a href="https://www.threads.com/@jaydymilla" target="_blank" rel="noopener noreferrer" 
+                 class="group flex items-center gap-3 p-3 rounded-xl bg-[#0A0A0E] border border-white/10 hover:border-white/50 hover:bg-white/10 transition-all text-decoration-none shadow-sm">
+                <div class="w-9 h-9 rounded-lg bg-white/15 text-white flex items-center justify-center group-hover:scale-110 transition-transform shrink-0">
+                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12c2.45 0 4.73-.736 6.643-2.007l-1.394-1.859C15.65 21.1 13.9 21.6 12 21.6c-5.302 0-9.6-4.298-9.6-9.6S6.698 2.4 12 2.4s9.6 4.298 9.6 9.6c0 1.94-.486 3.82-1.408 5.438l1.91 1.09A11.956 11.956 0 0 0 24 12c0-6.627-5.373-12-12-12zm.23 6.4c-2.45 0-4.32 1.34-4.88 3.52l2.3.6c.32-1.25 1.37-1.82 2.58-1.82 1.7 0 2.87 1.05 2.87 2.76v.38a8.2 8.2 0 0 0-3.6-.82c-2.6 0-4.5 1.48-4.5 3.73 0 2.17 1.83 3.65 4.25 3.65 1.9 0 3.23-.88 3.85-2.28h.08v2.08h2.32V11.84c0-3.3-2.22-5.44-5.22-5.44zm.64 9.6c-1.34 0-2.32-.78-2.32-1.92 0-1.16 1.02-1.88 2.42-1.88.94 0 1.9.22 2.68.64-.32 1.86-1.52 3.16-2.78 3.16z"/></svg>
+                </div>
+                <div class="min-w-0">
+                  <div class="font-kanit font-bold text-xs text-white group-hover:text-white transition-colors flex items-center gap-1">
+                    <span>Threads</span>
+                    <span class="text-[10px] text-white/40 group-hover:text-white">↗</span>
+                  </div>
+                  <div class="font-space text-[11px] text-white/50 truncate">@jaydymilla</div>
+                </div>
+              </a>
+
+            </div>
+
+            <!-- Direct Instagram DM Action -->
+            <a href="https://www.instagram.com/direct/t/jaydymilla" target="_blank" rel="noopener noreferrer" 
+               class="btn-lime w-full flex items-center justify-center gap-2 text-center text-xs py-2.5 font-bold tracking-wider">
+              <span>SEND DIRECT INSTAGRAM MESSAGE</span>
+              <span>↗</span>
+            </a>
+          </div>
+        </div>
+
+        <!-- Right: Professional Inquiry Form -->
+        <div class="lg:col-span-7">
+          <div class="stealth-card p-6 sm:p-10">
+            <h3 class="font-kanit font-bold text-xl text-white mb-6">Submit a Professional Inquiry</h3>
+            <form id="inquiry-form" class="space-y-4">
+              
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="inq-name" class="block font-space text-xs text-white/60 mb-1.5 uppercase">Your Name *</label>
+                  <input type="text" id="inq-name" required placeholder="Name or Agency" class="stealth-input">
+                </div>
+                <div>
+                  <label for="inq-email" class="block font-space text-xs text-white/60 mb-1.5 uppercase">Email Address *</label>
+                  <input type="email" id="inq-email" required placeholder="email@company.com" class="stealth-input">
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                  <label for="inq-type" class="block font-space text-xs text-white/60 mb-1.5 uppercase">Inquiry Type *</label>
+                  <select id="inq-type" required class="stealth-select">
+                    <option value="Festival Booking">Live Festival Booking</option>
+                    <option value="Concert / Listening Room">Concert / Listening Room</option>
+                    <option value="House Concert">Private House Concert</option>
+                    <option value="Sync Licensing">Film / TV Sync Licensing</option>
+                    <option value="Creative Collaboration">Creative Collaboration</option>
+                    <option value="Press / Media">Press / Media Interview</option>
+                  </select>
+                </div>
+                <div>
+                  <label for="inq-date" class="block font-space text-xs text-white/60 mb-1.5 uppercase">Proposed Date / Timeline</label>
+                  <input type="text" id="inq-date" placeholder="e.g. Autumn 2026" class="stealth-input">
+                </div>
+              </div>
+
+              <div>
+                <label for="inq-message" class="block font-space text-xs text-white/60 mb-1.5 uppercase">Project Details *</label>
+                <textarea id="inq-message" rows="4" required placeholder="Describe the event, budget, production scope, or synchronization placement..." class="stealth-textarea"></textarea>
+              </div>
+
+              <div class="pt-2">
+                <button type="submit" class="btn-lime w-full text-center">
+                  TRANSMIT INQUIRY ↗
+                </button>
+              </div>
+
+            </form>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ========================================================================
+       12. FOOTER & WATERMARK
+       ======================================================================== -->
+  <footer class="bg-[#000000] border-t border-white/10 pt-20 pb-28 sm:pb-24 relative overflow-hidden" aria-label="Footer">
+    <div class="inner-container">
+      
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-16 border-b border-white/10">
+        
+        <!-- Col 1: Identity -->
+        <div class="md:col-span-2">
+          <span class="font-kanit font-black text-3xl tracking-tight text-white lowercase">
+            jaydymilla<span class="text-[#CBFE00]">.</span>
+          </span>
+          <p class="font-kanit text-white/60 text-sm mt-3 max-w-sm">
+            Appalachian roots, shamanic power songs, and modern rhythmic production. Based in Asheville, North Carolina.
+          </p>
+          <div class="mt-4 font-space text-xs text-[#CBFE00]">
+            📍 ASHEVILLE, NORTH CAROLINA
+          </div>
+        </div>
+
+        <!-- Col 2: Streaming Channels -->
+        <div>
+          <div class="font-space text-xs text-white/40 uppercase tracking-widest mb-4">STREAMING</div>
+          <ul class="space-y-2.5 font-kanit text-sm">
+            <li><a href="https://open.spotify.com/artist/1dKmGMjzhXQZrcYhKDgWRB" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-[#CBFE00] transition-colors">Spotify Artist Profile ↗</a></li>
+            <li><a href="https://www.youtube.com/channel/UCSLuzR-gvXozEWNZpnXz0Hw" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-[#CBFE00] transition-colors">YouTube Topic Channel ↗</a></li>
+            <li><a href="#catalog" class="text-white/70 hover:text-[#CBFE00] transition-colors">2026 Studio Singles</a></li>
+          </ul>
+        </div>
+
+        <!-- Col 3: Community & Social -->
+        <div>
+          <div class="font-space text-xs text-white/40 uppercase tracking-widest mb-4">COMMUNITY</div>
+          <ul class="space-y-2.5 font-kanit text-sm">
+            <li><a href="https://www.instagram.com/jaydymilla" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-[#CBFE00] transition-colors">Instagram @jaydymilla ↗</a></li>
+            <li><a href="https://www.threads.com/@jaydymilla" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-[#CBFE00] transition-colors">Threads Profile ↗</a></li>
+            <li><a href="https://jahkneedee.com/studio" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-[#CBFE00] transition-colors">JAH KNEE DEE Studios ↗</a></li>
+          </ul>
+        </div>
+
+      </div>
+
+      <!-- Legal & Copyright -->
+      <div class="flex flex-col sm:flex-row items-center justify-between pt-8 gap-4 font-space text-xs text-white/40">
+        <div>© 2026 JayDyMilla. All rights reserved. Distributed via DistroKid (12683546 Records DK).</div>
+        <div class="flex items-center gap-6">
+          <a href="#hero" class="hover:text-white transition-colors">BACK TO TOP ↑</a>
+        </div>
+      </div>
+
+      <!-- Monumental Background Watermark -->
+      <div class="footer-watermark mt-12" aria-hidden="true">
+        JAYDYMILLA
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ========================================================================
+       13. PERSISTENT AUDIO DOCK (#sticky-bar)
+       Authentic Player Connected to Local Verified Audio Previews
+       ======================================================================== -->
+  <div id="sticky-bar" class="dock-hidden" role="region" aria-label="Persistent Audio Player">
+    
+    <!-- Left: Track Meta & Artwork Thumbnail -->
+    <div class="flex items-center gap-3 min-w-0">
+      <img id="dock-thumb" src="photes/image_b38c6.JPG" alt="Current playing single artwork" class="w-10 h-10 rounded-lg object-cover flex-shrink-0 border border-white/15">
+      <div class="min-w-0">
+        <div id="dock-title" class="font-kanit font-bold text-sm text-white truncate">If You Miss Me 🎨</div>
+        <div class="font-space text-[11px] text-[#CBFE00] truncate">JayDyMilla • Prod. JAH KNEE DEE</div>
+      </div>
+    </div>
+
+    <!-- Center: Player Controls & Scrubbing Slider -->
+    <div class="flex-1 max-w-md hidden sm:flex flex-col gap-1">
+      <div class="flex items-center justify-between font-space text-[10px] text-white/40">
+        <span id="dock-current-time">0:00</span>
+        <span id="dock-total-time">0:30</span>
+      </div>
+      <input type="range" id="dock-scrubber" min="0" max="100" value="0" class="dock-scrubber" aria-label="Audio scrubber">
+    </div>
+
+    <!-- Right: Volume, Play/Pause Button & Spotify Deep Link -->
+    <div class="flex items-center gap-3">
+      
+      <!-- Volume Control (Mute/Slider) -->
+      <div class="hidden md:flex items-center gap-2 pr-2 border-r border-white/15">
+        <button id="dock-volume-btn" class="text-white/50 hover:text-[#CBFE00] transition-colors p-1" aria-label="Mute / Unmute">
+          <svg id="dock-vol-high" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+          <svg id="dock-vol-mute" class="w-4 h-4 hidden text-[#FF007F]" fill="currentColor" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+        </button>
+        <input type="range" id="dock-volume-slider" min="0" max="100" value="85" class="dock-volume-slider" aria-label="Volume Control">
+      </div>
+
+      <button id="dock-play-toggle" class="dock-play-btn" aria-label="Toggle Play / Pause">
+        <svg id="dock-play-icon" class="w-5 h-5 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        <svg id="dock-pause-icon" class="w-5 h-5 hidden" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+      </button>
+      <a id="dock-spotify-link" href="https://open.spotify.com/track/6KM8gT06FLVCFh46SX1XoR" target="_blank" rel="noopener noreferrer" class="text-white/40 hover:text-[#CBFE00] transition-colors" title="Open in Spotify">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.498 17.306c-.216.353-.674.467-1.027.251-2.813-1.718-6.354-2.107-10.523-1.155-.404.092-.81-.161-.902-.564-.092-.403.161-.81.564-.902 4.568-1.042 8.483-.6 11.637 1.343.353.216.467.674.251 1.027zm1.467-3.262c-.272.443-.85.584-1.293.312-3.22-1.979-8.129-2.551-11.939-1.395-.499.151-1.033-.133-1.184-.632-.151-.499.133-1.033.632-1.184 4.356-1.321 9.774-.683 13.472 1.594.443.272.584.85.312 1.293zm.126-3.41c-3.861-2.293-10.231-2.505-13.916-1.387-.593.18-1.222-.162-1.402-.755-.18-.593.162-1.222.755-1.402 4.234-1.285 11.272-1.039 15.707 1.593.533.316.708 1.01.392 1.543-.316.533-1.01.708-1.543.392z"/></svg>
+      </a>
+      <button id="dock-close-btn" class="text-white/30 hover:text-white transition-colors text-sm px-1" aria-label="Minimize Audio Dock">✕</button>
+    </div>
+
+    <!-- Hidden HTML5 Audio Element for Real Playback -->
+    <audio id="global-audio-element" preload="none"></audio>
+  </div>
+
+  <!-- Booking Success Modal -->
+  <div id="booking-modal" class="stealth-modal-overlay" aria-hidden="true">
+    <div class="stealth-modal-card">
+      <div class="w-12 h-12 rounded-full bg-[#CBFE00]/10 border border-[#CBFE00]/40 text-[#CBFE00] flex items-center justify-center font-bold text-xl mb-4">
+        ✓
+      </div>
+      <h3 class="font-kanit font-bold text-2xl text-white mb-2">Inquiry Transmitted</h3>
+      <p class="font-kanit text-white/70 text-sm leading-relaxed mb-6">
+        Thank you. Your message has been routed to JayDyMilla. You will receive a direct reply via email within 24 to 48 hours.
+      </p>
+      <button id="close-modal-btn" class="btn-lime w-full text-center">
+        ACKNOWLEDGE & CLOSE
+      </button>
+    </div>
+  </div>
+
+  <!-- Application Logic -->
+  <script src="app.js?v=2"></script>
+</body>
+</html>

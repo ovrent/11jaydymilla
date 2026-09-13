@@ -1,0 +1,26 @@
+# Operating System Files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDE & Editor Directories
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Python Cache & Virtual Environments
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+env/
+venv/
+
+# Temporary and Scratch Files
+*.tmp
+*.bak
+*.orig
+*.swp
+*~
+*.log
