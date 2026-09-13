@@ -24,3 +24,8 @@ venv/
 *.swp
 *~
 *.log
+
+# Environment and Secret Files
+.env
+.env.local
+.env.*.local
