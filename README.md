@@ -1,5 +1,12 @@
 # JayDyMilla — Official Artist Digital Platform
 
+[![Live Website](https://img.shields.io/badge/Production-Live%20on%20Vercel-success?style=for-the-badge&logo=vercel)](https://11jaydymilla.vercel.app)
+[![GitHub Repository](https://img.shields.io/badge/GitHub-ovrent%2F11jaydymilla-181717?style=for-the-badge&logo=github)](https://github.com/ovrent/11jaydymilla)
+[![Database](https://img.shields.io/badge/Supabase-PostgreSQL%20Active-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com)
+
+- **Live Production URL**: [https://11jaydymilla.vercel.app](https://11jaydymilla.vercel.app)
+- **GitHub Repository**: [https://github.com/ovrent/11jaydymilla](https://github.com/ovrent/11jaydymilla)
+
 A high-performance, editorial digital platform for **JayDyMilla** (Dr. Jay Miller) — Asheville, North Carolina songwriter and 5-string banjo artist fusing Appalachian folk roots, shamanic power songs, and modern rhythmic production.
 
 ---
