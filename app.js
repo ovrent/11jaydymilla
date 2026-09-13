@@ -64,14 +64,12 @@
   let currentVelocity = 0.0;
 
   // Zero-Race Seek Engine State
-  let isSeeking = false;
   let pendingSeekTime = null;
   let videoDuration = 0;
 
-  const omega = 17.0; // Silky critically damped spring frequency (absorbs sudden scroll reversals)
+  const omega = 20.0; // Responsive critically damped spring frequency (immediate rotation with smooth inertia)
 
   let isDecoderPrimed = false;
-  let seekTimeout = null;
 
   function primeVideoDecoder() {
     if (!cylinderVideo || isDecoderPrimed) return;
@@ -162,32 +160,19 @@
     cylinderVideo.addEventListener('loadeddata', onDataReady);
     cylinderVideo.addEventListener('canplay', onDataReady);
 
-    // Frame-Paint Locked Seek Queue: Guarantees previous frame is drawn before dispatching next seek
-    const onFrameDrawn = () => {
-      isSeeking = false;
+    // Native Zero-Race Seek Queue: Seamless, instant rotation on scroll
+    cylinderVideo.addEventListener('seeked', () => {
+      clearPoster();
       if (pendingSeekTime !== null) {
         const nextTime = pendingSeekTime;
         pendingSeekTime = null;
-        executeSeek(nextTime);
-      }
-    };
-
-    cylinderVideo.addEventListener('seeking', () => {
-      isSeeking = true;
-      clearTimeout(seekTimeout);
-      seekTimeout = setTimeout(() => {
-        onFrameDrawn();
-      }, 140);
-    });
-
-    cylinderVideo.addEventListener('seeked', () => {
-      clearTimeout(seekTimeout);
-      clearPoster();
-      // Wait for hardware compositor to paint frame before clearing isSeeking lock
-      if ('requestVideoFrameCallback' in cylinderVideo) {
-        cylinderVideo.requestVideoFrameCallback(onFrameDrawn);
-      } else {
-        requestAnimationFrame(onFrameDrawn);
+        if (Math.abs(cylinderVideo.currentTime - nextTime) >= 0.016) {
+          try {
+            cylinderVideo.currentTime = nextTime;
+          } catch (e) {
+            pendingSeekTime = nextTime;
+          }
+        }
       }
     });
 
@@ -208,16 +193,15 @@
       if (!isDecoderPrimed) primeVideoDecoder();
       return;
     }
-    // Throttle micro-seeks below 33ms (approx 1 frame at 30fps) to eliminate decoder thrashing
-    if (Math.abs(cylinderVideo.currentTime - time) < 0.033) return;
-    if (cylinderVideo.seeking || isSeeking) {
+    // Skip if difference is negligible (< 16ms, ~half frame)
+    if (Math.abs(cylinderVideo.currentTime - time) < 0.016) return;
+    
+    // If native hardware decoder is currently seeking, queue up latest target time
+    if (cylinderVideo.seeking) {
       pendingSeekTime = time;
       return;
     }
     try {
-      if (!cylinderVideo.paused) {
-        cylinderVideo.pause();
-      }
       cylinderVideo.currentTime = time;
     } catch (err) {
       pendingSeekTime = time;
