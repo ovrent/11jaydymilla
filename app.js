@@ -68,7 +68,7 @@
   let pendingSeekTime = null;
   let videoDuration = 0;
 
-  const omega = 22.0; // Natural angular frequency for critical damping
+  const omega = 17.0; // Silky critically damped spring frequency (absorbs sudden scroll reversals)
 
   let isDecoderPrimed = false;
   let seekTimeout = null;
@@ -102,6 +102,17 @@
     cylinderScaler = document.getElementById('motion-cylinder-scaler');
 
     if (!cylinderTrack || !cylinderVideo) return;
+
+    // Remove poster immediately once loaded to prevent iOS Safari flashing poster on backward seeks
+    const clearPoster = () => {
+      if (cylinderVideo && cylinderVideo.hasAttribute('poster')) {
+        cylinderVideo.removeAttribute('poster');
+      }
+    };
+    cylinderVideo.addEventListener('loadeddata', clearPoster, { once: true });
+    cylinderVideo.addEventListener('canplay', clearPoster, { once: true });
+    cylinderVideo.addEventListener('timeupdate', clearPoster, { once: true });
+    cylinderVideo.addEventListener('seeked', clearPoster, { once: true });
 
     // Mobile WebKit / Android decoder warmup on first user gesture
     const unlockDecoder = () => {
@@ -151,27 +162,32 @@
     cylinderVideo.addEventListener('loadeddata', onDataReady);
     cylinderVideo.addEventListener('canplay', onDataReady);
 
-    // Zero-Race Seek Queue Resolution with safety fallback
-    cylinderVideo.addEventListener('seeking', () => {
-      isSeeking = true;
-      clearTimeout(seekTimeout);
-      seekTimeout = setTimeout(() => {
-        isSeeking = false;
-        if (pendingSeekTime !== null) {
-          const nextTime = pendingSeekTime;
-          pendingSeekTime = null;
-          executeSeek(nextTime);
-        }
-      }, 120);
-    });
-
-    cylinderVideo.addEventListener('seeked', () => {
-      clearTimeout(seekTimeout);
+    // Frame-Paint Locked Seek Queue: Guarantees previous frame is drawn before dispatching next seek
+    const onFrameDrawn = () => {
       isSeeking = false;
       if (pendingSeekTime !== null) {
         const nextTime = pendingSeekTime;
         pendingSeekTime = null;
         executeSeek(nextTime);
+      }
+    };
+
+    cylinderVideo.addEventListener('seeking', () => {
+      isSeeking = true;
+      clearTimeout(seekTimeout);
+      seekTimeout = setTimeout(() => {
+        onFrameDrawn();
+      }, 140);
+    });
+
+    cylinderVideo.addEventListener('seeked', () => {
+      clearTimeout(seekTimeout);
+      clearPoster();
+      // Wait for hardware compositor to paint frame before clearing isSeeking lock
+      if ('requestVideoFrameCallback' in cylinderVideo) {
+        cylinderVideo.requestVideoFrameCallback(onFrameDrawn);
+      } else {
+        requestAnimationFrame(onFrameDrawn);
       }
     });
 
@@ -186,18 +202,22 @@
 
   function executeSeek(time) {
     if (!cylinderVideo) return;
-    // Allow seek once metadata (readyState >= 1) is ready so browser begins fetching requested frame
+    // Allow seek once metadata (readyState >= 1) is ready
     if (cylinderVideo.readyState < 1) {
       pendingSeekTime = time;
       if (!isDecoderPrimed) primeVideoDecoder();
       return;
     }
-    if (Math.abs(cylinderVideo.currentTime - time) < 0.016) return; // Skip if under 1 frame
+    // Throttle micro-seeks below 33ms (approx 1 frame at 30fps) to eliminate decoder thrashing
+    if (Math.abs(cylinderVideo.currentTime - time) < 0.033) return;
     if (cylinderVideo.seeking || isSeeking) {
       pendingSeekTime = time;
       return;
     }
     try {
+      if (!cylinderVideo.paused) {
+        cylinderVideo.pause();
+      }
       cylinderVideo.currentTime = time;
     } catch (err) {
       pendingSeekTime = time;
@@ -227,15 +247,16 @@
       currentProgress = targetProgress;
       currentVelocity = 0.0;
     } else {
-      // Critically Damped Harmonic Oscillator (zeta = 1.0, omega = 22.0)
-      const f = 1.0 + 2.0 * dt * omega;
+      // Critically Damped Harmonic Oscillator (zeta = 1.0, omega = 17.0)
+      const safeDt = Math.min(dt, 0.033);
+      const f = 1.0 + 2.0 * safeDt * omega;
       const oo = omega * omega;
-      const hoo = dt * oo;
-      const hhoo = dt * hoo;
+      const hoo = safeDt * oo;
+      const hhoo = safeDt * hoo;
       const detInv = 1.0 / (f + hhoo);
       const detDiff = targetProgress - currentProgress;
 
-      currentProgress = (f * currentProgress + dt * currentVelocity + hhoo * targetProgress) * detInv;
+      currentProgress = (f * currentProgress + safeDt * currentVelocity + hhoo * targetProgress) * detInv;
       currentVelocity = (currentVelocity + hoo * detDiff) * detInv;
     }
 
