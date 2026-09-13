@@ -581,7 +581,9 @@ main {
 .motion-visual-stage {
   flex: 1;
   position: relative;
+  -webkit-perspective: 1200px;
   perspective: 1200px;
+  -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
   display: flex;
   align-items: center;
@@ -602,7 +604,10 @@ main {
   justify-content: center;
   transform: scale(1.9);
   transform-origin: center center;
+  -webkit-transform-style: preserve-3d;
   transform-style: preserve-3d;
+  -webkit-backface-visibility: visible;
+  backface-visibility: visible;
 }
 
 @media (max-width: 1024px) {
@@ -621,14 +626,35 @@ main {
   }
 }
 
-/* Hardware-Accelerated Video Cylinder Scrubber with Black-Level Filter */
+/* Hardware-Accelerated Video Cylinder Scrubber */
 .motion-ring-video {
   width: 100%;
   height: 100%;
   object-fit: contain;
-  filter: url(#video-black-level);
+  /* Universal hardware black-level crushing (avoids SVG filter failure on iOS WebKit / mobile GPUs) */
+  filter: contrast(1.10) brightness(0.95);
+  -webkit-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
+  -webkit-backface-visibility: visible;
+  backface-visibility: visible;
   will-change: transform;
   pointer-events: auto;
+}
+
+/* Desktop Chromium/Firefox enhancement where SVG filter graphs on video are supported */
+@media (min-width: 769px) {
+  @supports (filter: url('#video-black-level')) {
+    .motion-ring-video {
+      filter: url(#video-black-level);
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .motion-ring-video {
+    /* Guarantees video is 100% visible on iPhone Safari and Android mobile */
+    filter: contrast(1.08) brightness(0.95) !important;
+  }
 }
 
 /* Bottom Metadata Badge */

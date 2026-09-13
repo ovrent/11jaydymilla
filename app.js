@@ -70,6 +70,32 @@
 
   const omega = 22.0; // Natural angular frequency for critical damping
 
+  let isDecoderPrimed = false;
+  let seekTimeout = null;
+
+  function primeVideoDecoder() {
+    if (!cylinderVideo || isDecoderPrimed) return;
+    try {
+      const playPromise = cylinderVideo.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          isDecoderPrimed = true;
+          cylinderVideo.pause();
+          if (cylinderVideo.duration && !isNaN(cylinderVideo.duration)) {
+            videoDuration = cylinderVideo.duration;
+          }
+          if (pendingSeekTime !== null) {
+            const nextTime = pendingSeekTime;
+            pendingSeekTime = null;
+            executeSeek(nextTime);
+          }
+        }).catch(() => {
+          // Handled gracefully on first user interaction
+        });
+      }
+    } catch (e) {}
+  }
+
   function initCylinderMotion() {
     cylinderTrack = document.getElementById('cinematic-motion');
     cylinderVideo = document.getElementById('cylinder-video-element');
@@ -77,8 +103,22 @@
 
     if (!cylinderTrack || !cylinderVideo) return;
 
-    // Ensure video is strictly paused (never autoplays)
-    cylinderVideo.pause();
+    // Mobile WebKit / Android decoder warmup on first user gesture
+    const unlockDecoder = () => {
+      primeVideoDecoder();
+      window.removeEventListener('touchstart', unlockDecoder);
+      window.removeEventListener('scroll', unlockDecoder, { capture: true });
+      window.removeEventListener('pointerdown', unlockDecoder);
+    };
+    window.addEventListener('touchstart', unlockDecoder, { passive: true, once: true });
+    window.addEventListener('scroll', unlockDecoder, { passive: true, capture: true, once: true });
+    window.addEventListener('pointerdown', unlockDecoder, { passive: true, once: true });
+
+    // Ensure video initiates loading pipeline
+    try {
+      cylinderVideo.load();
+      primeVideoDecoder();
+    } catch (e) {}
 
     const setInitialState = () => {
       if (cylinderVideo.duration && !isNaN(cylinderVideo.duration)) {
@@ -98,6 +138,9 @@
     }
 
     const onDataReady = () => {
+      if (cylinderVideo.duration && !isNaN(cylinderVideo.duration)) {
+        videoDuration = cylinderVideo.duration;
+      }
       if (pendingSeekTime !== null) {
         const nextTime = pendingSeekTime;
         pendingSeekTime = null;
@@ -108,12 +151,22 @@
     cylinderVideo.addEventListener('loadeddata', onDataReady);
     cylinderVideo.addEventListener('canplay', onDataReady);
 
-    // Zero-Race Seek Queue Resolution
+    // Zero-Race Seek Queue Resolution with safety fallback
     cylinderVideo.addEventListener('seeking', () => {
       isSeeking = true;
+      clearTimeout(seekTimeout);
+      seekTimeout = setTimeout(() => {
+        isSeeking = false;
+        if (pendingSeekTime !== null) {
+          const nextTime = pendingSeekTime;
+          pendingSeekTime = null;
+          executeSeek(nextTime);
+        }
+      }, 120);
     });
 
     cylinderVideo.addEventListener('seeked', () => {
+      clearTimeout(seekTimeout);
       isSeeking = false;
       if (pendingSeekTime !== null) {
         const nextTime = pendingSeekTime;
@@ -133,8 +186,10 @@
 
   function executeSeek(time) {
     if (!cylinderVideo) return;
-    if (cylinderVideo.readyState < 2) {
+    // Allow seek once metadata (readyState >= 1) is ready so browser begins fetching requested frame
+    if (cylinderVideo.readyState < 1) {
       pendingSeekTime = time;
+      if (!isDecoderPrimed) primeVideoDecoder();
       return;
     }
     if (Math.abs(cylinderVideo.currentTime - time) < 0.016) return; // Skip if under 1 frame
@@ -144,7 +199,9 @@
     }
     try {
       cylinderVideo.currentTime = time;
-    } catch (err) {}
+    } catch (err) {
+      pendingSeekTime = time;
+    }
   }
 
   function updateCylinderScroll() {
