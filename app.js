@@ -564,6 +564,70 @@
   let isAudioPlaying = false;
   let isScrubbing = false;
   let previousVolume = 0.85;
+  let playPromise = null;
+
+  const PLAY_ICON_SVG = '<svg class="w-4 h-4 ml-0.5" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>';
+  const PAUSE_ICON_SVG = '<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>';
+
+  function safePlay() {
+    if (!globalAudio) return;
+    isAudioPlaying = true;
+    updateAllPlayButtons();
+
+    try {
+      playPromise = globalAudio.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          playPromise = null;
+        }).catch(err => {
+          playPromise = null;
+          if (err && err.name !== 'AbortError') {
+            console.warn('Audio play notice:', err);
+            isAudioPlaying = false;
+            updateAllPlayButtons();
+          }
+        });
+      }
+    } catch (err) {
+      console.warn('Audio play exception:', err);
+      isAudioPlaying = false;
+      updateAllPlayButtons();
+    }
+  }
+
+  function safePause() {
+    if (!globalAudio) return;
+    isAudioPlaying = false;
+    updateAllPlayButtons();
+
+    if (playPromise !== null) {
+      playPromise.then(() => {
+        globalAudio.pause();
+      }).catch(() => {
+        globalAudio.pause();
+      });
+    } else {
+      globalAudio.pause();
+    }
+  }
+
+  function handleTrackAction(trackId) {
+    if (!trackId || !AUDIO_TRACKS[trackId]) return;
+
+    // Case 1: Clicked the currently active track
+    if (activeTrackKey === trackId) {
+      if (isAudioPlaying) {
+        safePause();
+      } else {
+        stickyBar?.classList.remove('dock-hidden');
+        safePlay();
+      }
+      return;
+    }
+
+    // Case 2: Clicked a different track
+    loadTrack(trackId, true);
+  }
 
   function initAudioEngine() {
     globalAudio = document.getElementById('global-audio-element');
@@ -589,17 +653,18 @@
     globalAudio.volume = 0.85;
     if (dockVolumeSlider) dockVolumeSlider.value = 85;
 
-    // Load initial track metadata
+    // Load initial track metadata without autoplaying
     loadTrack(activeTrackKey, false);
 
-    // Audio Event Handlers
+    // Audio Event Handlers (Browser HTML5 Audio is the single source of truth)
     globalAudio.addEventListener('timeupdate', onAudioTimeUpdate);
     globalAudio.addEventListener('loadedmetadata', onAudioLoadedMetadata);
     globalAudio.addEventListener('ended', onAudioEnded);
     globalAudio.addEventListener('pause', onAudioPauseState);
     globalAudio.addEventListener('play', onAudioPlayState);
+    globalAudio.addEventListener('playing', onAudioPlayState);
 
-    // Dock Controls
+    // Dock Play/Pause Toggle
     dockPlayBtn?.addEventListener('click', togglePlayPause);
 
     dockScrubber?.addEventListener('input', () => {
@@ -644,17 +709,15 @@
       }
     });
 
-    // Dedicated Play Button Triggers (Stops event propagation to prevent double-firing)
+    // Dedicated Play Button Triggers
     document.querySelectorAll('.track-play-btn, .track-play-btn-inline').forEach(btn => {
+      if (btn.tagName.toLowerCase() === 'a') return; // Let Spotify anchor links open normally
       btn.addEventListener('click', function(e) {
         e.stopPropagation();
+        e.preventDefault();
         const trackId = this.getAttribute('data-track-id');
-        if (trackId && AUDIO_TRACKS[trackId]) {
-          if (activeTrackKey === trackId && isAudioPlaying) {
-            globalAudio.pause();
-          } else {
-            loadTrack(trackId, true);
-          }
+        if (trackId) {
+          handleTrackAction(trackId);
         }
       });
     });
@@ -664,12 +727,17 @@
       card.addEventListener('click', function(e) {
         if (e.target.closest('a') || e.target.closest('button')) return;
         const trackId = this.getAttribute('data-track-id');
-        if (trackId && AUDIO_TRACKS[trackId]) {
-          if (activeTrackKey === trackId && isAudioPlaying) {
-            globalAudio.pause();
-          } else {
-            loadTrack(trackId, true);
-          }
+        if (trackId) {
+          handleTrackAction(trackId);
+        }
+      });
+    });
+
+    // Pause internal audio when opening external Spotify links
+    document.querySelectorAll('a[href*="spotify.com"]').forEach(link => {
+      link.addEventListener('click', () => {
+        if (globalAudio && !globalAudio.paused) {
+          safePause();
         }
       });
     });
@@ -689,46 +757,51 @@
     const track = AUDIO_TRACKS[trackKey];
     if (!track || !globalAudio) return;
 
+    const isDifferentTrack = (activeTrackKey !== trackKey);
     activeTrackKey = trackKey;
-    globalAudio.src = track.src;
+
+    if (isDifferentTrack || !globalAudio.src.includes(track.src)) {
+      globalAudio.src = track.src;
+    }
 
     if (dockThumb) dockThumb.src = track.cover;
     if (dockTitle) dockTitle.textContent = track.title;
     if (dockSpotifyLink) dockSpotifyLink.href = track.spotify;
 
-    updateTrackCardHighlights();
+    updateAllPlayButtons();
 
     // Ensure audio dock is visible whenever user interacts with audio
     stickyBar?.classList.remove('dock-hidden');
 
     if (autoPlay) {
-      globalAudio.play().catch(err => {
-        console.warn('Audio playback waiting for gesture:', err);
-      });
+      safePlay();
     }
   }
 
   function togglePlayPause() {
     if (!globalAudio) return;
-    if (globalAudio.paused) {
-      globalAudio.play().catch(e => console.warn(e));
+    if (isAudioPlaying || !globalAudio.paused) {
+      safePause();
     } else {
-      globalAudio.pause();
+      safePlay();
     }
   }
 
   function onAudioPlayState() {
     isAudioPlaying = true;
-    dockPlayIcon?.classList.add('hidden');
-    dockPauseIcon?.classList.remove('hidden');
-    updateTrackCardHighlights();
+    updateAllPlayButtons();
   }
 
   function onAudioPauseState() {
     isAudioPlaying = false;
-    dockPlayIcon?.classList.remove('hidden');
-    dockPauseIcon?.classList.add('hidden');
-    updateTrackCardHighlights();
+    updateAllPlayButtons();
+  }
+
+  function onAudioEnded() {
+    isAudioPlaying = false;
+    updateAllPlayButtons();
+    if (dockCurrentTime) dockCurrentTime.textContent = formatTime(0);
+    if (dockScrubber) dockScrubber.value = 0;
   }
 
   function onAudioTimeUpdate() {
@@ -740,26 +813,74 @@
 
   function onAudioLoadedMetadata() {
     if (dockTotalTime) dockTotalTime.textContent = formatTime(globalAudio.duration);
-    if (dockCurrentTime) dockCurrentTime.textContent = formatTime(0);
-    if (dockScrubber) dockScrubber.value = 0;
+    if (dockCurrentTime) dockCurrentTime.textContent = formatTime(globalAudio.currentTime || 0);
+    if (dockScrubber && globalAudio.duration) {
+      dockScrubber.value = (globalAudio.currentTime / globalAudio.duration) * 100;
+    }
   }
 
-  function onAudioEnded() {
-    isAudioPlaying = false;
-    dockPlayIcon?.classList.remove('hidden');
-    dockPauseIcon?.classList.add('hidden');
-    updateTrackCardHighlights();
-  }
-
-  function updateTrackCardHighlights() {
+  function updateAllPlayButtons() {
+    // 1. Update all track card buttons and card highlight states
     document.querySelectorAll('.track-card').forEach(card => {
-      const id = card.getAttribute('data-track-id');
-      if (id === activeTrackKey && isAudioPlaying) {
+      const cardTrackId = card.getAttribute('data-track-id');
+      const isCardActive = (cardTrackId === activeTrackKey && isAudioPlaying);
+      
+      if (isCardActive) {
         card.classList.add('is-playing');
       } else {
         card.classList.remove('is-playing');
       }
+
+      const cardBtn = card.querySelector('.track-play-btn');
+      if (cardBtn && cardBtn.tagName.toLowerCase() === 'button' && cardTrackId) {
+        if (isCardActive) {
+          cardBtn.innerHTML = PAUSE_ICON_SVG;
+          cardBtn.setAttribute('aria-label', `Pause ${AUDIO_TRACKS[cardTrackId]?.title || 'preview'}`);
+        } else {
+          cardBtn.innerHTML = PLAY_ICON_SVG;
+          cardBtn.setAttribute('aria-label', `Play ${AUDIO_TRACKS[cardTrackId]?.title || 'preview'}`);
+        }
+      }
     });
+
+    // 2. Update standalone buttons (Spotlight card, etc.)
+    document.querySelectorAll('button.track-play-btn').forEach(btn => {
+      const btnTrackId = btn.getAttribute('data-track-id');
+      if (!btnTrackId) return;
+      // Skip if already updated via parent .track-card
+      if (btn.closest('.track-card')) return;
+
+      const isBtnActive = (btnTrackId === activeTrackKey && isAudioPlaying);
+      if (isBtnActive) {
+        btn.innerHTML = PAUSE_ICON_SVG;
+        btn.classList.add('is-playing');
+      } else {
+        btn.innerHTML = PLAY_ICON_SVG;
+        btn.classList.remove('is-playing');
+      }
+    });
+
+    // 3. Update Hero inline button
+    document.querySelectorAll('.track-play-btn-inline').forEach(btn => {
+      const btnTrackId = btn.getAttribute('data-track-id') || 'if_you_miss_me';
+      const isInlineActive = (btnTrackId === activeTrackKey && isAudioPlaying);
+      if (isInlineActive) {
+        btn.innerHTML = PAUSE_ICON_SVG + '<span class="ml-1.5">PAUSE: IF YOU MISS ME</span>';
+      } else {
+        btn.innerHTML = PLAY_ICON_SVG + '<span class="ml-1.5">PLAY FEATURED: IF YOU MISS ME</span>';
+      }
+    });
+
+    // 4. Update Dock Toggle Button
+    if (isAudioPlaying) {
+      dockPlayIcon?.classList.add('hidden');
+      dockPauseIcon?.classList.remove('hidden');
+      dockPlayBtn?.setAttribute('aria-label', 'Pause audio');
+    } else {
+      dockPlayIcon?.classList.remove('hidden');
+      dockPauseIcon?.classList.add('hidden');
+      dockPlayBtn?.setAttribute('aria-label', 'Play audio');
+    }
   }
 
   function formatTime(seconds) {
