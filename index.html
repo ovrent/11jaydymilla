@@ -13,6 +13,25 @@
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪕</text></svg>">
 
+  <!-- Schema.org Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "MusicGroup",
+    "name": "JayDyMilla",
+    "alternateName": "Dr. Jay Miller",
+    "url": "https://11jaydymilla.vercel.app",
+    "email": "music@jaydymilla.com",
+    "genre": ["Appalachian Folk", "World Rhythm", "Shamanic Folk", "Acoustic Banjo"],
+    "sameAs": [
+      "https://open.spotify.com/artist/1dKmGMjzhXQZrcYhKDgWRB",
+      "https://www.instagram.com/jaydymilla",
+      "https://www.threads.com/@jaydymilla",
+      "https://www.youtube.com/channel/UCSLuzR-gvXozEWNZpnXz0Hw"
+    ]
+  }
+  </script>
+
   <!-- Asset Preloads -->
   <link rel="preload" as="image" href="photes/image_0ca22.JPG">
   <link rel="preload" as="image" href="vides/hero-poster.jpg">
@@ -1057,7 +1076,7 @@
           <div class="space-y-4 font-space text-xs text-white/50">
             <div class="flex items-center gap-3">
               <span class="w-2 h-2 rounded-full bg-[#CBFE00]"></span>
-              <span>DIRECT ARTIST CONTACT • ZERO INTERMEDIARY COMMISSIONS</span>
+              <span>DIRECT ARTIST CONTACT • <a href="mailto:music@jaydymilla.com" class="text-white hover:text-[#CBFE00] underline underline-offset-2 transition-colors">music@jaydymilla.com</a></span>
             </div>
             <div class="flex items-center gap-3">
               <span class="w-2 h-2 rounded-full bg-[#CBFE00]"></span>
@@ -1073,8 +1092,26 @@
           <div class="mt-8 pt-6 border-t border-white/10">
             <div class="font-space text-xs text-[#CBFE00] uppercase tracking-widest mb-3 font-semibold flex items-center gap-2">
               <span class="w-1.5 h-1.5 rounded-full bg-[#CBFE00]"></span>
-              <span>OFFICIAL SOCIAL HUBS & DIRECT CONNECT</span>
+              <span>OFFICIAL CONTACT & SOCIAL HUBS</span>
             </div>
+
+            <!-- Official Direct Email Card -->
+            <a href="mailto:music@jaydymilla.com" 
+               class="group flex items-center justify-between p-3.5 mb-3 rounded-xl bg-[#0A0A0E] border border-[#CBFE00]/30 hover:border-[#CBFE00] hover:bg-[#CBFE00]/10 transition-all text-decoration-none shadow-sm">
+              <div class="flex items-center gap-3 min-w-0">
+                <div class="w-9 h-9 rounded-lg bg-[#CBFE00]/15 text-[#CBFE00] flex items-center justify-center group-hover:scale-110 transition-transform shrink-0">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+                </div>
+                <div class="min-w-0">
+                  <div class="font-kanit font-bold text-xs text-white group-hover:text-[#CBFE00] transition-colors flex items-center gap-1.5">
+                    <span>Direct Inquiries Email</span>
+                    <span class="text-[10px] text-[#CBFE00]">↗</span>
+                  </div>
+                  <div class="font-space text-xs text-white/80 group-hover:text-white truncate">music@jaydymilla.com</div>
+                </div>
+              </div>
+              <span class="font-space text-[10px] px-2 py-0.5 rounded bg-[#CBFE00]/20 text-[#CBFE00] font-semibold uppercase tracking-wider shrink-0 ml-2">Official</span>
+            </a>
             
             <!-- 2x2 Interactive Social App Buttons Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-3">
@@ -1153,7 +1190,13 @@
         <!-- Right: Professional Inquiry Form -->
         <div class="lg:col-span-7">
           <div class="stealth-card p-6 sm:p-10">
-            <h3 class="font-kanit font-bold text-xl text-white mb-6">Submit a Professional Inquiry</h3>
+            <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+              <h3 class="font-kanit font-bold text-xl text-white">Submit a Professional Inquiry</h3>
+              <a href="mailto:music@jaydymilla.com" class="font-space text-xs text-[#CBFE00] hover:underline flex items-center gap-1">
+                <span>Direct: music@jaydymilla.com</span>
+                <span>↗</span>
+              </a>
+            </div>
             <form id="inquiry-form" class="space-y-4">
               
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1221,8 +1264,12 @@
           <p class="font-kanit text-white/60 text-sm mt-3 max-w-sm">
             Appalachian roots, shamanic power songs, and modern rhythmic production. Based in Asheville, North Carolina.
           </p>
-          <div class="mt-4 font-space text-xs text-[#CBFE00]">
-            📍 ASHEVILLE, NORTH CAROLINA
+          <div class="mt-4 flex flex-col gap-1.5 font-space text-xs">
+            <div class="text-[#CBFE00]">📍 ASHEVILLE, NORTH CAROLINA</div>
+            <a href="mailto:music@jaydymilla.com" class="text-white/70 hover:text-[#CBFE00] transition-colors flex items-center gap-1.5">
+              <span>✉️ music@jaydymilla.com</span>
+              <span class="text-[10px] text-[#CBFE00]">↗</span>
+            </a>
           </div>
         </div>
 
@@ -1236,10 +1283,11 @@
           </ul>
         </div>
 
-        <!-- Col 3: Community & Social -->
+        <!-- Col 3: Direct Contact & Community -->
         <div>
-          <div class="font-space text-xs text-white/40 uppercase tracking-widest mb-4">COMMUNITY</div>
+          <div class="font-space text-xs text-white/40 uppercase tracking-widest mb-4">DIRECT CONTACT</div>
           <ul class="space-y-2.5 font-kanit text-sm">
+            <li><a href="mailto:music@jaydymilla.com" class="text-[#CBFE00] font-medium hover:underline transition-colors flex items-center gap-1">music@jaydymilla.com ↗</a></li>
             <li><a href="https://www.instagram.com/jaydymilla" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-[#CBFE00] transition-colors">Instagram @jaydymilla ↗</a></li>
             <li><a href="https://www.threads.com/@jaydymilla" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-[#CBFE00] transition-colors">Threads Profile ↗</a></li>
             <li><a href="https://jahkneedee.com/studio" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-[#CBFE00] transition-colors">JAH KNEE DEE Studios ↗</a></li>

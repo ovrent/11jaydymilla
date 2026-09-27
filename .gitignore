@@ -31,3 +31,4 @@ venv/
 .env.*.local
 
 .vercel
+blender_masterpiece/
