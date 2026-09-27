@@ -1,0 +1,31 @@
+# robots.txt for https://jaydymilla.com
+# Official Artist Platform & Commercial Licensing Hub
+
+User-agent: *
+Allow: /
+
+# Ensure search crawlers can index public media assets
+Allow: /photes/
+Allow: /vides/
+Allow: /audio/
+Allow: /style.css
+Allow: /app.js
+
+# Explicitly welcome major search and AI discovery engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Googlebot-Image
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+# Canonical XML Sitemap
+Sitemap: https://jaydymilla.com/sitemap.xml
