@@ -149,10 +149,49 @@
   * Inspect `https://jaydymilla.com/sync` → click **Request Indexing**.
 - [ ] Record GSC inspection output (User canonical, Google canonical, crawl status).
 
-### External Authority & Entity Grounding (To Fix AI Asheville Connection):
-- [ ] **MusicBrainz**: Create verified artist entry for JayDyMilla linking `https://jaydymilla.com`, Spotify Artist ID, and Asheville, NC.
-- [ ] **Wikidata**: Submit structured entity record once secondary sources exist.
-- [ ] **Blue Ridge Music Trails of NC**: Submit artist profile to `blueridgemusicnc.com` directory to anchor the local Asheville music entity.
+### Step 9: MusicBrainz Artist Entity Creation & Website Schema Connection (September 28, 2026)
+* **Task:** MusicBrainz Entity Creation & Official Website Schema Connection
+* **MusicBrainz Entity Established & Applied:**
+  * **Artist Name:** `JayDyMilla`
+  * **Legal Name Alias:** `Jay Miller` (Primary) | **Search Hint Alias:** `Dr. Jay Miller`
+  * **Artist MBID:** `80288c08-98f3-4cfa-81dc-a3bad4fc603c`
+  * **Artist URL:** `https://musicbrainz.org/artist/80288c08-98f3-4cfa-81dc-a3bad4fc603c`
+  * **Artist Type:** `Person` | **Gender:** `Male` | **Area:** `Asheville, North Carolina, United States`
+  * **Release Anchor:** *If You Miss Me* (Digital Media, Single, 2026-06-18) | **Release MBID:** `5926e6bb-b21f-4095-baef-2a0bed743194`
+  * **Relationships Applied:** Official homepage, Spotify, Instagram, YouTube.
+* **Website Schema Integration:**
+  * **Commit:** `9c29f04`
+  * **Deployment:** `dpl_CS4NKAiQuKAq2NekNwuyHnxDRGGp` (Vercel Production `READY`, aliased to `https://jaydymilla.com`)
+  * **Files Changed:** `index.html`, `booking/index.html`, `sync/index.html`
+  * **Entity Model Validation:** Transitioned `@type` from `MusicGroup` to `Person` across all 3 pages, accurately aligning with MusicBrainz and real-world artist identity.
+  * **Stable Entity ID:** Established `https://jaydymilla.com/#jaydymilla` across all structured-data provider references.
+  * **MusicBrainz sameAs:** `Verified` (`https://musicbrainz.org/artist/80288c08-98f3-4cfa-81dc-a3bad4fc603c` added to `sameAs` array).
+  * **Verified sameAs Profiles:** Spotify, Instagram, YouTube, MusicBrainz.
+  * **Live Validation:** Confirmed HTTP 200, valid JSON-LD, 0 schema errors/warnings on `https://jaydymilla.com/`, `https://jaydymilla.com/booking`, and `https://jaydymilla.com/sync`.
+  * **Schema Validation:** `Passed` (0 errors, 0 warnings).
+
+---
+
+## 4. Pending Action Checklist (Next Immediate Tasks)
+
+### Technical Alignment & Entity Grounding (Completed):
+- [x] In `sitemap.xml` and canonical tags, align URLs to clean slashless versions.
+- [x] Create and verify official MusicBrainz artist entity (`80288c08-98f3-4cfa-81dc-a3bad4fc603c`) and release (*If You Miss Me*).
+- [x] Connect official website JSON-LD schema to MusicBrainz via `sameAs`, establish stable `@id` (`https://jaydymilla.com/#jaydymilla`), and align `@type` to `Person`.
+
+### User Action in Google Search Console:
+- [ ] Open [Google Search Console](https://search.google.com/search-console) for property `jaydymilla.com`.
+- [ ] **Submit Sitemap:** Navigate to **Indexing → Sitemaps** → enter `sitemap.xml` → click **Submit**.
+- [ ] **URL Inspection & Request Indexing:**
+  * Inspect `https://jaydymilla.com/` → click **Request Indexing**.
+  * Inspect `https://jaydymilla.com/booking` → click **Request Indexing**.
+  * Inspect `https://jaydymilla.com/sync` → click **Request Indexing**.
+- [ ] Record GSC inspection output (User canonical, Google canonical, crawl status).
+
+### External Authority & Entity Grounding (Remaining):
+- [x] **MusicBrainz**: Create verified artist entry for JayDyMilla linking `https://jaydymilla.com`, Spotify Artist ID, and Asheville, NC.
+- [ ] **Wikidata**: Verify notability thresholds before submission; do not submit prematurely.
+- [ ] **Blue Ridge Music Trails of NC**: Monitor directory reopening or identify eligible event/resource listing pathways (Traditional Artist Directory submissions currently paused).
 - [ ] **Sync Libraries**: Submit pre-cleared catalog to Marmoset, Musicbed, and Songtradr pointing back to `https://jaydymilla.com/sync`.
 
 ---
