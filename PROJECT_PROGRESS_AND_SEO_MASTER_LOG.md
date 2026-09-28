@@ -108,6 +108,30 @@
 
 ---
 
+### Step 8: Google Search Console Discovery & Live Production Verification (September 28, 2026)
+* **Production Endpoints Verified:**
+  * `https://jaydymilla.com/` → HTTP 200 (Clean canonical & schema active)
+  * `https://jaydymilla.com/booking` → HTTP 200 (Clean canonical & Open Graph aligned)
+  * `https://jaydymilla.com/sync` → HTTP 200 (Clean canonical & Open Graph aligned)
+  * `https://jaydymilla.com/sitemap.xml` → HTTP 200 (Contains direct 200 OK canonicals: `/`, `/booking`, `/sync`)
+  * `https://jaydymilla.com/robots.txt` → HTTP 200 (Allows Googlebot, links to canonical sitemap)
+* **GSC Environment Assessment:**
+  * Direct GSC API Service Account credentials are not present in the local codebase/environment.
+  * Discovery & indexing submission is executed via Google Search Console Web UI by property owner.
+* **GSC Audit & Tracking Log:**
+  * **Date:** September 28, 2026
+  * **Sitemap submitted:** `sitemap.xml` (`https://jaydymilla.com/sitemap.xml`)
+  * **Sitemap status:** Pending user web submission in GSC
+  * **Homepage indexing status (`https://jaydymilla.com/`):** Pending inspection & crawl
+  * **Booking indexing status (`https://jaydymilla.com/booking`):** Pending inspection & crawl
+  * **Sync indexing status (`https://jaydymilla.com/sync`):** Pending inspection & crawl
+  * **Google-selected canonicals:** Pending Googlebot crawl report in GSC
+  * **Errors:** None on live site (0 HTTP errors, 0 XML parse errors)
+  * **Warnings:** Trailing slash redirects successfully handled (308); URLs in sitemap clean
+  * **Actions still pending:** Manual GSC submission of `sitemap.xml` and "Request Indexing" submissions for the 3 URLs in Search Console.
+
+---
+
 ## 4. Pending Action Checklist (Next Immediate Tasks)
 
 ### Technical Alignment (Completed):
@@ -116,11 +140,14 @@
   * `https://jaydymilla.com/sync` (Validated: HTTP 200, canonical & og:url matched)
   * Redirects: `/booking/` and `/sync/` confirmed returning HTTP 308 to clean URLs.
 
-### User / Client Action in Google Search Console:
-- [ ] Open [Google Search Console](https://search.google.com/search-console).
-- [ ] Select property `jaydymilla.com`.
-- [ ] Go to **Indexing → Sitemaps** and submit: `sitemap.xml`.
-- [ ] In the URL Inspection tool, submit `https://jaydymilla.com/` and click **"Request Indexing"**. Repeat for `/booking` and `/sync`.
+### User Action in Google Search Console:
+- [ ] Open [Google Search Console](https://search.google.com/search-console) for property `jaydymilla.com`.
+- [ ] **Submit Sitemap:** Navigate to **Indexing → Sitemaps** → enter `sitemap.xml` → click **Submit**.
+- [ ] **URL Inspection & Request Indexing:**
+  * Inspect `https://jaydymilla.com/` → click **Request Indexing**.
+  * Inspect `https://jaydymilla.com/booking` → click **Request Indexing**.
+  * Inspect `https://jaydymilla.com/sync` → click **Request Indexing**.
+- [ ] Record GSC inspection output (User canonical, Google canonical, crawl status).
 
 ### External Authority & Entity Grounding (To Fix AI Asheville Connection):
 - [ ] **MusicBrainz**: Create verified artist entry for JayDyMilla linking `https://jaydymilla.com`, Spotify Artist ID, and Asheville, NC.
