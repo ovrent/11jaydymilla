@@ -32,25 +32,22 @@
   <!-- Favicon -->
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪕</text></svg>">
 
-  <!-- Schema.org Enhanced Structured Data (MusicGroup & Commercial Services) -->
+  <!-- Schema.org Enhanced Structured Data (Artist Entity & Commercial Services) -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "MusicGroup",
+    "@type": "Person",
+    "@id": "https://jaydymilla.com/#jaydymilla",
     "name": "JayDyMilla",
-    "alternateName": ["Dr. Jay Miller", "Jay Miller"],
-    "url": "https://jaydymilla.com/",
-    "logo": "https://jaydymilla.com/photes/image_0ca22.JPG",
-    "image": "https://jaydymilla.com/photes/image_0ca22.JPG",
-    "email": "music@jaydymilla.com",
-    "genre": [
-      "Appalachian Folk",
-      "Contemporary Banjo",
-      "World Rhythm",
-      "Shamanic Power Songs",
-      "Indie Folk-Hop"
+    "alternateName": [
+      "Dr. Jay Miller",
+      "Jay Miller"
     ],
-    "foundingLocation": {
+    "url": "https://jaydymilla.com/",
+    "image": "https://jaydymilla.com/photes/image_0ca22.JPG",
+    "description": "5-string banjo and modern rhythm artist based in Asheville, NC.",
+    "email": "music@jaydymilla.com",
+    "homeLocation": {
       "@type": "Place",
       "name": "Asheville, North Carolina",
       "address": {
@@ -60,17 +57,6 @@
         "addressCountry": "US"
       }
     },
-    "locationCreated": {
-      "@type": "Place",
-      "name": "Asheville, North Carolina"
-    },
-    "areaServed": [
-      "Asheville, NC",
-      "Western North Carolina",
-      "Appalachian Mountain Region",
-      "United States",
-      "Global"
-    ],
     "knowsAbout": [
       "5-String Banjo",
       "Open-Back Banjo",
@@ -81,9 +67,9 @@
     ],
     "sameAs": [
       "https://open.spotify.com/artist/1dKmGMjzhXQZrcYhKDgWRB",
-      "https://www.instagram.com/jaydymilla",
-      "https://www.threads.com/@jaydymilla",
-      "https://www.youtube.com/channel/UCSLuzR-gvXozEWNZpnXz0Hw"
+      "https://www.instagram.com/jaydymilla/",
+      "https://www.youtube.com/channel/UCSLuzR-gvXozEWNZpnXz0Hw",
+      "https://musicbrainz.org/artist/80288c08-98f3-4cfa-81dc-a3bad4fc603c"
     ],
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
@@ -96,8 +82,7 @@
             "name": "Live Festival & Concert Booking",
             "description": "Live appearances for festivals, intimate listening rooms, and private house concerts in Asheville and across the Appalachian region.",
             "provider": {
-              "@type": "MusicGroup",
-              "name": "JayDyMilla"
+              "@id": "https://jaydymilla.com/#jaydymilla"
             },
             "url": "https://jaydymilla.com/booking/"
           }
@@ -109,8 +94,7 @@
             "name": "Film & Television Synchronization Licensing",
             "description": "100% pre-cleared master and publishing rights for independent banjo and modern rhythm compositions.",
             "provider": {
-              "@type": "MusicGroup",
-              "name": "JayDyMilla"
+              "@id": "https://jaydymilla.com/#jaydymilla"
             },
             "url": "https://jaydymilla.com/sync/"
           }
