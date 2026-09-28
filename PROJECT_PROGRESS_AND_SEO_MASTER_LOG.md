@@ -76,6 +76,20 @@
   * Observed that Google knows the singles ("Fire Horse", "If You Miss Me"), but **explicitly states there is no public web information connecting JayDyMilla to Asheville, NC** because the site is brand new and not yet indexed.
 * Flagged technical trailing-slash mismatch: `vercel.json` removes trailing slashes (`/booking` vs `/booking/`).
 
+### Step 7: Clean URL & Canonical Tag Alignment (September 28, 2026)
+* **Problem:** In `vercel.json`, `cleanUrls: true` was active, causing `/booking/` and `/sync/` to return HTTP 308 redirects to `/booking` and `/sync`, while `sitemap.xml` and page canonical/og:url tags still pointed to trailing slashes.
+* **Work Done:**
+  * Updated `sitemap.xml`: `/booking/` → `/booking`, `/sync/` → `/sync`.
+  * Updated `booking/index.html`: `canonical` & `og:url` → `https://jaydymilla.com/booking`.
+  * Updated `sync/index.html`: `canonical` & `og:url` → `https://jaydymilla.com/sync`.
+  * Committed (`666014d`), pushed to GitHub `main`, and deployed to Vercel production (`dpl_AK13BXJKAu9fCTAghW6mkQzLmkAa`).
+* **Live Deployment Validation (Verified 200 OK & 308 Redirect):**
+  * `https://jaydymilla.com/booking` → HTTP 200 | Canonical: `https://jaydymilla.com/booking` | og:url: `https://jaydymilla.com/booking`
+  * `https://jaydymilla.com/sync` → HTTP 200 | Canonical: `https://jaydymilla.com/sync` | og:url: `https://jaydymilla.com/sync`
+  * `https://jaydymilla.com/booking/` → HTTP 308 Redirect Target: `/booking`
+  * `https://jaydymilla.com/sync/` → HTTP 308 Redirect Target: `/sync`
+  * `https://jaydymilla.com/sitemap.xml` → HTTP 200 | Clean canonical locs verified with zero redirect hops.
+
 ---
 
 ## 3. Current Live Status Table
@@ -83,10 +97,10 @@
 | Item | Live URL / File | Status | Notes |
 | :--- | :--- | :---: | :--- |
 | **Robots Directives** | `https://jaydymilla.com/robots.txt` | `HTTP 200 OK` | Valid directives & sitemap link |
-| **XML Sitemap** | `https://jaydymilla.com/sitemap.xml` | `HTTP 200 OK` | Valid XML with images |
+| **XML Sitemap** | `https://jaydymilla.com/sitemap.xml` | `HTTP 200 OK` | Valid XML with clean slashless canonicals & images |
 | **Homepage** | `https://jaydymilla.com/` | `HTTP 200 OK` | Fully optimized & canonicalized |
-| **Live Booking Page** | `https://jaydymilla.com/booking` | `HTTP 200 OK` | Dedicated B2B booking hub |
-| **Sync Licensing Page**| `https://jaydymilla.com/sync` | `HTTP 200 OK` | Dedicated sync catalog hub |
+| **Live Booking Page** | `https://jaydymilla.com/booking` | `HTTP 200 OK` | Dedicated B2B booking hub (clean canonical aligned) |
+| **Sync Licensing Page**| `https://jaydymilla.com/sync` | `HTTP 200 OK` | Dedicated sync catalog hub (clean canonical aligned) |
 | **Official Email** | `music@jaydymilla.com` | `Active` | Active in code, forms, and mailto |
 | **Database Forms** | Supabase (`inquiries` table) | `Active` | Connected on `/`, `/booking`, `/sync` |
 | **Google Indexing** | `site:jaydymilla.com` | `0 Results` | Pending Googlebot crawl & GSC processing |
@@ -96,11 +110,11 @@
 
 ## 4. Pending Action Checklist (Next Immediate Tasks)
 
-### Quick Technical Alignment (Minor Fix):
-- [ ] In `sitemap.xml` and canonical tags, align URLs to clean slashless versions:
-  * Change `https://jaydymilla.com/booking/` → `https://jaydymilla.com/booking`
-  * Change `https://jaydymilla.com/sync/` → `https://jaydymilla.com/sync`
-  *(This avoids an unnecessary 308 redirect when Googlebot crawls from the sitemap).*
+### Technical Alignment (Completed):
+- [x] In `sitemap.xml` and canonical tags, align URLs to clean slashless versions:
+  * `https://jaydymilla.com/booking` (Validated: HTTP 200, canonical & og:url matched)
+  * `https://jaydymilla.com/sync` (Validated: HTTP 200, canonical & og:url matched)
+  * Redirects: `/booking/` and `/sync/` confirmed returning HTTP 308 to clean URLs.
 
 ### User / Client Action in Google Search Console:
 - [ ] Open [Google Search Console](https://search.google.com/search-console).
