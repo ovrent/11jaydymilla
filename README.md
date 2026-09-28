@@ -1,10 +1,14 @@
 # JayDyMilla — Official Artist Digital Platform
 
-[![Live Website](https://img.shields.io/badge/Production-Live%20on%20Vercel-success?style=for-the-badge&logo=vercel)](https://11jaydymilla.vercel.app)
+[![Live Website](https://img.shields.io/badge/Production-Live%20on%20jaydymilla.com-success?style=for-the-badge&logo=vercel)](https://jaydymilla.com)
 [![GitHub Repository](https://img.shields.io/badge/GitHub-ovrent%2F11jaydymilla-181717?style=for-the-badge&logo=github)](https://github.com/ovrent/11jaydymilla)
+[![MusicBrainz](https://img.shields.io/badge/MusicBrainz-Verified%20Entity-EB743B?style=for-the-badge&logo=musicbrainz)](https://musicbrainz.org/artist/80288c08-98f3-4cfa-81dc-a3bad4fc603c)
 [![Database](https://img.shields.io/badge/Supabase-PostgreSQL%20Active-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com)
 
-- **Live Production URL**: [https://11jaydymilla.vercel.app](https://11jaydymilla.vercel.app)
+- **Official Live Website**: [https://jaydymilla.com](https://jaydymilla.com)
+- **Live Booking Hub**: [https://jaydymilla.com/booking](https://jaydymilla.com/booking)
+- **Sync Licensing Hub**: [https://jaydymilla.com/sync](https://jaydymilla.com/sync)
+- **MusicBrainz Artist Entity**: [`80288c08-98f3-4cfa-81dc-a3bad4fc603c`](https://musicbrainz.org/artist/80288c08-98f3-4cfa-81dc-a3bad4fc603c)
 - **GitHub Repository**: [https://github.com/ovrent/11jaydymilla](https://github.com/ovrent/11jaydymilla)
 
 A high-performance, editorial digital platform for **JayDyMilla** (Dr. Jay Miller) — Asheville, North Carolina songwriter and 5-string banjo artist fusing Appalachian folk roots, shamanic power songs, and modern rhythmic production.
