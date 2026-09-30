@@ -970,13 +970,11 @@
       }
 
       try {
-        await fetch(`${SUPABASE_URL}/rest/v1/inquiries`, {
+        // Dispatch to /api/inquiry (triggers Supabase storage + Resend dual-dispatch)
+        const response = await fetch('/api/inquiry', {
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json',
-            'apikey': SUPABASE_ANON_KEY,
-            'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
-            'Prefer': 'return=minimal'
+            'Content-Type': 'application/json'
           },
           body: JSON.stringify({
             name,
@@ -986,8 +984,32 @@
             message
           })
         });
+
+        // If serverless endpoint is unavailable (e.g., raw file preview), fallback to direct Supabase REST
+        if (!response.ok) {
+          throw new Error('API dispatch failed; initiating direct database fallback');
+        }
       } catch (err) {
-        // Graceful handling preserves modal feedback
+        try {
+          await fetch(`${SUPABASE_URL}/rest/v1/inquiries`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': SUPABASE_ANON_KEY,
+              'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+              'Prefer': 'return=minimal'
+            },
+            body: JSON.stringify({
+              name,
+              email,
+              inquiry_type: inquiryType,
+              timeline: timeline || null,
+              message
+            })
+          });
+        } catch (dbErr) {
+          // Gracefully continue to show confirmation modal
+        }
       } finally {
         if (submitBtn) {
           submitBtn.disabled = false;
