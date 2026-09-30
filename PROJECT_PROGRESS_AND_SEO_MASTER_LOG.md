@@ -287,11 +287,10 @@
     * Implemented deterministic global 20-day expiry engine (`calculateReleaseExpiry`, `getCurrentDateInNewYork`, `isNewReleaseActive`).
     * Implemented intra-session dismissal using `sessionStorage` and Escape key listener.
     * Wired `initNewReleasePopup()` cleanly into `boot()`.
-* **Live Validation:**
-  * Catalog: Track 01 displays "Diamond & Dragon", artist JayDyMilla, producer JAH KNEE DEE, link `https://open.spotify.com/track/7fL2F2B0VOghhJItxtcCdi`.
-  * Popup Display: Renders smoothly in bottom-right corner with artwork, title, producer, Spotify CTA, and close button.
-  * Dismissal: Closes immediately on ✕, "Dismiss", or Escape key; persists dismissal for current session via `sessionStorage`.
-  * Date Expiry: Tested across Day 0, Day 1, Day 2 (today), Day 19 (all active), and Day 20+ (automatically hidden/removed). All test assertions passed (6/6).
-  * Responsive: Verified on Desktop (1440px) and Mobile (390px/500px). Zero horizontal scroll or layout shift.
-  * Accessibility: Valid ARIA attributes, semantic `<aside>`, high-contrast focus rings, no keyboard trap.
+* **Production Deployment:**
+  * **Vercel Deployment ID:** `dpl_4L97GG9uVNh1yHLRXpiuzCmDBjFm`
+  * **Production URL:** `https://11jaydymilla-4s6yag8s1-ovrent.vercel.app`
+  * **Live Aliased Domain:** `https://jaydymilla.com` & `https://www.jaydymilla.com`
+  * **Live Verification:** HTTP 200 OK; confirmed live rendering of Track 01 *Diamond & Dragon* and `#new-release-popup` announcement card on production.
+
 
