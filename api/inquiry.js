@@ -38,7 +38,10 @@ export default async function handler(req, res) {
     const SUPABASE_URL = process.env.SUPABASE_URL || 'https://hzjzrnliyilimzpymldt.supabase.co';
     const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'sb_publishable_NcJDQyR6YNG_A4Klm1B32A_-bOqwDk8';
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
-    const ADMIN_EMAIL = process.env.RESEND_ADMIN_EMAIL || 'music@jaydymilla.com';
+    const rawAdmin = process.env.RESEND_ADMIN_EMAIL || 'music@jaydymilla.com, contentovrent@gmail.com';
+    const adminRecipients = rawAdmin.split(',').map(s => s.trim()).filter(Boolean);
+    const adminTo = adminRecipients.length === 1 ? adminRecipients[0] : adminRecipients;
+    const primaryAdmin = adminRecipients[0] || 'music@jaydymilla.com';
     const FROM_EMAIL = process.env.RESEND_FROM_EMAIL || 'JayDyMilla Licensing Desk <inquiry@jaydymilla.com>';
     const FALLBACK_FROM = 'JayDyMilla <onboarding@resend.dev>';
 
@@ -220,7 +223,7 @@ export default async function handler(req, res) {
     // Dispatch Admin Email
     const adminResult = await sendResendMail({
       from: FROM_EMAIL,
-      to: ADMIN_EMAIL,
+      to: adminTo,
       reply_to: email,
       subject: `⚡ New Inquiry: [${inquiry_type || 'Booking'}] from ${name}`,
       html: adminHtml
@@ -232,7 +235,7 @@ export default async function handler(req, res) {
       clientResult = await sendResendMail({
         from: FROM_EMAIL,
         to: email,
-        reply_to: ADMIN_EMAIL,
+        reply_to: primaryAdmin,
         subject: `Inquiry Received // JayDyMilla Executive Desk`,
         html: clientHtml
       });

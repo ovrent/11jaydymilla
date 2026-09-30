@@ -43,7 +43,9 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
             supabase_url = env.get('SUPABASE_URL', 'https://hzjzrnliyilimzpymldt.supabase.co')
             supabase_key = env.get('SUPABASE_ANON_KEY', 'sb_publishable_NcJDQyR6YNG_A4Klm1B32A_-bOqwDk8')
             resend_key = env.get('RESEND_API_KEY', '')
-            admin_email = env.get('RESEND_ADMIN_EMAIL', 'music@jaydymilla.com')
+            raw_admin = env.get('RESEND_ADMIN_EMAIL', 'music@jaydymilla.com, contentovrent@gmail.com')
+            admin_list = [a.strip() for a in raw_admin.split(',') if a.strip()]
+            from_email = env.get('RESEND_FROM_EMAIL', 'JayDyMilla Licensing Desk <inquiry@jaydymilla.com>')
 
             # 1. Supabase
             try:
@@ -85,8 +87,8 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
                 mail_req = urllib.request.Request(
                     'https://api.resend.com/emails',
                     data=json.dumps({
-                        'from': 'JayDyMilla <onboarding@resend.dev>',
-                        'to': admin_email,
+                        'from': from_email,
+                        'to': admin_list,
                         'reply_to': email,
                         'subject': f"⚡ New Inquiry: [{inquiry_type}] from {name}",
                         'html': admin_html
@@ -100,6 +102,42 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
                 urllib.request.urlopen(mail_req)
             except Exception as e:
                 print(f"[dev_server] Resend error: {e}")
+
+            # 3. Resend Inquirer Confirmation Mail
+            if email and '@' in email:
+                try:
+                    client_html = f"""
+                    <div style='background:#0c0c10; color:#f0f0f5; padding:28px; font-family:sans-serif; border-radius:8px; max-width:600px; margin:0 auto;'>
+                      <h1 style='color:#ffffff; margin:0; text-transform:uppercase; letter-spacing:2px;'>JAYDYMILLA</h1>
+                      <div style='color:#bbf246; font-size:12px; margin-top:4px;'>Executive & Licensing Desk</div>
+                      <p style='margin-top:20px;'>Hello {name},</p>
+                      <p>Your transmission regarding <strong>"{inquiry_type}"</strong> has been successfully received.</p>
+                      <div style='background:#14141a; padding:16px; border-radius:6px; margin:18px 0;'>
+                        <p style='margin:4px 0;'><strong>Inquiry Category:</strong> {inquiry_type}</p>
+                        <p style='margin:4px 0;'><strong>Target Timeline:</strong> {timeline or 'N/A'}</p>
+                        <p style='margin:4px 0;'><strong>Status:</strong> Logged & In Executive Queue</p>
+                      </div>
+                      <p>Warm regards,<br><strong>JayDyMilla Management Desk</strong></p>
+                    </div>
+                    """
+                    user_mail_req = urllib.request.Request(
+                        'https://api.resend.com/emails',
+                        data=json.dumps({
+                            'from': from_email,
+                            'to': email,
+                            'reply_to': admin_list[0] if admin_list else 'music@jaydymilla.com',
+                            'subject': 'Inquiry Received // JayDyMilla Executive Desk',
+                            'html': client_html
+                        }).encode('utf-8'),
+                        headers={
+                            'Authorization': f"Bearer {resend_key}",
+                            'Content-Type': 'application/json',
+                            'User-Agent': 'Mozilla/5.0'
+                        }
+                    )
+                    urllib.request.urlopen(user_mail_req)
+                except Exception as e:
+                    print(f"[dev_server] Resend client confirmation error: {e}")
 
             self.send_response(200)
             self.send_header('Content-Type', 'application/json')
