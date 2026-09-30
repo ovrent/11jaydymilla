@@ -43,7 +43,7 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
             supabase_url = env.get('SUPABASE_URL', 'https://hzjzrnliyilimzpymldt.supabase.co')
             supabase_key = env.get('SUPABASE_ANON_KEY', 'sb_publishable_NcJDQyR6YNG_A4Klm1B32A_-bOqwDk8')
             resend_key = env.get('RESEND_API_KEY', '')
-            raw_admin = env.get('RESEND_ADMIN_EMAIL', 'music@jaydymilla.com, contentovrent@gmail.com')
+            raw_admin = env.get('RESEND_ADMIN_EMAIL', 'music@jaydymilla.com')
             admin_list = [a.strip() for a in raw_admin.split(',') if a.strip()]
             from_email = env.get('RESEND_FROM_EMAIL', 'JayDyMilla Licensing Desk <inquiry@jaydymilla.com>')
 

@@ -38,7 +38,7 @@ export default async function handler(req, res) {
     const SUPABASE_URL = process.env.SUPABASE_URL || 'https://hzjzrnliyilimzpymldt.supabase.co';
     const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'sb_publishable_NcJDQyR6YNG_A4Klm1B32A_-bOqwDk8';
     const RESEND_API_KEY = process.env.RESEND_API_KEY;
-    const rawAdmin = process.env.RESEND_ADMIN_EMAIL || 'music@jaydymilla.com, contentovrent@gmail.com';
+    const rawAdmin = process.env.RESEND_ADMIN_EMAIL || 'music@jaydymilla.com';
     const adminRecipients = rawAdmin.split(',').map(s => s.trim()).filter(Boolean);
     const adminTo = adminRecipients.length === 1 ? adminRecipients[0] : adminRecipients;
     const primaryAdmin = adminRecipients[0] || 'music@jaydymilla.com';
