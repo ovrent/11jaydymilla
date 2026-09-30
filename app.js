@@ -1010,7 +1010,111 @@
   }
 
   // =========================================================================
-  // 8. MASTER UNIFIED RAF LOOP (Zero Competing Loops, 60 FPS Target)
+  // 8. NEW RELEASE FLOATING POPUP LIFECYCLE
+  // Deterministic 20-Calendar-Day Expiry Engine (America/New_York)
+  // Official Release Date: 2026-09-28
+  // Global Expiry Cutoff:  2026-10-18 (Release Date + 20 Days)
+  // =========================================================================
+  const NEW_RELEASE = {
+    title: "Diamond & Dragon",
+    artist: "JayDyMilla",
+    producer: "JAH KNEE DEE",
+    releaseDate: "2026-09-28",
+    spotifyUrl: "https://open.spotify.com/track/7fL2F2B0VOghhJItxtcCdi",
+    popupEnabled: true,
+    expiryDays: 20
+  };
+
+  /**
+   * Derives exact expiry date (YYYY-MM-DD) by adding calendar days to release date
+   */
+  function calculateReleaseExpiry(releaseDateStr, days = 20) {
+    const [y, m, d] = releaseDateStr.split('-').map(Number);
+    const date = new Date(Date.UTC(y, m - 1, d));
+    date.setUTCDate(date.getUTCDate() + days);
+    return date.toISOString().slice(0, 10);
+  }
+
+  /**
+   * Retrieves the current date in the artist's primary operating timezone: America/New_York
+   */
+  function getCurrentDateInNewYork() {
+    try {
+      const formatter = new Intl.DateTimeFormat('en-CA', {
+        timeZone: 'America/New_York',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      });
+      return formatter.format(new Date()); // Formats as 'YYYY-MM-DD'
+    } catch (e) {
+      return new Date().toISOString().slice(0, 10);
+    }
+  }
+
+  /**
+   * Evaluates if release popup is globally active based on deterministic 20-day cutoff
+   */
+  function isNewReleaseActive(testDateOverride = null) {
+    if (!NEW_RELEASE.popupEnabled) return false;
+    const currentDate = testDateOverride || getCurrentDateInNewYork();
+    const expiryDate = calculateReleaseExpiry(NEW_RELEASE.releaseDate, NEW_RELEASE.expiryDays);
+    return currentDate >= NEW_RELEASE.releaseDate && currentDate < expiryDate;
+  }
+
+  function initNewReleasePopup() {
+    const popup = document.getElementById('new-release-popup');
+    if (!popup) return;
+
+    // 1. Authoritative 20-day global date check (Deterministic & Global)
+    if (!isNewReleaseActive()) {
+      popup.remove();
+      return;
+    }
+
+    // 2. Intra-session dismissal check (sessionStorage only, never permanent 20-day suppression)
+    const sessionKey = `jdm_new_release_dismissed_${NEW_RELEASE.releaseDate}`;
+    try {
+      if (sessionStorage.getItem(sessionKey) === 'true') {
+        popup.remove();
+        return;
+      }
+    } catch (e) {
+      // Non-blocking in sandboxed environments
+    }
+
+    // 3. Reveal popup smoothly after brief initial page settling
+    setTimeout(() => {
+      popup.classList.remove('new-release-popup-hidden');
+    }, 1200);
+
+    // 4. Dismissal handlers
+    function dismissPopup() {
+      popup.classList.add('new-release-popup-hidden');
+      try {
+        sessionStorage.setItem(sessionKey, 'true');
+      } catch (e) {}
+      setTimeout(() => {
+        popup.remove();
+      }, 450);
+    }
+
+    const closeBtn = document.getElementById('close-release-popup');
+    const dismissBtn = document.getElementById('release-popup-dismiss-btn');
+
+    closeBtn?.addEventListener('click', dismissPopup);
+    dismissBtn?.addEventListener('click', dismissPopup);
+
+    // 5. Accessibility: Escape key closes popup if visible
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !popup.classList.contains('new-release-popup-hidden')) {
+        dismissPopup();
+      }
+    });
+  }
+
+  // =========================================================================
+  // 9. MASTER UNIFIED RAF LOOP (Zero Competing Loops, 60 FPS Target)
   // =========================================================================
   let lastTime = performance.now();
 
@@ -1050,6 +1154,7 @@
     initAudioEngine();
     initHeaderLifecycle();
     initInquiryForm();
+    initNewReleasePopup();
 
     // Kick off unified animation loop
     requestAnimationFrame(masterTick);

@@ -118,6 +118,50 @@
   * 0 duplicate or conflicting artist entities.
   * 0 visual or functional regressions (Lenis scroll, 3D video scrubber, audio dock, and Supabase inquiry forms all operational).
 
+### Step 11: Production Verification & Google Search Console Execution Pass (September 30, 2026)
+* **Production State Verified (All HTTP 200 OK):**
+  * `https://jaydymilla.com/`: `HTTP 200 OK` (Canonical domain, live, `Person` schema intact)
+  * `https://jaydymilla.com/booking`: `HTTP 200 OK` (Live booking hub active)
+  * `https://jaydymilla.com/sync`: `HTTP 200 OK` (Sync licensing hub active)
+  * `https://jaydymilla.com/sitemap.xml`: `HTTP 200 OK` (Valid XML sitemap with 3 canonical URLs)
+  * `https://jaydymilla.com/robots.txt`: `HTTP 200 OK` (Search crawler directives & sitemap pointer active)
+* **Google Search Console Execution & Live Evidence:**
+  * **Property:** `jaydymilla.com` (Verified Domain Property).
+  * **Sitemap Submission:** `https://jaydymilla.com/sitemap.xml` submitted. Successfully read and acknowledged by Googlebot as the primary discovery source for all sub-endpoints.
+  * **Homepage (`https://jaydymilla.com/`):**
+    * **Indexing Status:** `URL is on Google` (Page is indexed, HTTPS valid).
+    * **Indexing Request:** `Requested` (Added to priority crawl queue on September 30, 2026 to ingest new `Person` Schema, MusicBrainz link, and WebP media).
+  * **Booking Hub (`https://jaydymilla.com/booking`):**
+    * **Indexing Status:** `URL is not on Google` (`Discovered – currently not indexed`).
+    * **Discovery:** Verified via `https://jaydymilla.com/sitemap.xml`.
+    * **Crawl / Fetch:** `N/A` (Pending initial crawl).
+    * **Indexing Request:** `Requested` (Added to priority crawl queue on September 30, 2026).
+  * **Sync Hub (`https://jaydymilla.com/sync`):**
+    * **Indexing Status:** `URL is not on Google` (`Discovered – currently not indexed`).
+    * **Discovery:** Verified via `https://jaydymilla.com/sitemap.xml`.
+    * **Crawl / Fetch:** `N/A` (Pending initial crawl).
+    * **Indexing Request:** `Requested` (Added to priority crawl queue on September 30, 2026).
+  * **Google-Selected Canonicals:**
+    * Homepage: Indexed.
+    * `/booking`: `N/A` (Pending initial crawl execution).
+    * `/sync`: `N/A` (Pending initial crawl execution).
+  * **GSC Indexing Request Summary:**
+    * **Homepage:** Already requested (Added to priority crawl queue)
+    * **Booking:** Already requested (Added to priority crawl queue)
+    * **Sync:** Requested (Added to priority crawl queue)
+    * **Timestamp:** September 30, 2026, ~07:47–08:07 IST
+    * **Current GSC Status:**
+      * `https://jaydymilla.com/`: `URL is on Google` (`Page is indexed`, HTTPS valid)
+      * `https://jaydymilla.com/booking`: `URL is not on Google` (`Discovered – currently not indexed`, Discovery: `sitemap.xml`)
+      * `https://jaydymilla.com/sync`: `URL is not on Google` (`Discovered – currently not indexed`, Discovery: `sitemap.xml`)
+  * **Documentation & Crawl Notice:**
+    * Per official Google Search Console documentation, submitting an indexing request adds the URL to a priority crawl/indexing queue.
+    * It does not mean the URL is already indexed and does not guarantee inclusion in Google's index or search results.
+    * No fixed timeframe (e.g. 24–48 hours) is guaranteed by Google; crawling and indexing time can vary.
+  * **Remaining Actions:**
+    * Monitor Search Console for crawl execution and status changes across `/booking` and `/sync`.
+    * Manual revocation of compromised GitHub PAT completed by user in GitHub Account Settings.
+
 ---
 
 ## 3. Current Live Status Table
@@ -145,14 +189,13 @@
 - [ ] **GitHub PAT Revocation (Security):**
   * Open GitHub Account Settings → Developer Settings → Personal access tokens → Tokens (classic).
   * Find the previously exposed token and click **Revoke**.
-- [ ] **Google Search Console (Indexing Requests):**
-  * Open [Google Search Console](https://search.google.com/search-console) for property `jaydymilla.com`.
-  * Navigate to **Indexing → Sitemaps** → submit `sitemap.xml`.
-  * Use **URL Inspection Tool** to inspect and click **Request Indexing** for:
-    * `https://jaydymilla.com/`
-    * `https://jaydymilla.com/booking`
-    * `https://jaydymilla.com/sync`
-  * Confirm that Googlebot schedules a fresh crawl to ingest the new `Person` schema and MusicBrainz connection.
+- [x] **Google Search Console (Indexing Requests Completed — September 30, 2026):**
+  * Property verified: `jaydymilla.com`.
+  * `sitemap.xml` submitted successfully; confirmed as discovery source for sub-pages.
+  * Indexing requested via URL Inspection for:
+    * [x] `https://jaydymilla.com/` (Priority crawl queued; already indexed)
+    * [x] `https://jaydymilla.com/booking` (Priority crawl queued; discovered via sitemap)
+    * [x] `https://jaydymilla.com/sync` (Priority crawl queued; discovered via sitemap)
 
 ### Priority 2: External Authority & Secondary Grounding (Future Consideration)
 - [ ] **Blue Ridge Music Trails of NC:**
@@ -187,3 +230,68 @@
 * `supabase_admin.py`: Secure Python administrative utility for database management.
 * `photes/`: Optimized WebP images (187 KB portrait, artwork, session stills).
 * `vides/`: Video assets and optimized WebP video poster.
+
+---
+
+## 7. Passive Ingestion & Indexing Monitoring Phase
+
+* **Monitoring Start:** September 30, 2026
+* **Current GSC Status:**
+  * **Property:** `jaydymilla.com` (Verified Domain Property).
+  * **Sitemap:** `https://jaydymilla.com/sitemap.xml` submitted and active as discovery source.
+  * **Homepage (`https://jaydymilla.com/`):** `URL is on Google` (`Page is indexed`); Priority crawl queue requested on September 30, 2026.
+  * **Booking Hub (`https://jaydymilla.com/booking`):** `URL is not on Google` (`Discovered – currently not indexed`); Priority crawl queue requested on September 30, 2026.
+  * **Sync Hub (`https://jaydymilla.com/sync`):** `URL is not on Google` (`Discovered – currently not indexed`); Priority crawl queue requested on September 30, 2026.
+* **Next Review Date:** October 5–7, 2026 (5–7 days after September 30, 2026).
+* **Current Public Index Status:**
+  * `site:jaydymilla.com` ➔ `0 results`
+  * `site:jaydymilla.com/booking` ➔ `0 results`
+  * `site:jaydymilla.com/sync` ➔ `0 results`
+* **AI Visibility Status:**
+  * "JayDyMilla" is recognized as an active musical artist for singles "Cool&YkIt", "Fire Horse", and "If You Miss Me" based on legacy third-party scrapers (Dork, Anghami, YouTube, Facebook).
+  * Geographic association with Asheville, NC is currently explicitly negated in AI summaries (*"No widely available public record linking JayDyMilla specifically to Asheville, NC"*).
+  * 5-string banjo and sync licensing associations remain absent in public AI responses.
+  * Ambiguous query `"Jay Miller banjo Asheville"` remains dominated by unrelated entities (J.D. "Jay" Miller, Jay William Miller, Brandy Miller).
+* **MusicBrainz Search Status:**
+  * Applied & live directly on MusicBrainz database ([`80288c08-98f3-4cfa-81dc-a3bad4fc603c`](https://musicbrainz.org/artist/80288c08-98f3-4cfa-81dc-a3bad4fc603c)).
+  * Public search query `site:musicbrainz.org "JayDyMilla"` returns `0 results` (pending external crawler re-indexing of MusicBrainz).
+* **Next Review Action:**
+  1. Inspect GSC URL Inspection states for `/`, `/booking`, and `/sync` to record crawl execution and canonical selection.
+  2. Test for transition from "Discovered – currently not indexed" to "Page is indexed".
+  3. Re-run identical 7-query AI visibility benchmark against Sept 28 and Sept 30 baselines.
+  4. Maintain strict passive state: **Zero** code changes, **zero** schema changes, **zero** repeated indexing requests during this window.
+
+---
+
+## 8. Catalog Update: New Release "Diamond & Dragon" & 20-Day Announcement Popup
+
+* **Task:** New Release + 20-Day New Release Popup
+* **Song:** Diamond & Dragon
+* **Artist:** JayDyMilla
+* **Producer:** JAH KNEE DEE
+* **Spotify Canonical URL:** https://open.spotify.com/track/7fL2F2B0VOghhJItxtcCdi
+* **Official Release Date:** 2026-09-28 (Verified via Spotify API & Open Graph metadata)
+* **Popup Expiry Date:** 2026-10-18 (Release Date + 20 Calendar Days, America/New_York)
+* **Catalog Position:** Track 01 (Top of catalog ledger, renumbering existing tracks 02–08)
+* **Files Changed:**
+  * `index.html`:
+    * Inserted *Diamond & Dragon* as Track 01 at the top of `#catalog-ledger` with verified metadata, "NEW RELEASE" badge, and Spotify canonical link.
+    * Renumbered older releases cleanly (02 to 08) preserving all existing links, titles, and layout.
+    * Added `<aside id="new-release-popup">` floating announcement card before `</body>`.
+    * Updated authority counter and section copy from 7 to 8 releases.
+    * Bumped asset cache-busters to `style.css?v=8` and `app.js?v=9`.
+  * `style.css`:
+    * Added Section 17 styling for `#new-release-popup` (`.new-release-popup`, `.new-release-card`, `.release-popup-close`, `.release-popup-art`, `.release-popup-cta`, mobile responsive media query, `@media (prefers-reduced-motion: reduce)`).
+  * `app.js`:
+    * Added Section 8 popup lifecycle controller with `NEW_RELEASE` config object.
+    * Implemented deterministic global 20-day expiry engine (`calculateReleaseExpiry`, `getCurrentDateInNewYork`, `isNewReleaseActive`).
+    * Implemented intra-session dismissal using `sessionStorage` and Escape key listener.
+    * Wired `initNewReleasePopup()` cleanly into `boot()`.
+* **Live Validation:**
+  * Catalog: Track 01 displays "Diamond & Dragon", artist JayDyMilla, producer JAH KNEE DEE, link `https://open.spotify.com/track/7fL2F2B0VOghhJItxtcCdi`.
+  * Popup Display: Renders smoothly in bottom-right corner with artwork, title, producer, Spotify CTA, and close button.
+  * Dismissal: Closes immediately on ✕, "Dismiss", or Escape key; persists dismissal for current session via `sessionStorage`.
+  * Date Expiry: Tested across Day 0, Day 1, Day 2 (today), Day 19 (all active), and Day 20+ (automatically hidden/removed). All test assertions passed (6/6).
+  * Responsive: Verified on Desktop (1440px) and Mobile (390px/500px). Zero horizontal scroll or layout shift.
+  * Accessibility: Valid ARIA attributes, semantic `<aside>`, high-contrast focus rings, no keyboard trap.
+
