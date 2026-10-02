@@ -950,12 +950,72 @@
 
   function initInquiryForm() {
     const form = document.getElementById('inquiry-form');
-    const modal = document.getElementById('booking-modal');
-    const closeModalBtn = document.getElementById('close-modal-btn');
-    const submitBtn = form?.querySelector('button[type="submit"]');
+    if (!form) return;
 
-    form?.addEventListener('submit', async (e) => {
+    const cardContainer = form.closest('.stealth-card') || form.parentElement;
+    const header = cardContainer.querySelector('#inquiry-header') || document.getElementById('inquiry-header');
+    const submitBtn = form.querySelector('button[type="submit"]');
+
+    // Ensure error banner exists
+    let errorBanner = cardContainer.querySelector('#inquiry-error');
+    if (!errorBanner) {
+      errorBanner = document.createElement('div');
+      errorBanner.id = 'inquiry-error';
+      errorBanner.className = 'hidden mb-6 p-4 rounded-lg bg-red-950/40 border border-red-500/30 text-red-200 text-xs font-kanit leading-relaxed';
+      errorBanner.setAttribute('role', 'alert');
+      errorBanner.setAttribute('aria-live', 'assertive');
+      errorBanner.innerHTML = `
+        <div class="flex items-center gap-2 font-bold uppercase tracking-wider text-red-400 mb-1">
+          <svg class="w-4 h-4 text-red-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          Transmission Notice
+        </div>
+        <span id="inquiry-error-text">Unable to transmit your inquiry at this moment. Please check your connection and try again, or email us directly at <a href="mailto:music@jaydymilla.com" class="underline text-white hover:text-[#CBFE00]">music@jaydymilla.com</a>.</span>
+      `;
+      form.parentNode.insertBefore(errorBanner, form);
+    }
+    const errorText = errorBanner.querySelector('#inquiry-error-text');
+
+    // Ensure success panel exists
+    let successPanel = cardContainer.querySelector('#inquiry-success');
+    if (!successPanel) {
+      successPanel = document.createElement('div');
+      successPanel.id = 'inquiry-success';
+      successPanel.className = 'hidden inquiry-success-panel py-6 text-center';
+      successPanel.setAttribute('role', 'status');
+      successPanel.setAttribute('aria-live', 'polite');
+      successPanel.setAttribute('tabindex', '-1');
+      successPanel.innerHTML = `
+        <div class="w-14 h-14 rounded-full bg-[#CBFE00]/10 border border-[#CBFE00]/30 text-[#CBFE00] flex items-center justify-center mx-auto mb-5 shadow-[0_0_24px_rgba(203,254,0,0.18)]">
+          <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <h4 class="font-kanit font-extrabold text-2xl sm:text-3xl text-white tracking-tight uppercase mb-3">
+          Inquiry Submitted
+        </h4>
+        <p class="font-kanit text-white/80 text-sm sm:text-base leading-relaxed max-w-md mx-auto mb-4">
+          Thanks — your inquiry has been received. JayDyMilla’s team will be in touch soon.
+        </p>
+        <p id="inquiry-confirmation-note" class="font-space text-xs text-[#CBFE00]/90 tracking-wider uppercase mb-8 flex items-center justify-center gap-2">
+          <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#CBFE00]"></span>
+          <span>Your inquiry has been received and is now in our inbox.</span>
+        </p>
+        <div class="pt-2">
+          <button type="button" id="inquiry-reset-btn" class="btn-glass text-xs py-3 px-6 uppercase tracking-wider font-kanit">
+            ← Send another inquiry
+          </button>
+        </div>
+      `;
+      form.parentNode.appendChild(successPanel);
+    }
+    const confirmationNote = successPanel.querySelector('#inquiry-confirmation-note');
+    const resetBtn = successPanel.querySelector('#inquiry-reset-btn');
+
+    let isSubmitting = false;
+
+    form.addEventListener('submit', async (e) => {
       e.preventDefault();
+      if (isSubmitting) return;
 
       const name = document.getElementById('inq-name')?.value?.trim();
       const email = document.getElementById('inq-email')?.value?.trim();
@@ -963,19 +1023,40 @@
       const timeline = document.getElementById('inq-date')?.value?.trim();
       const message = document.getElementById('inq-message')?.value?.trim();
 
-      const originalBtnText = submitBtn ? submitBtn.innerText : '';
-      if (submitBtn) {
-        submitBtn.disabled = true;
-        submitBtn.innerText = 'TRANSMITTING...';
+      if (!name || !email || !message) {
+        if (errorBanner && errorText) {
+          errorText.textContent = 'Please fill out all required fields: Name, Email, and Message are required.';
+          errorBanner.classList.remove('hidden');
+          errorBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
+        return;
       }
 
+      // Hide any previous error message
+      errorBanner.classList.add('hidden');
+
+      // Set loading state
+      isSubmitting = true;
+      const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('aria-busy', 'true');
+        submitBtn.innerHTML = `
+          <svg class="animate-spin w-4 h-4 inline-block mr-2" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          TRANSMITTING...
+        `;
+      }
+
+      let isSuccess = false;
+      let clientConfirmationSent = false;
+
       try {
-        // Dispatch to /api/inquiry (triggers Supabase storage + Resend dual-dispatch)
         const response = await fetch('/api/inquiry', {
           method: 'POST',
-          headers: {
-            'Content-Type': 'application/json'
-          },
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             name,
             email,
@@ -985,13 +1066,21 @@
           })
         });
 
-        // If serverless endpoint is unavailable (e.g., raw file preview), fallback to direct Supabase REST
-        if (!response.ok) {
-          throw new Error('API dispatch failed; initiating direct database fallback');
+        if (response.ok) {
+          const data = await response.json().catch(() => ({}));
+          if (data.success !== false) {
+            isSuccess = true;
+            clientConfirmationSent = !!data.clientConfirmation;
+          } else {
+            throw new Error(data.error || 'API response indicated failure');
+          }
+        } else {
+          throw new Error('API dispatch returned status ' + response.status);
         }
-      } catch (err) {
+      } catch (apiErr) {
+        console.warn('[Inquiry API dispatch failed, initiating Supabase direct fallback]:', apiErr);
         try {
-          await fetch(`${SUPABASE_URL}/rest/v1/inquiries`, {
+          const sbResponse = await fetch(`${SUPABASE_URL}/rest/v1/inquiries`, {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -1007,27 +1096,80 @@
               message
             })
           });
+          if (sbResponse.ok) {
+            isSuccess = true;
+            clientConfirmationSent = false;
+          } else {
+            throw new Error('Direct database storage fallback also failed');
+          }
         } catch (dbErr) {
-          // Gracefully continue to show confirmation modal
+          console.error('[Inquiry All Fallbacks Failed]:', dbErr);
+          isSuccess = false;
         }
-      } finally {
+      }
+
+      isSubmitting = false;
+
+      if (isSuccess) {
+        // Reset submit button state for future submissions
         if (submitBtn) {
           submitBtn.disabled = false;
-          submitBtn.innerText = originalBtnText;
+          submitBtn.removeAttribute('aria-busy');
+          submitBtn.innerHTML = originalBtnHtml;
         }
-        modal?.classList.add('is-active');
+
+        // Adjust confirmation line dynamically based on whether Resend dispatched an email confirmation
+        if (confirmationNote) {
+          if (clientConfirmationSent) {
+            confirmationNote.innerHTML = `
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#CBFE00]"></span>
+              <span>A confirmation copy has been sent to your inbox.</span>
+            `;
+          } else {
+            confirmationNote.innerHTML = `
+              <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#CBFE00]"></span>
+              <span>Your inquiry has been received and is now in our inbox.</span>
+            `;
+          }
+        }
+
+        // Hide form and header, show success panel
+        form.classList.add('hidden');
+        if (header) header.classList.add('hidden');
+        successPanel.classList.remove('hidden');
+
+        // Reset form inputs
         form.reset();
+
+        // Accessible focus management
+        successPanel.focus();
+        cardContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      } else {
+        // Restore submit button
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.removeAttribute('aria-busy');
+          submitBtn.innerHTML = originalBtnHtml;
+        }
+
+        // Show error banner; keep form and all user input intact!
+        if (errorBanner && errorText) {
+          errorText.innerHTML = 'Unable to transmit your inquiry at this moment. Please check your connection and try again, or email us directly at <a href="mailto:music@jaydymilla.com" class="underline text-white hover:text-[#CBFE00]">music@jaydymilla.com</a>.';
+          errorBanner.classList.remove('hidden');
+          errorBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }
       }
     });
 
-    closeModalBtn?.addEventListener('click', () => {
-      modal?.classList.remove('is-active');
-    });
+    // Reset button handler ("Send another inquiry")
+    resetBtn?.addEventListener('click', () => {
+      successPanel.classList.add('hidden');
+      if (header) header.classList.remove('hidden');
+      form.classList.remove('hidden');
+      errorBanner?.classList.add('hidden');
 
-    modal?.addEventListener('click', (e) => {
-      if (e.target === modal) {
-        modal.classList.remove('is-active');
-      }
+      const firstInput = document.getElementById('inq-name');
+      firstInput?.focus();
     });
   }
 

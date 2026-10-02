@@ -1298,13 +1298,23 @@
         <!-- Right: Professional Inquiry Form -->
         <div class="lg:col-span-7">
           <div class="stealth-card p-6 sm:p-10">
-            <div class="flex items-center justify-between mb-6 flex-wrap gap-2">
+            <div id="inquiry-header" class="flex items-center justify-between mb-6 flex-wrap gap-2">
               <h3 class="font-kanit font-bold text-xl text-white">Submit a Professional Inquiry</h3>
               <a href="mailto:music@jaydymilla.com" class="font-space text-xs text-[#CBFE00] hover:underline flex items-center gap-1">
                 <span>Direct: music@jaydymilla.com</span>
                 <span>↗</span>
               </a>
             </div>
+
+            <!-- Error Feedback Banner -->
+            <div id="inquiry-error" class="hidden mb-6 p-4 rounded-lg bg-red-950/40 border border-red-500/30 text-red-200 text-xs font-kanit leading-relaxed" role="alert" aria-live="assertive">
+              <div class="flex items-center gap-2 font-bold uppercase tracking-wider text-red-400 mb-1">
+                <svg class="w-4 h-4 text-red-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                Transmission Notice
+              </div>
+              <span id="inquiry-error-text">Unable to transmit your inquiry at this moment. Please check your connection and try again, or email us directly at <a href="mailto:music@jaydymilla.com" class="underline text-white hover:text-[#CBFE00]">music@jaydymilla.com</a>.</span>
+            </div>
+
             <form id="inquiry-form" class="space-y-4">
               
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
@@ -1348,6 +1358,30 @@
               </div>
 
             </form>
+
+            <!-- Success Confirmation Panel -->
+            <div id="inquiry-success" class="hidden inquiry-success-panel py-8 text-center" role="status" aria-live="polite" tabindex="-1">
+              <div class="w-14 h-14 rounded-full bg-[#CBFE00]/10 border border-[#CBFE00]/30 text-[#CBFE00] flex items-center justify-center mx-auto mb-5 shadow-[0_0_24px_rgba(203,254,0,0.18)]">
+                <svg class="w-7 h-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <h4 class="font-kanit font-extrabold text-2xl sm:text-3xl text-white tracking-tight uppercase mb-3">
+                Inquiry Submitted
+              </h4>
+              <p class="font-kanit text-white/80 text-sm sm:text-base leading-relaxed max-w-md mx-auto mb-4">
+                Thanks — your inquiry has been received. JayDyMilla’s team will be in touch soon.
+              </p>
+              <p id="inquiry-confirmation-note" class="font-space text-xs text-[#CBFE00]/90 tracking-wider uppercase mb-8 flex items-center justify-center gap-2">
+                <span class="inline-block w-1.5 h-1.5 rounded-full bg-[#CBFE00]"></span>
+                <span>Your inquiry has been received and is now in our inbox.</span>
+              </p>
+              <div class="pt-2">
+                <button type="button" id="inquiry-reset-btn" class="btn-glass text-xs py-3 px-6 uppercase tracking-wider font-kanit">
+                  ← Send another inquiry
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -1528,23 +1562,7 @@
     </div>
   </aside>
 
-  <!-- Booking Success Modal -->
-  <div id="booking-modal" class="stealth-modal-overlay" aria-hidden="true">
-    <div class="stealth-modal-card">
-      <div class="w-12 h-12 rounded-full bg-[#CBFE00]/10 border border-[#CBFE00]/40 text-[#CBFE00] flex items-center justify-center font-bold text-xl mb-4">
-        ✓
-      </div>
-      <h3 class="font-kanit font-bold text-2xl text-white mb-2">Inquiry Transmitted</h3>
-      <p class="font-kanit text-white/70 text-sm leading-relaxed mb-6">
-        Thank you. Your message has been routed to JayDyMilla. You will receive a direct reply via email within 24 to 48 hours.
-      </p>
-      <button id="close-modal-btn" class="btn-lime w-full text-center">
-        ACKNOWLEDGE & CLOSE
-      </button>
-    </div>
-  </div>
-
   <!-- Application Logic -->
-  <script src="app.js?v=9"></script>
+  <script src="app.js?v=10"></script>
 </body>
 </html>

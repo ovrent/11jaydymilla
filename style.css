@@ -1027,6 +1027,34 @@ main {
 }
 
 /* ==========================================================================
+   14B. INQUIRY CONFIRMATION & FEEDBACK UX
+   ========================================================================== */
+.hidden {
+  display: none !important;
+}
+
+.inquiry-success-panel {
+  animation: inquiryFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes inquiryFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .inquiry-success-panel {
+    animation: none !important;
+  }
+}
+
+/* ==========================================================================
    15. ACCORDIONS & COLLAPSIBLES
    ========================================================================== */
 .service-accordion-row {
