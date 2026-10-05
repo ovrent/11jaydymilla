@@ -1,9 +1,8 @@
 /* ==========================================================================
    JAYDYMILLA — OFFICIAL ARTIST DIGITAL PLATFORM
-   Master Design System: Pure Black Stealth Editorial + Modern Pulse
+/* Master Design System: Pure Black Stealth Editorial + Modern Pulse
+   Fonts loaded cleanly via <head> <link> tags
    ========================================================================== */
-
-@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,600;1,800&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 /* ==========================================================================
    1. EDITORIAL THEME TOKENS
@@ -986,45 +985,6 @@ main {
   color: #FFFFFF;
 }
 
-/* ==========================================================================
-   14. MODALS & OVERLAYS
-   ========================================================================== */
-.stealth-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.82);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  z-index: 100;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1.5rem;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s var(--ease-editorial);
-}
-
-.stealth-modal-overlay.is-active {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-.stealth-modal-card {
-  width: 100%;
-  max-width: 540px;
-  background-color: #0A0A0D;
-  border: 1px solid rgba(255, 255, 255, 0.16);
-  border-radius: 16px;
-  padding: clamp(1.75rem, 4vw, 2.5rem);
-  box-shadow: 0 25px 65px rgba(0, 0, 0, 0.95);
-  transform: translateY(20px) scale(0.97);
-  transition: transform 0.35s var(--ease-editorial);
-}
-
-.stealth-modal-overlay.is-active .stealth-modal-card {
-  transform: translateY(0) scale(1);
-}
 
 /* ==========================================================================
    14B. INQUIRY CONFIRMATION & FEEDBACK UX
@@ -1054,46 +1014,6 @@ main {
   }
 }
 
-/* ==========================================================================
-   15. ACCORDIONS & COLLAPSIBLES
-   ========================================================================== */
-.service-accordion-row {
-  background-color: #000000;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
-  transition: background-color 0.25s var(--ease-editorial), border-color 0.25s ease;
-  cursor: pointer;
-}
-
-.service-accordion-row:not(.is-active):hover {
-  background-color: rgba(255, 255, 255, 0.03);
-}
-
-.service-accordion-row.is-active {
-  background-color: var(--color-neon) !important;
-  color: #000000 !important;
-  border-bottom-color: rgba(0, 0, 0, 0.2) !important;
-  box-shadow: 0 10px 30px -8px rgba(203, 254, 0, 0.25);
-}
-
-.service-accordion-row.is-active * {
-  color: #000000 !important;
-}
-
-.service-accordion-body {
-  display: grid;
-  grid-template-rows: 0fr;
-  transition: grid-template-rows 0.35s var(--ease-editorial), opacity 0.25s ease;
-  opacity: 0;
-}
-
-.service-accordion-row.is-active .service-accordion-body {
-  grid-template-rows: 1fr;
-  opacity: 1;
-}
-
-.service-accordion-inner {
-  overflow: hidden;
-}
 
 /* ==========================================================================
    16. FOOTER & WATERMARK

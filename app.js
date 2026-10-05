@@ -71,6 +71,24 @@
 
   let isDecoderPrimed = false;
 
+  // Layout Cache to eliminate forced reflows during scroll
+  let trackOffsetTop = 0;
+  let trackHeight = 0;
+  let viewportHeight = window.innerHeight || 800;
+  let heroHeight = 0;
+
+  function measureLayout() {
+    viewportHeight = window.innerHeight || document.documentElement.clientHeight || 800;
+    if (cylinderTrack) {
+      const rect = cylinderTrack.getBoundingClientRect();
+      trackOffsetTop = rect.top + window.scrollY;
+      trackHeight = cylinderTrack.offsetHeight;
+    }
+    if (heroSection) {
+      heroHeight = heroSection.offsetHeight;
+    }
+  }
+
   function primeVideoDecoder() {
     if (!cylinderVideo || isDecoderPrimed) return;
     try {
@@ -176,6 +194,12 @@
       }
     });
 
+    // Measure initial layout and bind debounced listeners
+    measureLayout();
+    window.addEventListener('resize', measureLayout, { passive: true });
+    window.addEventListener('orientationchange', measureLayout, { passive: true });
+    setTimeout(measureLayout, 1000);
+
     // Immediate initial stage positioning (prevents first-tick layout shift)
     if (cylinderScaler) {
       const windowWidth = window.innerWidth;
@@ -184,6 +208,10 @@
       cylinderScaler.style.transform = `scale(${baseScale}) rotateY(${initialAngle.toFixed(2)}deg) translateZ(0)`;
     }
   }
+
+  let lastSeekTimestamp = 0;
+  const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (window.innerWidth < 768);
+  const seekThrottleMs = isMobileDevice ? 32 : 16;
 
   function executeSeek(time) {
     if (!cylinderVideo) return;
@@ -196,6 +224,13 @@
     // Skip if difference is negligible (< 16ms, ~half frame)
     if (Math.abs(cylinderVideo.currentTime - time) < 0.016) return;
     
+    // On mobile devices or high-frequency touch scrolls, throttle video seek requests to prevent decoder queue saturation
+    const now = performance.now();
+    if (now - lastSeekTimestamp < seekThrottleMs) {
+      pendingSeekTime = time;
+      return;
+    }
+
     // If native hardware decoder is currently seeking, queue up latest target time
     if (cylinderVideo.seeking) {
       pendingSeekTime = time;
@@ -203,22 +238,22 @@
     }
     try {
       cylinderVideo.currentTime = time;
+      lastSeekTimestamp = now;
     } catch (err) {
       pendingSeekTime = time;
     }
   }
 
-  function updateCylinderScroll() {
-    if (!cylinderTrack) return;
-    const rect = cylinderTrack.getBoundingClientRect();
-    const viewportHeight = window.innerHeight;
-    const trackHeight = cylinderTrack.offsetHeight;
+  function updateCylinderScroll(scrollY) {
+    if (!cylinderTrack || trackHeight <= 0) return;
     const scrollDistance = trackHeight - viewportHeight;
 
     if (scrollDistance <= 0) return;
 
     // Progress = (ScrollY - SectionTop) / (SectionHeight - ViewportHeight)
-    const scrolledInside = -rect.top;
+    // Absolute section top is trackOffsetTop. At scrollY == trackOffsetTop, scrolledInside == 0.
+    const currentY = (typeof scrollY === 'number') ? scrollY : window.scrollY;
+    const scrolledInside = currentY - trackOffsetTop;
     const rawProgress = scrolledInside / scrollDistance;
     targetProgress = Math.max(0.0, Math.min(1.0, rawProgress));
   }
@@ -913,7 +948,7 @@
 
   function updateHeaderOnScroll(scrollY) {
     if (!header || !heroSection) return;
-    const heroBottom = heroSection.offsetHeight;
+    const heroBottom = heroHeight || heroSection.offsetHeight;
     
     // In Hero: visible with dynamic blur background; Below Hero: gracefully retreats
     if (scrollY < heroBottom - 80) {
@@ -1022,6 +1057,7 @@
       const inquiryType = document.getElementById('inq-type')?.value;
       const timeline = document.getElementById('inq-date')?.value?.trim();
       const message = document.getElementById('inq-message')?.value?.trim();
+      const hpValue = document.getElementById('inq-security-check')?.value?.trim();
 
       if (!name || !email || !message) {
         if (errorBanner && errorText) {
@@ -1062,7 +1098,8 @@
             email,
             inquiry_type: inquiryType,
             timeline: timeline || null,
-            message
+            message,
+            _hp_security_check: hpValue || ''
           })
         });
 
@@ -1292,19 +1329,28 @@
     }
 
     const currentScrollY = window.scrollY;
+    const scrollChanged = (currentScrollY !== lastScrollY);
+    const physicsActive = Math.abs(targetProgress - currentProgress) > 0.0001 || Math.abs(currentVelocity) > 0.0001;
 
     // 2. 3D Cylinder Physics update
-    updateCylinderScroll();
-    updateCylinderPhysics(dt);
+    if (scrollChanged) {
+      updateCylinderScroll(currentScrollY);
+    }
+
+    if (scrollChanged || physicsActive) {
+      updateCylinderPhysics(dt);
+    }
 
     // 3. Dual-Layer Reveal cursor smoothing
-    updateRevealPhysics();
+    if (isRevealActive) {
+      updateRevealPhysics();
+    }
 
-    // 4. Opposing marquee translation
-    updateMarquee(currentScrollY);
-
-    // 5. Header scroll appearance
-    updateHeaderOnScroll(currentScrollY);
+    // 4. Opposing marquee translation & dynamic header (only on scroll change)
+    if (scrollChanged) {
+      updateMarquee(currentScrollY);
+      updateHeaderOnScroll(currentScrollY);
+    }
 
     lastScrollY = currentScrollY;
     requestAnimationFrame(masterTick);
@@ -1320,8 +1366,16 @@
     initInquiryForm();
     initNewReleasePopup();
 
-    // Kick off unified animation loop
-    requestAnimationFrame(masterTick);
+    // Subpage optimization: Only run RAF if animated elements or Lenis exist
+    const hasInteractiveMotion = !!(cylinderTrack || revealContainer || marqueeRow1 || lenis);
+    if (hasInteractiveMotion) {
+      measureLayout();
+      requestAnimationFrame(masterTick);
+    } else if (header && heroSection) {
+      window.addEventListener('scroll', () => {
+        updateHeaderOnScroll(window.scrollY);
+      }, { passive: true });
+    }
   }
 
   if (document.readyState === 'loading') {

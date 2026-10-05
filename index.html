@@ -91,7 +91,7 @@
             "provider": {
               "@id": "https://jaydymilla.com/#jaydymilla"
             },
-            "url": "https://jaydymilla.com/booking/"
+            "url": "https://jaydymilla.com/booking"
           }
         },
         {
@@ -103,7 +103,7 @@
             "provider": {
               "@id": "https://jaydymilla.com/#jaydymilla"
             },
-            "url": "https://jaydymilla.com/sync/"
+            "url": "https://jaydymilla.com/sync"
           }
         }
       ]
@@ -120,7 +120,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
   <link rel="preconnect" href="https://unpkg.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Inter+Tight:ital,wght@0,400;0,500;0,600;0,700;0,800;0,900;1,400;1,700&family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,600;1,800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,300;1,400;1,600;1,800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 
   <!-- 3. TAILWIND CSS CDN + EXTENDED THEME CONFIG -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -193,8 +193,8 @@
           <a href="#catalog" class="nav-link">Releases</a>
           <a href="#studio" class="nav-link">Studio</a>
           <a href="#global-dance" class="nav-link">Global Rhythm</a>
-          <a href="/booking/" class="nav-link text-[#CBFE00]">Booking</a>
-          <a href="/sync/" class="nav-link text-[#CBFE00]">Sync</a>
+          <a href="/booking" class="nav-link text-[#CBFE00]">Booking</a>
+          <a href="/sync" class="nav-link text-[#CBFE00]">Sync</a>
         </nav>
 
         <!-- Header CTA & Mobile Hamburger -->
@@ -229,8 +229,8 @@
       <a href="#catalog" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">03 / Release Catalog</a>
       <a href="#studio" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">04 / Studio & Gear</a>
       <a href="#global-dance" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">05 / Global Rhythm</a>
-      <a href="/booking/" class="mobile-nav-link text-[#CBFE00] hover:text-white transition-colors">06 / Live Booking ↗</a>
-      <a href="/sync/" class="mobile-nav-link text-[#CBFE00] hover:text-white transition-colors">07 / Sync Licensing ↗</a>
+      <a href="/booking" class="mobile-nav-link text-[#CBFE00] hover:text-white transition-colors">06 / Live Booking ↗</a>
+      <a href="/sync" class="mobile-nav-link text-[#CBFE00] hover:text-white transition-colors">07 / Sync Licensing ↗</a>
     </nav>
     <div class="mt-auto pt-6 border-t border-white/10 flex flex-col gap-3">
       <a href="https://open.spotify.com/artist/1dKmGMjzhXQZrcYhKDgWRB" target="_blank" rel="noopener noreferrer" class="btn-lime w-full text-center">
@@ -451,7 +451,7 @@
             playsinline 
             webkit-playsinline="true"
             x5-playsinline="true"
-            preload="auto">
+            preload="metadata">
             <source src="vides/animo-showcase-stream-1280p.mp4" type="video/mp4">
           </video>
 
@@ -1316,6 +1316,8 @@
             </div>
 
             <form id="inquiry-form" class="space-y-4">
+              <!-- Security Honeypot: Invisible to real users and assistive technology -->
+              <input type="text" id="inq-security-check" name="_hp_security_check" tabindex="-1" autocomplete="off" style="display:none!important;" aria-hidden="true">
               
               <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
@@ -1419,8 +1421,8 @@
         <div>
           <div class="font-space text-xs text-white/40 uppercase tracking-widest mb-4">RESOURCES &amp; HUBS</div>
           <ul class="space-y-2.5 font-kanit text-sm">
-            <li><a href="/booking/" class="text-[#CBFE00] hover:underline transition-colors font-medium">Live Festival Booking ↗</a></li>
-            <li><a href="/sync/" class="text-[#CBFE00] hover:underline transition-colors font-medium">Film/TV Sync Licensing ↗</a></li>
+            <li><a href="/booking" class="text-[#CBFE00] hover:underline transition-colors font-medium">Live Festival Booking ↗</a></li>
+            <li><a href="/sync" class="text-[#CBFE00] hover:underline transition-colors font-medium">Film/TV Sync Licensing ↗</a></li>
             <li><a href="https://open.spotify.com/artist/1dKmGMjzhXQZrcYhKDgWRB" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-[#CBFE00] transition-colors">Spotify Artist Profile ↗</a></li>
             <li><a href="https://www.youtube.com/channel/UCSLuzR-gvXozEWNZpnXz0Hw" target="_blank" rel="noopener noreferrer" class="text-white/70 hover:text-[#CBFE00] transition-colors">YouTube Topic Channel ↗</a></li>
             <li><a href="#catalog" class="text-white/70 hover:text-[#CBFE00] transition-colors">2026 Studio Singles</a></li>

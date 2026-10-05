@@ -2,13 +2,28 @@
 // Handles inquiry submissions: saves to Supabase and dispatches Resend notification emails.
 
 export default async function handler(req, res) {
-  // CORS Configuration
-  res.setHeader('Access-Control-Allow-Credentials', 'true');
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET,OPTIONS,PATCH,DELETE,POST,PUT');
+  // Restricted CORS Configuration
+  const origin = req.headers.origin;
+  const ALLOWED_ORIGINS = [
+    'https://jaydymilla.com',
+    'https://www.jaydymilla.com',
+    'https://11jaydymilla.vercel.app'
+  ];
+  const isAllowedOrigin = origin && (
+    ALLOWED_ORIGINS.includes(origin) ||
+    /^http:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin)
+  );
+
+  if (isAllowedOrigin) {
+    res.setHeader('Access-Control-Allow-Origin', origin);
+  } else {
+    res.setHeader('Access-Control-Allow-Origin', 'https://jaydymilla.com');
+  }
+  res.setHeader('Vary', 'Origin');
+  res.setHeader('Access-Control-Allow-Methods', 'POST,OPTIONS');
   res.setHeader(
     'Access-Control-Allow-Headers',
-    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    'Content-Type, X-Requested-With, Accept'
   );
 
   if (req.method === 'OPTIONS') {
@@ -29,11 +44,36 @@ export default async function handler(req, res) {
       }
     }
 
-    const { name, email, inquiry_type, timeline, message } = body || {};
+    const { name, email, inquiry_type, timeline, message, _hp_security_check, hp_check } = body || {};
+
+    // Honeypot spam defense: silent discard to deceive spam bots without leaking heuristics
+    if (_hp_security_check || hp_check) {
+      return res.status(200).json({
+        success: true,
+        message: 'Inquiry transmitted and notifications dispatched successfully.',
+        dbSaved: true,
+        adminNotification: true,
+        clientConfirmation: true
+      });
+    }
 
     if (!name || !email || !message) {
       return res.status(400).json({ error: 'Missing required fields: name, email, and message are required.' });
     }
+
+    const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if (!EMAIL_REGEX.test(String(email).trim()) || String(email).length > 254) {
+      return res.status(400).json({ error: 'Please provide a valid email address.' });
+    }
+
+    if (String(name).length > 150 || String(message).length > 5000) {
+      return res.status(400).json({ error: 'Payload exceeds maximum allowable character length.' });
+    }
+
+    // Sanitize CRLF characters to prevent header injection in email subjects
+    const safeName = String(name).replace(/[\r\n\t]/g, ' ').trim();
+    const safeInquiryType = (inquiry_type ? String(inquiry_type) : 'General Professional Inquiry').replace(/[\r\n\t]/g, ' ').trim();
+    const safeEmail = String(email).replace(/[\r\n\t]/g, ' ').trim();
 
     const SUPABASE_URL = process.env.SUPABASE_URL || 'https://hzjzrnliyilimzpymldt.supabase.co';
     const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'sb_publishable_NcJDQyR6YNG_A4Klm1B32A_-bOqwDk8';
@@ -224,17 +264,17 @@ export default async function handler(req, res) {
     const adminResult = await sendResendMail({
       from: FROM_EMAIL,
       to: adminTo,
-      reply_to: email,
-      subject: `⚡ New Inquiry: [${inquiry_type || 'Booking'}] from ${name}`,
+      reply_to: safeEmail,
+      subject: `⚡ New Inquiry: [${safeInquiryType}] from ${safeName}`,
       html: adminHtml
     });
 
     // Dispatch Inquirer Confirmation Email
     let clientResult = { ok: false };
-    if (email && email.includes('@')) {
+    if (safeEmail && safeEmail.includes('@')) {
       clientResult = await sendResendMail({
         from: FROM_EMAIL,
-        to: email,
+        to: safeEmail,
         reply_to: primaryAdmin,
         subject: `Inquiry Received // JayDyMilla Executive Desk`,
         html: clientHtml
