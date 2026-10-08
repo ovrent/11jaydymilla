@@ -1,0 +1,31 @@
+name: Supabase Keep-Alive
+
+on:
+  schedule:
+    # Runs every 3 days at 06:00 UTC (well within the 7-day inactivity pause threshold)
+    - cron: '0 6 */3 * *'
+  workflow_dispatch:
+
+jobs:
+  ping-supabase:
+    name: Ping Supabase Database
+    runs-on: ubuntu-latest
+    steps:
+      - name: Send keep-alive query to Supabase REST API
+        run: |
+          echo "Sending keep-alive ping to Supabase (11jaydymilla)..."
+          HTTP_STATUS=$(curl -s -o response.txt -w "%{http_code}" \
+            -H "apikey: sb_publishable_NcJDQyR6YNG_A4Klm1B32A_-bOqwDk8" \
+            -H "Authorization: Bearer sb_publishable_NcJDQyR6YNG_A4Klm1B32A_-bOqwDk8" \
+            "https://hzjzrnliyilimzpymldt.supabase.co/rest/v1/inquiries?select=id&limit=1")
+          
+          echo "Response HTTP Status: $HTTP_STATUS"
+          cat response.txt
+          echo ""
+          
+          if [ "$HTTP_STATUS" -eq 200 ]; then
+            echo "SUCCESS: Supabase project activity recorded. Project will not be paused."
+          else
+            echo "FAILED: Keep-alive ping failed with HTTP $HTTP_STATUS"
+            exit 1
+          fi

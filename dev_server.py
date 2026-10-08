@@ -24,6 +24,34 @@ class RangeRequestHandler(SimpleHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Headers', 'Content-Type, Authorization, apikey')
         self.end_headers()
 
+    def do_GET(self):
+        if self.path.startswith('/api/keepalive'):
+            env = load_env()
+            supabase_url = env.get('SUPABASE_URL', 'https://hzjzrnliyilimzpymldt.supabase.co')
+            supabase_key = env.get('SUPABASE_ANON_KEY', 'sb_publishable_NcJDQyR6YNG_A4Klm1B32A_-bOqwDk8')
+            try:
+                sb_req = urllib.request.Request(
+                    f"{supabase_url}/rest/v1/inquiries?select=id&limit=1",
+                    headers={
+                        'apikey': supabase_key,
+                        'Authorization': f"Bearer {supabase_key}"
+                    }
+                )
+                with urllib.request.urlopen(sb_req) as resp:
+                    resp.read()
+                self.send_response(200)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'success': True, 'message': 'Supabase keep-alive ping successful'}).encode('utf-8'))
+                return
+            except Exception as e:
+                self.send_response(500)
+                self.send_header('Content-Type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps({'success': False, 'error': str(e)}).encode('utf-8'))
+                return
+        super().do_GET()
+
     def do_POST(self):
         if self.path.startswith('/api/inquiry'):
             content_length = int(self.headers.get('Content-Length', 0))
