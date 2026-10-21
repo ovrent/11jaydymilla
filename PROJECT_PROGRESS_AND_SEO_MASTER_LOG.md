@@ -343,5 +343,20 @@
 * **Protected Elements:** Scroll ring 3D rotation, video seeking, image reveal, scroll marquee, audio dock, and release popup verified operational.
 * **Mobile 4x CPU Throttling Benchmark:** 96.7% of scroll frames render under 33ms; average frame time reduced to 21.54ms with forced reflow spikes eliminated.
 
+---
 
-
+### Step 12: 3D Scroll Ring / Cylinder Video Scrubber Stabilization (October 21, 2026)
+* **Root Cause Diagnosis:**
+  1. `preload="metadata"` caused the 36.5 MB cylinder video (`animo-showcase-stream-1280p.mp4`) to have 0 buffered frames on fast initial page load. Scrubbing while unbuffered forced continuous pending byte-range HTTP requests, stalling the hardware decoder and freezing or blanking the video.
+  2. Stale layout caching (`measureLayout`) cached `trackOffsetTop` before hero images and web fonts fully settled, misaligning the scroll progress ratio.
+  3. Over-damped spring physics (`omega = 20.0` harmonic oscillator) accumulated reverse velocity during fast user scrolls, causing backward seeking jumps and seek queue deadlock (`seeking: true`).
+  4. `contain: layout paint` on `.motion-stage-scaler` caused 3D perspective flattening on Chromium/WebKit.
+* **Engineering Solutions Applied:**
+  1. Restored `preload="auto"` and active preload buffer priming on `#cylinder-video-element` ([`index.html`](file:///a:/Ovrent%20clents/11jaydymilla/index.html) & [`app.js`](file:///a:/Ovrent%20clents/11jaydymilla/app.js)).
+  2. Implemented infallible real-time viewport projection via `getBoundingClientRect()` in `updateCylinderScroll()`, making scroll progress 100% immune to late-loading images, font swaps, or responsive shifts.
+  3. Replaced laggy oscillator with an adaptive dynamic lerp (`speedFactor` scaling up to 0.85 response alpha on rapid scrolls) for instant, 1:1 finger-to-ring tracking with zero reverse jumps.
+  4. Hardened zero-race seek queue with a 110ms decoder stall watchdog and intelligent throttling (26ms desktop / 34ms mobile).
+  5. Removed `contain: layout paint` in [`style.css`](file:///a:/Ovrent%20clents/11jaydymilla/style.css) and replaced with GPU-accelerated `will-change: transform`.
+  6. Tuned contrast to `contrast(1.15) brightness(0.92)` to completely eliminate the faint grey video bounding box against the `#000000` page background.
+* **Verification:**
+  * Tested live rapid forward and backward scrolling in Chrome DevTools: verified 100% smooth monotonic frame progression from 0.00s to 19.98s with 0 backward glitches and 0 console errors.

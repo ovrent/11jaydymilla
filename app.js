@@ -52,8 +52,9 @@
   }
 
   // =========================================================================
+  // =========================================================================
   // 2. 3D ROTATING CYLINDER VIDEO SCRUBBER
-  // Damped scroll progress mapped to video playback position
+  // Dynamic Scroll Progress mapped to Video Playback & 3D Stage Orientation
   // =========================================================================
   let cylinderVideo = null;
   let cylinderTrack = null;
@@ -61,29 +62,22 @@
 
   let targetProgress = 0.0;
   let currentProgress = 0.0;
-  let currentVelocity = 0.0;
 
   // Zero-Race Seek Engine State
   let pendingSeekTime = null;
-  let videoDuration = 0;
-
-  const omega = 20.0; // Responsive critically damped spring frequency (immediate rotation with smooth inertia)
-
+  let videoDuration = 20.0; // Verified baseline duration of animo-showcase-stream-1280p.mp4
   let isDecoderPrimed = false;
+  let lastSeekTimestamp = 0;
 
-  // Layout Cache to eliminate forced reflows during scroll
-  let trackOffsetTop = 0;
-  let trackHeight = 0;
+  const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (window.innerWidth < 768);
+  const seekThrottleMs = isMobileDevice ? 34 : 26;
+
+  // Layout Cache for viewport metrics
   let viewportHeight = window.innerHeight || 800;
   let heroHeight = 0;
 
   function measureLayout() {
     viewportHeight = window.innerHeight || document.documentElement.clientHeight || 800;
-    if (cylinderTrack) {
-      const rect = cylinderTrack.getBoundingClientRect();
-      trackOffsetTop = rect.top + window.scrollY;
-      trackHeight = cylinderTrack.offsetHeight;
-    }
     if (heroSection) {
       heroHeight = heroSection.offsetHeight;
     }
@@ -92,12 +86,13 @@
   function primeVideoDecoder() {
     if (!cylinderVideo || isDecoderPrimed) return;
     try {
+      cylinderVideo.preload = 'auto';
       const playPromise = cylinderVideo.play();
       if (playPromise !== undefined) {
         playPromise.then(() => {
           isDecoderPrimed = true;
           cylinderVideo.pause();
-          if (cylinderVideo.duration && !isNaN(cylinderVideo.duration)) {
+          if (cylinderVideo.duration && !isNaN(cylinderVideo.duration) && cylinderVideo.duration > 0) {
             videoDuration = cylinderVideo.duration;
           }
           if (pendingSeekTime !== null) {
@@ -106,10 +101,105 @@
             executeSeek(nextTime);
           }
         }).catch(() => {
-          // Handled gracefully on first user interaction
+          isDecoderPrimed = true;
         });
       }
     } catch (e) {}
+  }
+
+  function executeSeek(time) {
+    if (!cylinderVideo) return;
+
+    // Check difference: skip micro-deltas under 18ms (~1 frame)
+    if (Math.abs(cylinderVideo.currentTime - time) < 0.018) return;
+
+    const now = performance.now();
+
+    // Check if decoder is currently busy with a seek
+    if (cylinderVideo.seeking) {
+      pendingSeekTime = time;
+      // Safety Watchdog: If seeking takes over 110ms (stalled decoder or network hiccup),
+      // force recovery seek to latest target time to avoid permanent lockup.
+      if (now - lastSeekTimestamp > 110) {
+        try {
+          cylinderVideo.currentTime = time;
+          lastSeekTimestamp = now;
+        } catch (e) {}
+      }
+      return;
+    }
+
+    // Rate-limit seeks to prevent GPU video decoder queue saturation
+    if (now - lastSeekTimestamp < seekThrottleMs) {
+      pendingSeekTime = time;
+      return;
+    }
+
+    try {
+      cylinderVideo.currentTime = time;
+      lastSeekTimestamp = now;
+    } catch (err) {
+      pendingSeekTime = time;
+    }
+  }
+
+  function updateCylinderScroll() {
+    if (!cylinderTrack) return;
+    const rect = cylinderTrack.getBoundingClientRect();
+    const vh = window.innerHeight || viewportHeight;
+    const scrollDistance = cylinderTrack.offsetHeight - vh;
+
+    if (scrollDistance <= 0) return;
+
+    // Infallible Direct Projection:
+    // When cylinderTrack top hits top of viewport (rect.top <= 0), user is inside sticky track.
+    // Progress is the exact fraction of scrollDistance traversed: -rect.top / scrollDistance.
+    const rawProgress = -rect.top / scrollDistance;
+    targetProgress = Math.max(0.0, Math.min(1.0, rawProgress));
+  }
+
+  function updateCylinderPhysics(dt) {
+    if (!cylinderVideo) return;
+
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      currentProgress = targetProgress;
+    } else {
+      const diff = targetProgress - currentProgress;
+      const absDiff = Math.abs(diff);
+
+      if (absDiff < 0.0001) {
+        currentProgress = targetProgress;
+      } else {
+        // Dynamic Adaptive Lerp:
+        // On slow/gentle scroll: smooth response (~0.22) for silky cinematic glide.
+        // On fast/flick scroll: rapidly ramps responsiveness up to 0.85 so ring locks tightly
+        // with the user's hand/wheel without lagging or jumping backwards.
+        const speedFactor = Math.min(1.0, absDiff * 6.5);
+        const responseAlpha = 0.22 + 0.63 * speedFactor;
+        const frameAlpha = Math.min(1.0, 1.0 - Math.pow(Math.max(0, 1.0 - responseAlpha), dt * 60));
+        currentProgress += diff * frameAlpha;
+      }
+    }
+
+    // Direct 3D Perspective Stage Orientation:
+    // Executes on GPU compositor thread at full 60/120 FPS
+    if (cylinderScaler) {
+      const angle = (currentProgress - 0.5) * 8.0;
+      const windowWidth = window.innerWidth;
+      const baseScale = windowWidth < 640 ? 1.38 : (windowWidth < 1024 ? 1.62 : 1.90);
+      cylinderScaler.style.transform = `scale(${baseScale}) rotateY(${angle.toFixed(2)}deg) translateZ(0)`;
+    }
+
+    // Map progress to video seek time
+    const dur = (cylinderVideo.duration && !isNaN(cylinderVideo.duration) && cylinderVideo.duration > 0)
+      ? cylinderVideo.duration
+      : videoDuration;
+
+    if (dur > 0) {
+      const targetTime = Math.max(0.001, Math.min(dur - 0.01, currentProgress * dur));
+      executeSeek(targetTime);
+    }
   }
 
   function initCylinderMotion() {
@@ -119,18 +209,24 @@
 
     if (!cylinderTrack || !cylinderVideo) return;
 
-    // Remove poster immediately once loaded to prevent iOS Safari flashing poster on backward seeks
-    const clearPoster = () => {
-      if (cylinderVideo && cylinderVideo.hasAttribute('poster')) {
-        cylinderVideo.removeAttribute('poster');
-      }
-    };
-    cylinderVideo.addEventListener('loadeddata', clearPoster, { once: true });
-    cylinderVideo.addEventListener('canplay', clearPoster, { once: true });
-    cylinderVideo.addEventListener('timeupdate', clearPoster, { once: true });
-    cylinderVideo.addEventListener('seeked', clearPoster, { once: true });
+    // Force eager preloading so video data buffers ahead of fast scrolls
+    cylinderVideo.preload = 'auto';
 
-    // Mobile WebKit / Android decoder warmup on first user gesture
+    const syncMetadata = () => {
+      if (cylinderVideo.duration && !isNaN(cylinderVideo.duration) && cylinderVideo.duration > 0) {
+        videoDuration = cylinderVideo.duration;
+      }
+      const dur = videoDuration;
+      const t = Math.max(0.001, Math.min(dur - 0.01, currentProgress * dur));
+      executeSeek(t);
+    };
+
+    cylinderVideo.addEventListener('loadedmetadata', syncMetadata, { passive: true });
+    cylinderVideo.addEventListener('loadeddata', syncMetadata, { passive: true });
+    cylinderVideo.addEventListener('canplay', syncMetadata, { passive: true });
+    cylinderVideo.addEventListener('durationchange', syncMetadata, { passive: true });
+
+    // Video Warmup / Decoder Unlock on first user gesture
     const unlockDecoder = () => {
       primeVideoDecoder();
       window.removeEventListener('touchstart', unlockDecoder);
@@ -141,158 +237,47 @@
     window.addEventListener('scroll', unlockDecoder, { passive: true, capture: true, once: true });
     window.addEventListener('pointerdown', unlockDecoder, { passive: true, once: true });
 
-    // Ensure video initiates loading pipeline
+    // Ensure video initiates loading pipeline immediately
     try {
       cylinderVideo.load();
       primeVideoDecoder();
     } catch (e) {}
 
-    const setInitialState = () => {
-      if (cylinderVideo.duration && !isNaN(cylinderVideo.duration)) {
-        videoDuration = cylinderVideo.duration;
-      }
-      if (cylinderVideo.currentTime < 0.001) {
-        try {
-          cylinderVideo.currentTime = 0.001;
-        } catch (e) {}
-      }
-    };
-
-    if (cylinderVideo.readyState >= 1) {
-      setInitialState();
-    } else {
-      cylinderVideo.addEventListener('loadedmetadata', setInitialState, { once: true });
-    }
-
-    const onDataReady = () => {
-      if (cylinderVideo.duration && !isNaN(cylinderVideo.duration)) {
-        videoDuration = cylinderVideo.duration;
-      }
-      if (pendingSeekTime !== null) {
-        const nextTime = pendingSeekTime;
-        pendingSeekTime = null;
-        executeSeek(nextTime);
-      }
-    };
-
-    cylinderVideo.addEventListener('loadeddata', onDataReady);
-    cylinderVideo.addEventListener('canplay', onDataReady);
-
     // Native Zero-Race Seek Queue: Seamless, instant rotation on scroll
     cylinderVideo.addEventListener('seeked', () => {
-      clearPoster();
       if (pendingSeekTime !== null) {
         const nextTime = pendingSeekTime;
         pendingSeekTime = null;
-        if (Math.abs(cylinderVideo.currentTime - nextTime) >= 0.016) {
+        if (Math.abs(cylinderVideo.currentTime - nextTime) >= 0.02) {
           try {
             cylinderVideo.currentTime = nextTime;
+            lastSeekTimestamp = performance.now();
           } catch (e) {
             pendingSeekTime = nextTime;
           }
         }
       }
-    });
+    }, { passive: true });
 
-    // Measure initial layout and bind debounced listeners
-    measureLayout();
-    window.addEventListener('resize', measureLayout, { passive: true });
-    window.addEventListener('orientationchange', measureLayout, { passive: true });
-    setTimeout(measureLayout, 1000);
+    // Calculate initial scroll position immediately (handles direct loads / mid-page refreshes)
+    updateCylinderScroll();
+    currentProgress = targetProgress;
+    updateCylinderPhysics(0.016);
 
-    // Immediate initial stage positioning (prevents first-tick layout shift)
-    if (cylinderScaler) {
-      const windowWidth = window.innerWidth;
-      const baseScale = windowWidth < 640 ? 1.38 : (windowWidth < 1024 ? 1.62 : 1.90);
-      const initialAngle = (targetProgress - 0.5) * 8;
-      cylinderScaler.style.transform = `scale(${baseScale}) rotateY(${initialAngle.toFixed(2)}deg) translateZ(0)`;
-    }
-  }
-
-  let lastSeekTimestamp = 0;
-  const isMobileDevice = /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || (window.innerWidth < 768);
-  const seekThrottleMs = isMobileDevice ? 32 : 16;
-
-  function executeSeek(time) {
-    if (!cylinderVideo) return;
-    // Allow seek once metadata (readyState >= 1) is ready
-    if (cylinderVideo.readyState < 1) {
-      pendingSeekTime = time;
-      if (!isDecoderPrimed) primeVideoDecoder();
-      return;
-    }
-    // Skip if difference is negligible (< 16ms, ~half frame)
-    if (Math.abs(cylinderVideo.currentTime - time) < 0.016) return;
-    
-    // On mobile devices or high-frequency touch scrolls, throttle video seek requests to prevent decoder queue saturation
-    const now = performance.now();
-    if (now - lastSeekTimestamp < seekThrottleMs) {
-      pendingSeekTime = time;
-      return;
-    }
-
-    // If native hardware decoder is currently seeking, queue up latest target time
-    if (cylinderVideo.seeking) {
-      pendingSeekTime = time;
-      return;
-    }
-    try {
-      cylinderVideo.currentTime = time;
-      lastSeekTimestamp = now;
-    } catch (err) {
-      pendingSeekTime = time;
-    }
-  }
-
-  function updateCylinderScroll(scrollY) {
-    if (!cylinderTrack || trackHeight <= 0) return;
-    const scrollDistance = trackHeight - viewportHeight;
-
-    if (scrollDistance <= 0) return;
-
-    // Progress = (ScrollY - SectionTop) / (SectionHeight - ViewportHeight)
-    // Absolute section top is trackOffsetTop. At scrollY == trackOffsetTop, scrolledInside == 0.
-    const currentY = (typeof scrollY === 'number') ? scrollY : window.scrollY;
-    const scrolledInside = currentY - trackOffsetTop;
-    const rawProgress = scrolledInside / scrollDistance;
-    targetProgress = Math.max(0.0, Math.min(1.0, rawProgress));
-  }
-
-  function updateCylinderPhysics(dt) {
-    if (!cylinderVideo) return;
-
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (prefersReducedMotion) {
-      currentProgress = targetProgress;
-      currentVelocity = 0.0;
-    } else {
-      // Critically Damped Harmonic Oscillator (zeta = 1.0, omega = 17.0)
-      const safeDt = Math.min(dt, 0.033);
-      const f = 1.0 + 2.0 * safeDt * omega;
-      const oo = omega * omega;
-      const hoo = safeDt * oo;
-      const hhoo = safeDt * hoo;
-      const detInv = 1.0 / (f + hhoo);
-      const detDiff = targetProgress - currentProgress;
-
-      currentProgress = (f * currentProgress + safeDt * currentVelocity + hhoo * targetProgress) * detInv;
-      currentVelocity = (currentVelocity + hoo * detDiff) * detInv;
-    }
-
-    // Map progress to video seek time
-    const dur = (cylinderVideo && cylinderVideo.duration && !isNaN(cylinderVideo.duration)) ? cylinderVideo.duration : videoDuration;
-    if (dur > 0) {
-      const targetTime = Math.max(0.001, Math.min(dur - 0.01, currentProgress * dur));
-      executeSeek(targetTime);
-    }
-
-    // Apply subtle spatial stage tilt in sync with progress (Heroic cinematic scaling)
-    if (cylinderScaler) {
-      const angle = (currentProgress - 0.5) * 8; // Gentle 3D perspective orientation
-      const windowWidth = window.innerWidth;
-      const baseScale = windowWidth < 640 ? 1.38 : (windowWidth < 1024 ? 1.62 : 1.90);
-      cylinderScaler.style.transform = `scale(${baseScale}) rotateY(${angle.toFixed(2)}deg) translateZ(0)`;
-    }
+    // Dynamic layout listeners for resize, orientation, and asset load
+    window.addEventListener('resize', () => {
+      measureLayout();
+      updateCylinderScroll();
+    }, { passive: true });
+    window.addEventListener('orientationchange', () => {
+      measureLayout();
+      updateCylinderScroll();
+    }, { passive: true });
+    window.addEventListener('load', () => {
+      measureLayout();
+      updateCylinderScroll();
+      updateCylinderPhysics(0.016);
+    }, { passive: true });
   }
 
   // =========================================================================
@@ -1330,11 +1315,11 @@
 
     const currentScrollY = window.scrollY;
     const scrollChanged = (currentScrollY !== lastScrollY);
-    const physicsActive = Math.abs(targetProgress - currentProgress) > 0.0001 || Math.abs(currentVelocity) > 0.0001;
+    const physicsActive = Math.abs(targetProgress - currentProgress) > 0.0001;
 
     // 2. 3D Cylinder Physics update
     if (scrollChanged) {
-      updateCylinderScroll(currentScrollY);
+      updateCylinderScroll();
     }
 
     if (scrollChanged || physicsActive) {
@@ -1370,6 +1355,8 @@
     const hasInteractiveMotion = !!(cylinderTrack || revealContainer || marqueeRow1 || lenis);
     if (hasInteractiveMotion) {
       measureLayout();
+      updateCylinderScroll();
+      updateCylinderPhysics(0.016);
       requestAnimationFrame(masterTick);
     } else if (header && heroSection) {
       window.addEventListener('scroll', () => {

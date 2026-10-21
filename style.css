@@ -609,7 +609,7 @@ main {
   transform-style: preserve-3d;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  contain: layout paint;
+  will-change: transform;
 }
 
 @media (max-width: 1024px) {
@@ -634,8 +634,8 @@ main {
   height: 100%;
   object-fit: contain;
   background-color: #000000;
-  /* Universal hardware black-level crushing (avoids SVG filter failure on iOS WebKit / mobile GPUs) */
-  filter: contrast(1.10) brightness(0.95);
+  /* Universal hardware black-level crushing (seamless pure #000000 integration) */
+  filter: contrast(1.15) brightness(0.92);
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
   -webkit-backface-visibility: hidden;
@@ -648,15 +648,15 @@ main {
 @media (min-width: 769px) {
   @supports (filter: url('#video-black-level')) {
     .motion-ring-video {
-      filter: url(#video-black-level);
+      filter: url(#video-black-level) contrast(1.05);
     }
   }
 }
 
 @media (max-width: 768px) {
   .motion-ring-video {
-    /* Guarantees video is 100% visible on iPhone Safari and Android mobile */
-    filter: contrast(1.08) brightness(0.95) !important;
+    /* Seamless blend and high-contrast rendering on iOS Safari & mobile devices */
+    filter: contrast(1.15) brightness(0.92) !important;
   }
 }
 
