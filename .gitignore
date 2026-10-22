@@ -33,3 +33,4 @@ venv/
 .vercel
 blender_masterpiece/
 test_*.png
+.originkit/

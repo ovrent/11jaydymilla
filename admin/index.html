@@ -1,0 +1,1912 @@
+<!DOCTYPE html>
+<html lang="en" class="bg-[#000000] text-white">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Executive Command Portal | JayDyMilla Admin</title>
+  <meta name="robots" content="noindex, nofollow">
+
+  <!-- Favicon & Site Icons -->
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+  <!-- Typography -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@1&family=Kanit:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Google Identity Services SDK -->
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: '#CBFE00',
+            brandDark: '#a3cc00',
+            originkitBlue: '#2563EB',
+            originkitRoyal: '#3600FF',
+            originkitMagenta: '#FF007F',
+            surfaceDark: '#07070A',
+            cardDark: '#0D0D12',
+            cardBorder: '#1A1A24',
+            cardHover: '#14141E'
+          },
+          fontFamily: {
+            kanit: ['Kanit', 'sans-serif'],
+            serif: ['"Instrument Serif"', 'serif'],
+            space: ['"Space Grotesk"', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #050508;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #222230;
+      border-radius: 3px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #CBFE00;
+    }
+
+    /* Subtle Scanline Effect */
+    .scanline-overlay {
+      background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+      background-size: 100% 3px, 6px 100%;
+      pointer-events: none;
+    }
+
+    /* Modal Backdrop Blur */
+    .backdrop-acrylic {
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    /* Card Glow */
+    .card-neon-hover:hover {
+      border-color: rgba(203, 254, 0, 0.4);
+      box-shadow: 0 0 20px -5px rgba(203, 254, 0, 0.15);
+    }
+
+    /* Originkit Arrow Reveal Button */
+    .originkit-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      overflow: hidden;
+      border-radius: 9999px;
+      cursor: pointer;
+      user-select: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease, border-color 0.3s ease;
+      will-change: transform;
+    }
+    .originkit-btn:active {
+      transform: scale(0.96) !important;
+    }
+    .originkit-flood-badge {
+      position: absolute;
+      border-radius: 9999px;
+      pointer-events: none;
+      transform: translate(-50%, -50%) scale(1);
+      transition: transform 0.52s cubic-bezier(0.44, 0, 0.56, 1);
+      z-index: 1;
+    }
+    .originkit-flood-right {
+      right: 4px;
+      top: 50%;
+      transform: translateY(-50%) scale(1);
+    }
+    .originkit-btn:hover .originkit-flood-right {
+      transform: translateY(-50%) scale(30);
+    }
+    .originkit-flood-left {
+      left: 4px;
+      top: 50%;
+      transform: translateY(-50%) scale(1);
+    }
+    .originkit-btn:hover .originkit-flood-left {
+      transform: translateY(-50%) scale(30);
+    }
+    .originkit-icon-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 9999px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 2;
+      transition: transform 0.46s cubic-bezier(0.44, 0, 0.56, 1), background-color 0.3s ease, color 0.3s ease;
+    }
+    .originkit-glyph {
+      display: inline-block;
+      transition: transform 0.46s cubic-bezier(0.44, 0, 0.56, 1);
+      will-change: transform;
+    }
+    .originkit-btn:hover .originkit-glyph-rotate45 {
+      transform: rotate(45deg);
+    }
+    .originkit-btn:hover .originkit-glyph-rotate90 {
+      transform: rotate(90deg);
+    }
+    .originkit-btn:hover .originkit-glyph-scale {
+      transform: scale(1.15) rotate(15deg);
+    }
+    .originkit-label-text {
+      position: relative;
+      z-index: 2;
+      transition: transform 0.46s cubic-bezier(0.44, 0, 0.56, 1), color 0.35s ease;
+      white-space: nowrap;
+    }
+    .originkit-btn.badge-right:hover .originkit-label-text {
+      transform: translateX(-4px);
+    }
+    .originkit-btn.badge-left:hover .originkit-label-text {
+      transform: translateX(4px);
+    }
+  </style>
+</head>
+<body class="min-h-screen bg-[#000000] text-neutral-100 font-kanit selection:bg-[#CBFE00] selection:text-black relative overflow-x-hidden antialiased">
+
+  <!-- Scanline Background Layer -->
+  <div class="fixed inset-0 scanline-overlay z-0 opacity-40"></div>
+
+  <!-- Ambient Glow Blobs -->
+  <div class="fixed top-[-10%] left-[-10%] w-[500px] h-[500px] bg-[#CBFE00]/5 rounded-full blur-[140px] pointer-events-none"></div>
+  <div class="fixed bottom-[-10%] right-[-10%] w-[600px] h-[600px] bg-[#00E5FF]/5 rounded-full blur-[160px] pointer-events-none"></div>
+
+  <!-- Toast Notification Center -->
+  <div id="toast-container" class="fixed top-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- =========================================================================
+       1. AUTHENTICATION LOCK SCREEN (Google OAuth & Enterprise Passkey)
+       ========================================================================= -->
+  <div id="auth-lock-screen" class="fixed inset-0 z-40 bg-[#000000]/95 backdrop-acrylic flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-8 shadow-2xl relative overflow-hidden">
+      <!-- Glow Accent -->
+      <div class="absolute -top-16 -right-16 w-36 h-36 bg-[#CBFE00]/10 rounded-full blur-2xl"></div>
+
+      <!-- Header -->
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-xl bg-[#CBFE00]/15 border border-[#CBFE00]/30 flex items-center justify-center font-space font-bold text-[#CBFE00] text-sm">
+          JM
+        </div>
+        <div>
+          <h1 class="text-xl font-bold tracking-tight text-white font-kanit">JayDyMilla Portal</h1>
+          <p class="text-xs font-space text-neutral-400">Executive Security & Management Desk</p>
+        </div>
+      </div>
+
+      <!-- Google Sign-In Primary CTA -->
+      <div class="space-y-3">
+        <button
+          type="button"
+          onclick="handleGoogleSignInClick()"
+          id="google-signin-btn"
+          class="w-full py-3 px-5 rounded-full bg-white hover:bg-neutral-100 text-neutral-900 font-space font-bold text-xs uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-3 shadow-xl active:scale-[0.98]"
+        >
+          <svg class="w-4 h-4 flex-shrink-0" viewBox="0 0 24 24">
+            <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+            <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+            <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
+            <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+          </svg>
+          <span id="google-btn-text">Sign in with Google</span>
+        </button>
+
+        <div class="text-[10px] font-space text-center text-neutral-500">
+          Authorized Whitelist: <span class="text-[#CBFE00]">music@jaydymilla.com</span>
+        </div>
+      </div>
+
+      <!-- Divider -->
+      <div class="relative flex items-center justify-center my-6">
+        <div class="border-t border-[#1A1A24] w-full"></div>
+        <span class="bg-[#0D0D12] px-3 text-[10px] font-space uppercase text-neutral-500 tracking-widest whitespace-nowrap">
+          Or Enterprise Master Passkey
+        </span>
+        <div class="border-t border-[#1A1A24] w-full"></div>
+      </div>
+
+      <form id="auth-form" class="space-y-4" onsubmit="event.preventDefault(); handleLogin();">
+        <!-- Email field -->
+        <div>
+          <label for="admin-email-input" class="block text-xs font-space uppercase tracking-widest text-neutral-400 mb-2">
+            Administrator Email
+          </label>
+          <input
+            type="email"
+            id="admin-email-input"
+            required
+            value="music@jaydymilla.com"
+            autocomplete="username"
+            class="w-full px-4 py-3 bg-[#050508] border border-[#222230] rounded-xl text-white placeholder-neutral-600 focus:outline-none focus:border-[#CBFE00] focus:ring-1 focus:ring-[#CBFE00] font-space text-sm transition-all"
+          >
+        </div>
+
+        <!-- Password field -->
+        <div>
+          <div class="flex items-center justify-between mb-2">
+            <label for="admin-key-input" class="block text-xs font-space uppercase tracking-widest text-neutral-400">
+              Administrator Password
+            </label>
+          </div>
+          <div class="relative">
+            <input
+              type="password"
+              id="admin-key-input"
+              required
+              autocomplete="current-password"
+              placeholder="Enter secure password..."
+              class="w-full px-4 py-3 bg-[#050508] border border-[#222230] rounded-xl text-white placeholder-neutral-600 focus:outline-none focus:border-[#CBFE00] focus:ring-1 focus:ring-[#CBFE00] font-space text-sm transition-all"
+            >
+            <button
+              type="button"
+              onclick="togglePasskeyVisibility()"
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-500 hover:text-white text-xs font-space px-2 py-1"
+            >
+              SHOW
+            </button>
+          </div>
+          <div id="auth-error-msg" class="hidden text-xs text-rose-500 font-space mt-2 flex items-center gap-1.5">
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
+            <span id="auth-error-text">Authentication failed. Please verify your passkey.</span>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between text-xs font-space text-neutral-500">
+          <label class="flex items-center gap-2 cursor-pointer hover:text-neutral-400">
+            <input type="checkbox" id="remember-auth-checkbox" checked class="accent-[#CBFE00] rounded">
+            <span>Remember in this browser</span>
+          </label>
+          <span class="text-neutral-600">PostgreSQL SHA-256</span>
+        </div>
+
+        <!-- ORIGINKIT ARROW REVEAL BUTTON (/button) -->
+        <button
+          type="submit"
+          id="auth-submit-btn"
+          class="originkit-btn badge-right w-full py-3.5 px-6 rounded-full bg-[#050508] border border-[#2A2A38] hover:border-[#CBFE00] text-white text-sm transition-all shadow-xl group"
+        >
+          <span class="originkit-flood-badge originkit-flood-right w-10 h-10 bg-[#CBFE00]"></span>
+          <span class="originkit-label-text font-space font-bold uppercase tracking-wider text-xs sm:text-sm text-neutral-100 group-hover:text-black">
+            Unlock Command Center
+          </span>
+          <span class="originkit-icon-badge w-10 h-10 bg-[#CBFE00] group-hover:bg-black text-black group-hover:text-[#CBFE00] shadow-md">
+            <svg class="originkit-glyph originkit-glyph-rotate45 w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </span>
+        </button>
+      </form>
+
+      <!-- Security Shield Badge -->
+      <div class="mt-6 pt-5 border-t border-[#1A1A24] flex items-center justify-between text-[10px] font-space text-neutral-500">
+        <span class="flex items-center gap-1 text-emerald-400">
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+          <span>HMAC-SHA256 JWT Signed</span>
+        </span>
+        <a href="/" class="hover:text-[#CBFE00] transition-colors">
+          ← Public Website
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       2. MAIN DASHBOARD APPLICATION
+       ========================================================================= -->
+  <div id="main-dashboard" class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 space-y-6">
+
+    <!-- Top Navigation & Environment Bar -->
+    <header class="flex flex-col md:flex-row md:items-center md:justify-between gap-4 pb-6 border-b border-[#1A1A24]">
+      <div class="flex items-center gap-3">
+        <div class="w-11 h-11 rounded-xl bg-[#CBFE00] text-black flex items-center justify-center font-space font-black text-lg shadow-md shadow-[#CBFE00]/20">
+          JM
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-2xl font-bold tracking-tight font-kanit">JAYDYMILLA</h1>
+            <span class="px-2 py-0.5 rounded-full text-[10px] font-space font-bold uppercase bg-[#CBFE00]/10 text-[#CBFE00] border border-[#CBFE00]/30">
+              Admin Portal
+            </span>
+            <span id="session-user-badge" class="px-2 py-0.5 rounded-full text-[10px] font-space text-neutral-400 bg-[#0D0D12] border border-[#1A1A24]">
+              music@jaydymilla.com
+            </span>
+          </div>
+          <p class="text-xs font-space text-neutral-400">
+            Artist Management &bull; Live Bookings &bull; Sync Catalog Telemetry
+          </p>
+        </div>
+      </div>
+
+      <!-- Action Suite -->
+      <div class="flex flex-wrap items-center gap-2.5">
+        <!-- Live Indicator -->
+        <div class="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-[#0D0D12] border border-[#1A1A24] text-xs font-space">
+          <span class="w-2 h-2 rounded-full bg-[#CBFE00] animate-pulse"></span>
+          <span class="text-neutral-400">DB:</span>
+          <span id="db-status-label" class="text-white font-medium">Supabase Active</span>
+        </div>
+
+        <!-- Refresh Button -->
+        <button
+          onclick="fetchInquiries(true)"
+          id="refresh-btn"
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0D0D12] hover:bg-[#14141E] border border-[#1A1A24] text-xs font-space text-neutral-300 hover:text-white transition-all active:scale-95"
+          title="Reload inquiries"
+        >
+          <svg id="refresh-icon" class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+          <span>Refresh</span>
+        </button>
+
+        <!-- Export Dropdown -->
+        <div class="relative inline-block text-left">
+          <button
+            onclick="toggleExportMenu()"
+            class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#0D0D12] hover:bg-[#14141E] border border-[#1A1A24] text-xs font-space text-neutral-300 hover:text-white transition-all"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span>Export</span>
+          </button>
+          <div id="export-dropdown" class="hidden absolute right-0 mt-2 w-40 bg-[#0D0D12] border border-[#1A1A24] rounded-xl shadow-xl py-1 z-30 font-space text-xs">
+            <button onclick="exportData('csv')" class="w-full text-left px-3 py-2 text-neutral-300 hover:text-[#CBFE00] hover:bg-[#14141E]">Export CSV</button>
+            <button onclick="exportData('json')" class="w-full text-left px-3 py-2 text-neutral-300 hover:text-[#CBFE00] hover:bg-[#14141E]">Export JSON</button>
+          </div>
+        </div>
+
+        <!-- Originkit Arrow Reveal Pill for Website Link -->
+        <a
+          href="/"
+          target="_blank"
+          class="originkit-btn badge-right py-1.5 px-3.5 rounded-full bg-[#0D0D12] hover:border-[#CBFE00] border border-[#1A1A24] text-xs font-space text-neutral-300 transition-all group"
+          title="Open live site"
+        >
+          <span class="originkit-flood-badge originkit-flood-right w-6 h-6 bg-[#CBFE00]"></span>
+          <span class="originkit-label-text group-hover:text-black font-semibold mr-1.5">Website</span>
+          <span class="originkit-icon-badge w-6 h-6 bg-[#CBFE00] group-hover:bg-black text-black group-hover:text-[#CBFE00]">
+            <svg class="originkit-glyph originkit-glyph-rotate45 w-3 h-3" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+            </svg>
+          </span>
+        </a>
+
+        <!-- Logout Button -->
+        <button
+          onclick="handleLogout()"
+          class="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-xs font-space text-rose-400 transition-all"
+          title="Sign out of portal"
+        >
+          <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+          <span>Lock</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="flex flex-wrap items-center gap-2 border-b border-[#1A1A24] pb-2 font-space text-xs">
+      <button onclick="switchTab('inquiries')" id="tab-btn-inquiries" class="tab-btn px-4 py-2 rounded-lg bg-[#CBFE00] text-black font-bold uppercase transition-all">
+        Inquiries & Bookings (<span id="tab-inquiries-count">0</span>)
+      </button>
+      <button onclick="switchTab('traffic')" id="tab-btn-traffic" class="tab-btn px-4 py-2 rounded-lg text-neutral-400 hover:text-white uppercase transition-all flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+        <span>Visitor Traffic & Geolocation (<span id="tab-traffic-count">0</span>)</span>
+      </button>
+      <button onclick="switchTab('audit')" id="tab-btn-audit" class="tab-btn px-4 py-2 rounded-lg text-neutral-400 hover:text-white uppercase transition-all flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+        <span>Security Audit Logs</span>
+      </button>
+      <button onclick="switchTab('buttons')" id="tab-btn-buttons" class="tab-btn px-4 py-2 rounded-lg text-neutral-400 hover:text-white uppercase transition-all flex items-center gap-1.5">
+        <span class="w-2 h-2 rounded-full bg-[#CBFE00]"></span>
+        <span>Originkit Buttons (/button)</span>
+      </button>
+      <button onclick="switchTab('audio')" id="tab-btn-audio" class="tab-btn px-4 py-2 rounded-lg text-neutral-400 hover:text-white uppercase transition-all">
+        Master Audio Catalog (5)
+      </button>
+      <button onclick="switchTab('diagnostics')" id="tab-btn-diagnostics" class="tab-btn px-4 py-2 rounded-lg text-neutral-400 hover:text-white uppercase transition-all">
+        System Health & Telemetry
+      </button>
+    </nav>
+
+    <!-- =========================================================================
+         TAB 1: INQUIRIES & TRANSMISSIONS WORKSPACE
+         ========================================================================= -->
+    <section id="tab-content-inquiries" class="space-y-6">
+
+      <!-- Metric Cards Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <!-- Total Inquiries -->
+        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-4 relative overflow-hidden card-neon-hover transition-all">
+          <div class="text-[11px] font-space uppercase tracking-wider text-neutral-400">Total Transmissions</div>
+          <div id="stat-total" class="text-3xl font-bold font-kanit text-white mt-1">--</div>
+          <div class="text-[10px] font-space text-[#CBFE00] mt-1 flex items-center gap-1">
+            <span>● All-Time Logged</span>
+          </div>
+        </div>
+
+        <!-- Festival Bookings -->
+        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-4 relative overflow-hidden card-neon-hover transition-all">
+          <div class="text-[11px] font-space uppercase tracking-wider text-neutral-400">Festival Bookings</div>
+          <div id="stat-festival" class="text-3xl font-bold font-kanit text-[#CBFE00] mt-1">--</div>
+          <div class="text-[10px] font-space text-neutral-400 mt-1">Live gig offers</div>
+        </div>
+
+        <!-- Sync Licensing -->
+        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-4 relative overflow-hidden card-neon-hover transition-all">
+          <div class="text-[11px] font-space uppercase tracking-wider text-neutral-400">Sync Licensing</div>
+          <div id="stat-sync" class="text-3xl font-bold font-kanit text-cyan-400 mt-1">--</div>
+          <div class="text-[10px] font-space text-neutral-400 mt-1">Film / TV / Games / Ads</div>
+        </div>
+
+        <!-- House / Listening -->
+        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-4 relative overflow-hidden card-neon-hover transition-all">
+          <div class="text-[11px] font-space uppercase tracking-wider text-neutral-400">House &amp; Intimate</div>
+          <div id="stat-house" class="text-3xl font-bold font-kanit text-amber-400 mt-1">--</div>
+          <div class="text-[10px] font-space text-neutral-400 mt-1">Acoustic &amp; Listening Rooms</div>
+        </div>
+      </div>
+
+      <!-- Controls & Filter Toolbar -->
+      <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <!-- Search Field -->
+        <div class="relative flex-1 max-w-md">
+          <svg class="w-4 h-4 text-neutral-500 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input
+            type="text"
+            id="search-input"
+            oninput="handleSearch(this.value)"
+            placeholder="Search by name, email, timeline or message..."
+            class="w-full pl-10 pr-4 py-2.5 bg-[#050508] border border-[#222230] rounded-xl text-white placeholder-neutral-500 text-sm font-space focus:outline-none focus:border-[#CBFE00]"
+          >
+          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-space text-neutral-600 border border-neutral-800 rounded px-1.5 py-0.5">/</span>
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div class="flex flex-wrap items-center gap-1.5 font-space text-xs" id="category-pills">
+          <button onclick="setFilter('ALL')" data-filter="ALL" class="filter-pill px-3 py-1.5 rounded-lg bg-[#CBFE00] text-black font-bold">
+            All
+          </button>
+          <button onclick="setFilter('Festival Booking')" data-filter="Festival Booking" class="filter-pill px-3 py-1.5 rounded-lg bg-[#050508] text-neutral-300 hover:text-white border border-[#222230]">
+            Festivals
+          </button>
+          <button onclick="setFilter('Sync Licensing')" data-filter="Sync Licensing" class="filter-pill px-3 py-1.5 rounded-lg bg-[#050508] text-neutral-300 hover:text-white border border-[#222230]">
+            Sync
+          </button>
+          <button onclick="setFilter('House Concert')" data-filter="House Concert" class="filter-pill px-3 py-1.5 rounded-lg bg-[#050508] text-neutral-300 hover:text-white border border-[#222230]">
+            House Concerts
+          </button>
+          <button onclick="setFilter('General Professional Inquiry')" data-filter="General Professional Inquiry" class="filter-pill px-3 py-1.5 rounded-lg bg-[#050508] text-neutral-300 hover:text-white border border-[#222230]">
+            General
+          </button>
+        </div>
+      </div>
+
+      <!-- Inquiries Table -->
+      <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl overflow-hidden shadow-2xl">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm font-kanit">
+            <thead class="bg-[#050508] text-neutral-400 font-space text-[11px] uppercase tracking-wider border-b border-[#1A1A24]">
+              <tr>
+                <th class="py-3 px-4">Date</th>
+                <th class="py-3 px-4">Inquirer</th>
+                <th class="py-3 px-4">Category</th>
+                <th class="py-3 px-4">Timeline</th>
+                <th class="py-3 px-4">Message Preview</th>
+                <th class="py-3 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inquiries-tbody" class="divide-y divide-[#1A1A24]">
+              <!-- Loading Skeleton Rows -->
+              <tr>
+                <td colspan="6" class="py-12 text-center text-neutral-500 font-space text-xs">
+                  <div class="inline-block animate-spin w-5 h-5 border-2 border-[#CBFE00] border-t-transparent rounded-full mb-2"></div>
+                  <div>Loading live transmissions from Supabase...</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Table Footer / Count -->
+        <div class="px-4 py-3 bg-[#050508] border-t border-[#1A1A24] flex items-center justify-between text-xs font-space text-neutral-500">
+          <div>
+            Showing <span id="filtered-count" class="text-white font-bold">0</span> of <span id="total-count" class="text-white">0</span> transmissions
+          </div>
+          <div class="text-[11px]">
+            Encrypted API Transport &bull; PostgreSQL 15 Active
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         TAB: VISITOR TRAFFIC & GEOLOCATION TELEMETRY
+         ========================================================================= -->
+    <section id="tab-content-traffic" class="hidden space-y-6">
+      <!-- Traffic Summary Metrics -->
+      <div class="grid grid-cols-2 md:grid-cols-5 gap-3.5">
+        <div class="bg-[#0D0D12] border border-[#1A1A24] p-4 rounded-xl relative overflow-hidden">
+          <div class="text-[10px] font-space uppercase tracking-widest text-neutral-400">Total Page Views</div>
+          <div id="traffic-total-views" class="text-2xl font-bold font-kanit text-white mt-1">0</div>
+          <div class="text-[10px] text-cyan-400 font-space mt-1 flex items-center gap-1">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+            Real-Time Edge Tracker
+          </div>
+        </div>
+
+        <div class="bg-[#0D0D12] border border-[#1A1A24] p-4 rounded-xl">
+          <div class="text-[10px] font-space uppercase tracking-widest text-neutral-400">Unique Visitors</div>
+          <div id="traffic-unique-visitors" class="text-2xl font-bold font-kanit text-[#CBFE00] mt-1">0</div>
+          <div class="text-[10px] text-neutral-500 font-space mt-1">Hashed Device IDs</div>
+        </div>
+
+        <div class="bg-[#0D0D12] border border-[#1A1A24] p-4 rounded-xl">
+          <div class="text-[10px] font-space uppercase tracking-widest text-neutral-400">Top Country</div>
+          <div id="traffic-top-country" class="text-xl font-bold font-kanit text-white mt-1 truncate">Loading...</div>
+          <div id="traffic-top-country-pct" class="text-[10px] text-emerald-400 font-space mt-1">0% of total visits</div>
+        </div>
+
+        <div class="bg-[#0D0D12] border border-[#1A1A24] p-4 rounded-xl">
+          <div class="text-[10px] font-space uppercase tracking-widest text-neutral-400">Top Acquisition Source</div>
+          <div id="traffic-top-source" class="text-xl font-bold font-kanit text-cyan-400 mt-1 truncate">Direct</div>
+          <div class="text-[10px] text-neutral-500 font-space mt-1">Organic / Social / Direct</div>
+        </div>
+
+        <div class="bg-[#0D0D12] border border-[#1A1A24] p-4 rounded-xl col-span-2 md:col-span-1">
+          <div class="text-[10px] font-space uppercase tracking-widest text-neutral-400">Device Platform</div>
+          <div class="flex items-center justify-between mt-1">
+            <div id="traffic-device-split" class="text-sm font-bold font-kanit text-white">50% Mob / 50% Dsk</div>
+          </div>
+          <div class="w-full bg-[#1A1A24] h-1.5 rounded-full mt-2 overflow-hidden flex">
+            <div id="traffic-mobile-bar" class="bg-cyan-400 h-full" style="width: 50%"></div>
+            <div id="traffic-desktop-bar" class="bg-[#CBFE00] h-full" style="width: 50%"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Top Origins & Acquisition Breakdown Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Geolocation by Country & City -->
+        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-6">
+          <div class="flex items-center justify-between pb-4 mb-4 border-b border-[#1A1A24]">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">🌍</span>
+              <h3 class="text-base font-bold font-kanit text-white">Visitor Origins (Country & City)</h3>
+            </div>
+            <span class="text-[10px] font-space text-neutral-500 uppercase tracking-widest">Global Telemetry</span>
+          </div>
+
+          <div class="space-y-3" id="traffic-countries-container">
+            <div class="py-8 text-center text-xs text-neutral-500 font-space">Listening for live incoming visitor pings...</div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-[#1A1A24]">
+            <h4 class="text-xs font-space uppercase tracking-widest text-neutral-400 mb-3">Top Cities</h4>
+            <div id="traffic-cities-container" class="flex flex-wrap gap-2 text-xs font-space">
+              <span class="px-2.5 py-1 rounded-lg bg-[#050508] border border-[#222230] text-neutral-400">Loading cities...</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Acquisition Sources & Popular Pages -->
+        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-6">
+          <div class="flex items-center justify-between pb-4 mb-4 border-b border-[#1A1A24]">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">🔗</span>
+              <h3 class="text-base font-bold font-kanit text-white">Acquisition Sources & Pages</h3>
+            </div>
+            <span class="text-[10px] font-space text-neutral-500 uppercase tracking-widest">Referrals</span>
+          </div>
+
+          <div class="space-y-3" id="traffic-sources-container">
+            <div class="py-8 text-center text-xs text-neutral-500 font-space">Listening for referral data...</div>
+          </div>
+
+          <div class="mt-6 pt-4 border-t border-[#1A1A24]">
+            <h4 class="text-xs font-space uppercase tracking-widest text-neutral-400 mb-3">Top Visited Pages</h4>
+            <div id="traffic-pages-container" class="space-y-2 text-xs font-space">
+              <div class="text-neutral-500">Loading page traffic...</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Real-Time Visitor Log Stream Table -->
+      <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 pb-4 border-b border-[#1A1A24]">
+          <div>
+            <div class="flex items-center gap-2">
+              <h3 class="text-lg font-bold font-kanit text-white">Real-Time Visitor Log Stream</h3>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-space font-bold uppercase bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
+                Live Edge Hits
+              </span>
+            </div>
+            <p class="text-xs font-space text-neutral-400 mt-1">Latest inbound requests captured across JayDyMilla digital domains</p>
+          </div>
+          <button onclick="fetchTrafficAnalytics()" class="px-3.5 py-1.5 rounded-lg bg-[#14141E] hover:bg-[#1E1E2C] border border-[#222232] text-xs font-space text-white flex items-center gap-2 transition-all">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+            Refresh Stream
+          </button>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left font-space text-xs">
+            <thead>
+              <tr class="border-b border-[#1A1A24] text-neutral-500 uppercase text-[10px] tracking-wider">
+                <th class="py-3 px-4">Timestamp</th>
+                <th class="py-3 px-4">Visitor Origin</th>
+                <th class="py-3 px-4">Page Visited</th>
+                <th class="py-3 px-4">Source Channel</th>
+                <th class="py-3 px-4">Device Platform</th>
+              </tr>
+            </thead>
+            <tbody id="traffic-logs-tbody" class="divide-y divide-[#161622]">
+              <tr>
+                <td colspan="5" class="py-8 text-center text-neutral-500 font-space">Loading real-time visitor activity...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         TAB 2: SECURITY AUDIT LOGS (Enterprise Google & System Security)
+         ========================================================================= -->
+    <section id="tab-content-audit" class="hidden space-y-6">
+      <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-6">
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-[#1A1A24]">
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 class="text-xl font-bold font-kanit text-white">Security Audit Log Telemetry</h2>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-space font-bold uppercase bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">
+                PostgreSQL Immutable
+              </span>
+            </div>
+            <p class="text-xs font-space text-neutral-400 mt-1">
+              Permanent cryptographic records of every authentication event, Google OAuth verification, and sensitive database modification.
+            </p>
+          </div>
+          <button
+            onclick="fetchAuditLogs()"
+            class="px-3 py-1.5 rounded-lg bg-[#050508] hover:bg-[#14141E] border border-[#222230] text-xs font-space text-neutral-300 hover:text-white transition-all flex items-center gap-1.5"
+          >
+            <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            <span>Reload Logs</span>
+          </button>
+        </div>
+
+        <!-- Audit Table -->
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-xs font-space">
+            <thead class="bg-[#050508] text-neutral-400 uppercase tracking-wider border-b border-[#1A1A24]">
+              <tr>
+                <th class="py-3 px-4">Timestamp</th>
+                <th class="py-3 px-4">Security Event</th>
+                <th class="py-3 px-4">Actor Email</th>
+                <th class="py-3 px-4">IP Address</th>
+                <th class="py-3 px-4">Status / Details</th>
+              </tr>
+            </thead>
+            <tbody id="audit-logs-tbody" class="divide-y divide-[#1A1A24]">
+              <tr>
+                <td colspan="5" class="py-8 text-center text-neutral-500">Loading audit log entries from Supabase...</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- =========================================================================
+         TAB 3: ORIGINKIT ARROW REVEAL BUTTON SHOWCASE & LAB (/button)
+         ========================================================================= -->
+    <section id="tab-content-buttons" class="hidden space-y-6">
+      <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-6 relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-48 h-48 bg-[#CBFE00]/10 rounded-full blur-3xl"></div>
+
+        <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-6 border-b border-[#1A1A24]">
+          <div>
+            <div class="flex items-center gap-2">
+              <h2 class="text-xl font-bold font-kanit text-white">Originkit Arrow Reveal Button Lab</h2>
+              <span class="px-2 py-0.5 rounded-full text-[10px] font-space font-bold uppercase bg-[#CBFE00]/15 text-[#CBFE00] border border-[#CBFE00]/40">
+                /button skill
+              </span>
+            </div>
+            <p class="text-xs font-space text-neutral-400 mt-1">
+              Hover over each button below to preview the circular expansion flood, rotating arrow glyphs, and spring dynamics.
+            </p>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-space text-neutral-500">Live Click Counter:</span>
+            <span id="button-click-counter" class="px-3 py-1 rounded-lg bg-[#050508] border border-[#222230] font-space font-bold text-[#CBFE00] text-sm">0</span>
+          </div>
+        </div>
+
+        <!-- Interactive Grid of Button Variants -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          <!-- 1. JayDyMilla Signature Acid Lime -->
+          <div class="bg-[#050508] border border-[#1A1A24] rounded-2xl p-6 space-y-4 hover:border-[#CBFE00]/40 transition-colors">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-bold font-kanit text-base text-white">1. Acid Lime Stealth (JayDyMilla Signature)</h3>
+                <p class="text-xs font-space text-neutral-400">Pill in dark surface with lime circular flood & 45° arrow rotation</p>
+              </div>
+              <span class="text-[10px] font-space text-[#CBFE00] border border-[#CBFE00]/30 rounded px-2 py-0.5">Recommended</span>
+            </div>
+
+            <div class="py-6 flex items-center justify-center bg-[#000000]/60 rounded-xl border border-dashed border-[#222230]">
+              <button
+                onclick="recordButtonClick('Acid Lime Signature')"
+                class="originkit-btn badge-right py-3.5 px-7 rounded-full bg-[#0D0D12] border border-[#2A2A38] hover:border-[#CBFE00] text-white transition-all shadow-xl group"
+              >
+                <span class="originkit-flood-badge originkit-flood-right w-10 h-10 bg-[#CBFE00]"></span>
+                <span class="originkit-label-text font-space font-bold text-sm text-neutral-100 group-hover:text-black mr-4">
+                  BOOK JAYDYMILLA
+                </span>
+                <span class="originkit-icon-badge w-10 h-10 bg-[#CBFE00] group-hover:bg-black text-black group-hover:text-[#CBFE00] shadow-md">
+                  <svg class="originkit-glyph originkit-glyph-rotate45 w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 2. Originkit Signature Electric Blue (From Skill Reference) -->
+          <div class="bg-[#050508] border border-[#1A1A24] rounded-2xl p-6 space-y-4 hover:border-blue-500/40 transition-colors">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-bold font-kanit text-base text-white">2. Electric Blue Royal (Skill Reference Default)</h3>
+                <p class="text-xs font-space text-neutral-400">Originkit flagship pill with #2563EB expanding badge & diagonal reveal</p>
+              </div>
+              <span class="text-[10px] font-space text-blue-400 border border-blue-500/30 rounded px-2 py-0.5">Classic</span>
+            </div>
+
+            <div class="py-6 flex items-center justify-center bg-[#000000]/60 rounded-xl border border-dashed border-[#222230]">
+              <button
+                onclick="recordButtonClick('Electric Blue')"
+                class="originkit-btn badge-right py-3.5 px-7 rounded-full bg-[#FFFFFF] border border-white hover:border-blue-500 text-black transition-all shadow-xl group"
+              >
+                <span class="originkit-flood-badge originkit-flood-right w-10 h-10 bg-[#2563EB]"></span>
+                <span class="originkit-label-text font-space font-bold text-sm text-neutral-900 group-hover:text-white mr-4">
+                  EXPLORE RELEASES
+                </span>
+                <span class="originkit-icon-badge w-10 h-10 bg-[#2563EB] group-hover:bg-white text-white group-hover:text-[#2563EB] shadow-md">
+                  <svg class="originkit-glyph originkit-glyph-rotate45 w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 3. Neon Magenta / Festival & Sync Edition -->
+          <div class="bg-[#050508] border border-[#1A1A24] rounded-2xl p-6 space-y-4 hover:border-pink-500/40 transition-colors">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-bold font-kanit text-base text-white">3. Cyber Magenta (Sync Licensing CTA)</h3>
+                <p class="text-xs font-space text-neutral-400">High-converting diagonal 90° arrow reveal with #FF007F expansion</p>
+              </div>
+              <span class="text-[10px] font-space text-pink-400 border border-pink-500/30 rounded px-2 py-0.5">High Impact</span>
+            </div>
+
+            <div class="py-6 flex items-center justify-center bg-[#000000]/60 rounded-xl border border-dashed border-[#222230]">
+              <button
+                onclick="recordButtonClick('Cyber Magenta')"
+                class="originkit-btn badge-right py-3.5 px-7 rounded-full bg-[#0D0D12] border border-[#2A2A38] hover:border-pink-500 text-white transition-all shadow-xl group"
+              >
+                <span class="originkit-flood-badge originkit-flood-right w-10 h-10 bg-[#FF007F]"></span>
+                <span class="originkit-label-text font-space font-bold text-sm text-neutral-100 group-hover:text-white mr-4">
+                  SYNC MASTER CLEARANCE
+                </span>
+                <span class="originkit-icon-badge w-10 h-10 bg-[#FF007F] group-hover:bg-white text-white group-hover:text-[#FF007F] shadow-md">
+                  <svg class="originkit-glyph originkit-glyph-rotate90 w-4 h-4" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M7 17L17 7M17 7H7M17 7V17"/>
+                  </svg>
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <!-- 4. Left-Badge Minimal Gold Star Edition -->
+          <div class="bg-[#050508] border border-[#1A1A24] rounded-2xl p-6 space-y-4 hover:border-amber-500/40 transition-colors">
+            <div class="flex items-center justify-between">
+              <div>
+                <h3 class="font-bold font-kanit text-base text-white">4. Left-Badge Gold Star (Special Feature)</h3>
+                <p class="text-xs font-space text-neutral-400">Left-side badge origin expanding rightward with rotating star glyph</p>
+              </div>
+              <span class="text-[10px] font-space text-amber-400 border border-amber-500/30 rounded px-2 py-0.5">Left Badge</span>
+            </div>
+
+            <div class="py-6 flex items-center justify-center bg-[#000000]/60 rounded-xl border border-dashed border-[#222230]">
+              <button
+                onclick="recordButtonClick('Gold Star Left')"
+                class="originkit-btn badge-left py-3.5 px-7 rounded-full bg-[#0D0D12] border border-[#2A2A38] hover:border-amber-400 text-white transition-all shadow-xl group"
+              >
+                <span class="originkit-flood-badge originkit-flood-left w-10 h-10 bg-[#F59E0B]"></span>
+                <span class="originkit-icon-badge w-10 h-10 bg-[#F59E0B] group-hover:bg-black text-black group-hover:text-[#F59E0B] shadow-md mr-4">
+                  <span class="originkit-glyph originkit-glyph-scale text-base font-bold">★</span>
+                </span>
+                <span class="originkit-label-text font-space font-bold text-sm text-neutral-100 group-hover:text-black">
+                  VIP BACKSTAGE ACCESS
+                </span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- =========================================================================
+         TAB 4: AUDIO MASTER RELEASES
+         ========================================================================= -->
+    <section id="tab-content-audio" class="hidden space-y-6">
+      <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-6">
+        <div class="flex items-center justify-between mb-4">
+          <div>
+            <h2 class="text-lg font-bold font-kanit">Master Audio Catalog Preview</h2>
+            <p class="text-xs font-space text-neutral-400">Direct streaming check for production audio assets stored in /audio/</p>
+          </div>
+          <span class="px-2.5 py-1 rounded-full text-xs font-space bg-[#CBFE00]/10 text-[#CBFE00] border border-[#CBFE00]/30 font-bold">
+            5 Master Releases
+          </span>
+        </div>
+
+        <div class="space-y-3" id="tracks-container"></div>
+
+        <div class="mt-8 pt-6 border-t border-[#1A1A24] bg-[#050508] p-4 rounded-xl flex flex-col md:flex-row items-center justify-between gap-4">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-[#CBFE00]/20 flex items-center justify-center text-[#CBFE00]">
+              <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+            </div>
+            <div>
+              <div id="active-track-name" class="font-bold text-sm text-white">Select a track to preview</div>
+              <div id="active-track-file" class="font-space text-xs text-neutral-500">No media loaded</div>
+            </div>
+          </div>
+          <audio id="admin-audio-player" controls class="w-full md:w-96 accent-[#CBFE00]"></audio>
+        </div>
+      </div>
+    </section>
+
+
+
+    <!-- =========================================================================
+         TAB 5: SYSTEM DIAGNOSTICS & TELEMETRY
+         ========================================================================= -->
+    <section id="tab-content-diagnostics" class="hidden space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+        <!-- Supabase Health Card -->
+        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold font-kanit text-base text-white">Supabase PostgreSQL Enterprise Architecture</h3>
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          </div>
+          <div class="space-y-2 text-xs font-space">
+            <div class="flex justify-between py-1.5 border-b border-[#1A1A24]">
+              <span class="text-neutral-500">Project Reference:</span>
+              <span class="text-neutral-200">hzjzrnliyilimzpymldt</span>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-[#1A1A24]">
+              <span class="text-neutral-500">Security Backend:</span>
+              <span class="text-[#CBFE00]">Google Identity Services + Signed HMAC-SHA256 JWT</span>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-[#1A1A24]">
+              <span class="text-neutral-500">Database Tables:</span>
+              <span class="text-neutral-200">public.inquiries &bull; public.admin_users &bull; public.admin_audit_logs</span>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-[#1A1A24]">
+              <span class="text-neutral-500">Admin Account in Supabase:</span>
+              <span class="text-[#CBFE00]">music@jaydymilla.com (Saved in DB)</span>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-[#1A1A24]">
+              <span class="text-neutral-500">Brute-Force Rate Limiting:</span>
+              <span class="text-emerald-400">Active (5 strikes &rarr; 15m lockout)</span>
+            </div>
+            <div class="flex justify-between py-1.5">
+              <span class="text-neutral-500">Keep-Alive Automated Cron:</span>
+              <span class="text-neutral-200">Active (Vercel Cron daily at 12:00 UTC)</span>
+            </div>
+          </div>
+          <button
+            onclick="pingDatabaseHealth()"
+            class="w-full py-2.5 rounded-xl bg-[#050508] hover:bg-[#14141E] border border-[#222230] text-xs font-space text-neutral-300 hover:text-white transition-all flex items-center justify-center gap-2"
+          >
+            <span>Run Real-Time Ping Test</span>
+            <span id="ping-latency-badge" class="text-[#CBFE00] font-bold"></span>
+          </button>
+        </div>
+
+        <!-- Resend Email Configuration Card -->
+        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-6 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="font-bold font-kanit text-base text-white">Resend Dispatch Gateway</h3>
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse"></span>
+          </div>
+          <div class="space-y-2 text-xs font-space">
+            <div class="flex justify-between py-1.5 border-b border-[#1A1A24]">
+              <span class="text-neutral-500">Admin Dispatch Email:</span>
+              <span class="text-[#CBFE00]">music@jaydymilla.com</span>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-[#1A1A24]">
+              <span class="text-neutral-500">Verified Sender:</span>
+              <span class="text-neutral-200">JayDyMilla Licensing Desk &lt;inquiry@jaydymilla.com&gt;</span>
+            </div>
+            <div class="flex justify-between py-1.5 border-b border-[#1A1A24]">
+              <span class="text-neutral-500">Client Auto-Confirmation:</span>
+              <span class="text-emerald-400">Active (Instant Executive Confirmation)</span>
+            </div>
+            <div class="flex justify-between py-1.5">
+              <span class="text-neutral-500">Honeypot Spam Shield:</span>
+              <span class="text-emerald-400">Silent Discard Engine Active</span>
+            </div>
+          </div>
+          <div class="p-3 bg-[#050508] border border-[#1A1A24] rounded-xl text-[11px] font-space text-neutral-400">
+            Incoming inquiries trigger both immediate database storage and simultaneous dual email delivery via Resend API.
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div>
+
+  <!-- =========================================================================
+       6. INQUIRY INSPECTION & RESPONSE MODAL
+       ========================================================================= -->
+  <div id="inquiry-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-acrylic hidden flex items-center justify-center p-4">
+    <div class="w-full max-w-2xl bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-6 shadow-2xl relative overflow-hidden max-h-[90vh] flex flex-col">
+      <div class="flex items-start justify-between pb-4 border-b border-[#1A1A24]">
+        <div>
+          <div class="flex items-center gap-2">
+            <span id="modal-category-badge" class="px-2 py-0.5 rounded text-[10px] font-space font-bold uppercase bg-[#CBFE00]/15 text-[#CBFE00]">
+              CATEGORY
+            </span>
+            <span id="modal-date" class="text-xs font-space text-neutral-400">Date</span>
+          </div>
+          <h2 id="modal-name" class="text-2xl font-bold font-kanit text-white mt-1">Sender Name</h2>
+          <div class="flex items-center gap-2 mt-1">
+            <a id="modal-email-link" href="#" class="text-sm font-space text-[#CBFE00] hover:underline flex items-center gap-1">
+              <span id="modal-email">email@example.com</span>
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/></svg>
+            </a>
+            <button onclick="copyModalEmail()" class="text-xs font-space text-neutral-500 hover:text-white px-2 py-0.5 rounded bg-[#14141E]" title="Copy Email">
+              Copy
+            </button>
+          </div>
+        </div>
+        <button onclick="closeModal()" class="text-neutral-400 hover:text-white p-2 rounded-lg bg-[#050508] border border-[#222230]">
+          ✕
+        </button>
+      </div>
+
+      <div class="overflow-y-auto py-4 space-y-4 flex-1">
+        <div id="modal-timeline-box" class="p-3 bg-[#050508] border border-[#1A1A24] rounded-xl flex items-center justify-between text-xs font-space">
+          <span class="text-neutral-400">Target Event Timeline:</span>
+          <span id="modal-timeline" class="text-white font-bold">N/A</span>
+        </div>
+
+        <div>
+          <label class="block text-xs font-space uppercase tracking-widest text-neutral-400 mb-2">Original Transmission</label>
+          <div id="modal-message" class="p-4 bg-[#050508] border border-[#1A1A24] rounded-xl text-neutral-200 text-sm whitespace-pre-wrap leading-relaxed font-kanit">
+            Message content here...
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-space uppercase tracking-widest text-[#CBFE00] mb-2 flex items-center justify-between">
+            <span>Direct Response Template</span>
+            <button onclick="copyReplyTemplate()" class="text-[10px] text-neutral-400 hover:text-white uppercase font-bold">
+              Copy Template
+            </button>
+          </label>
+          <div id="modal-reply-preview" class="p-3 bg-[#050508] border border-[#1A1A24] rounded-xl text-neutral-400 text-xs font-space whitespace-pre-wrap">
+            Drafting response...
+          </div>
+        </div>
+      </div>
+
+      <div class="pt-4 border-t border-[#1A1A24] flex items-center justify-between gap-3">
+        <button
+          id="modal-delete-btn"
+          onclick="deleteModalInquiry()"
+          class="px-4 py-2.5 rounded-xl bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-400 font-space text-xs transition-all flex items-center gap-1.5"
+        >
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+          <span>Delete Record</span>
+        </button>
+
+        <div class="flex items-center gap-2">
+          <button
+            onclick="closeModal()"
+            class="px-4 py-2.5 rounded-xl bg-[#050508] hover:bg-[#14141E] border border-[#222230] text-neutral-300 font-space text-xs transition-all"
+          >
+            Close
+          </button>
+
+          <a
+            id="modal-reply-mailto-btn"
+            href="#"
+            class="originkit-btn badge-right py-2.5 px-5 rounded-full bg-[#050508] border border-[#2A2A38] hover:border-[#CBFE00] text-white text-xs transition-all shadow-xl group"
+          >
+            <span class="originkit-flood-badge originkit-flood-right w-8 h-8 bg-[#CBFE00]"></span>
+            <span class="originkit-label-text font-space font-bold uppercase tracking-wider text-neutral-100 group-hover:text-black mr-3">
+              Launch Email Client
+            </span>
+            <span class="originkit-icon-badge w-8 h-8 bg-[#CBFE00] group-hover:bg-black text-black group-hover:text-[#CBFE00]">
+              <svg class="originkit-glyph originkit-glyph-rotate45 w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+              </svg>
+            </span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =========================================================================
+       7. JAVASCRIPT APPLICATION CORE (Senior Dev Enterprise Client)
+       ========================================================================= -->
+  <script>
+    const AUDIO_CATALOG = [
+      { id: 1, title: 'By the Window', file: 'by_the_window.mp3', duration: '3:45', size: '8.8 MB' },
+      { id: 2, title: 'If You Miss Me', file: 'if_you_miss_me.mp3', duration: '4:12', size: '9.6 MB' },
+      { id: 3, title: 'Lost It', file: 'lost_it.mp3', duration: '3:20', size: '7.8 MB' },
+      { id: 4, title: 'Neon Limelight', file: 'neon_limelight.mp3', duration: '4:02', size: '9.4 MB' },
+      { id: 5, title: 'Soul Creature', file: 'soul_creature.mp3', duration: '4:35', size: '10.5 MB' }
+    ];
+
+    // State
+    let adminToken = localStorage.getItem('jaydymilla_jwt_session') || sessionStorage.getItem('jaydymilla_jwt_session') || '';
+    let currentAuthUser = null;
+    let allInquiries = [];
+    let auditLogs = [];
+    let currentFilter = 'ALL';
+    let searchQuery = '';
+    let selectedInquiry = null;
+    let buttonClicks = 0;
+
+    // Toast Utility
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const isSuccess = type === 'success';
+      const isError = type === 'error';
+      
+      toast.className = `px-4 py-3 rounded-xl border font-space text-xs shadow-xl transition-all duration-300 transform translate-x-full pointer-events-auto flex items-center gap-2 ${
+        isSuccess ? 'bg-[#0D0D12] text-[#CBFE00] border-[#CBFE00]/40' :
+        isError ? 'bg-[#180A0A] text-rose-400 border-rose-500/40' :
+        'bg-[#0D0D12] text-white border-[#222230]'
+      }`;
+
+      toast.innerHTML = `
+        <span class="w-1.5 h-1.5 rounded-full ${isSuccess ? 'bg-[#CBFE00]' : isError ? 'bg-rose-500' : 'bg-white'}"></span>
+        <span>${message}</span>
+      `;
+
+      container.appendChild(toast);
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-x-full');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Google Sign-In Handler
+    async function handleGoogleSignInClick() {
+      const btnText = document.getElementById('google-btn-text');
+      btnText.innerText = 'Connecting Google...';
+
+      // If Google GSI client is initialized
+      if (window.google && window.google.accounts && window.google.accounts.id) {
+        window.google.accounts.id.prompt((notification) => {
+          if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+            promptGoogleFallback();
+          }
+        });
+      } else {
+        promptGoogleFallback();
+      }
+    }
+
+    function promptGoogleFallback() {
+      const btnText = document.getElementById('google-btn-text');
+      btnText.innerText = 'Sign in with Google';
+      showToast('Google OAuth is pending client ID initialization. Please authenticate using the Administrator Password below.', 'info');
+      const keyInput = document.getElementById('admin-key-input');
+      if (keyInput) keyInput.focus();
+    }
+
+    // Toggle Password Visibility
+    function togglePasskeyVisibility() {
+      const input = document.getElementById('admin-key-input');
+      input.type = input.type === 'password' ? 'text' : 'password';
+    }
+
+    // Handle Authentication Login
+    async function handleLogin() {
+      const emailInput = document.getElementById('admin-email-input');
+      const keyInput = document.getElementById('admin-key-input');
+      const rememberCheckbox = document.getElementById('remember-auth-checkbox');
+      const errorBox = document.getElementById('auth-error-msg');
+      const errorText = document.getElementById('auth-error-text');
+      const submitBtn = document.getElementById('auth-submit-btn');
+
+      const email = emailInput ? emailInput.value.trim() : 'music@jaydymilla.com';
+      const key = keyInput.value.trim();
+      if (!key) return;
+
+      submitBtn.disabled = true;
+      const label = submitBtn.querySelector('.originkit-label-text');
+      if (label) label.innerText = 'Verifying with PostgreSQL...';
+      errorBox.classList.add('hidden');
+
+      try {
+        const res = await fetch('/api/admin?action=login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ email: email, password: key, action: 'login' })
+        });
+
+        const data = await res.json();
+
+        if (res.ok && data.success) {
+          adminToken = data.token;
+          currentAuthUser = data.user;
+
+          if (rememberCheckbox.checked) {
+            localStorage.setItem('jaydymilla_jwt_session', data.token);
+            localStorage.setItem('jaydymilla_admin_email', email);
+          } else {
+            sessionStorage.setItem('jaydymilla_jwt_session', data.token);
+            sessionStorage.setItem('jaydymilla_admin_email', email);
+          }
+
+          document.getElementById('auth-lock-screen').classList.add('hidden');
+          document.getElementById('session-user-badge').innerText = email;
+          showToast(`Portal Access Granted. Signed JWT Session Issued for ${email}`, 'success');
+          fetchInquiries();
+        } else {
+          errorText.innerText = data.error || 'Invalid administrator credentials.';
+          errorBox.classList.remove('hidden');
+        }
+      } catch (err) {
+        errorText.innerText = 'Connection error. Check dev_server or deployment.';
+        errorBox.classList.remove('hidden');
+      } finally {
+        submitBtn.disabled = false;
+        if (label) label.innerText = 'Unlock Command Center';
+      }
+    }
+
+    // Handle Logout
+    function handleLogout() {
+      adminToken = '';
+      currentAuthUser = null;
+      localStorage.removeItem('jaydymilla_jwt_session');
+      sessionStorage.removeItem('jaydymilla_jwt_session');
+      document.getElementById('auth-lock-screen').classList.remove('hidden');
+      document.getElementById('admin-key-input').value = '';
+      showToast('Portal session locked.', 'info');
+    }
+
+    // Switch Tabs
+    function switchTab(tabId) {
+      ['inquiries', 'traffic', 'audit', 'buttons', 'audio', 'diagnostics'].forEach(id => {
+        const btn = document.getElementById(`tab-btn-${id}`);
+        const content = document.getElementById(`tab-content-${id}`);
+        if (!btn || !content) return;
+        if (id === tabId) {
+          btn.className = 'tab-btn px-4 py-2 rounded-lg bg-[#CBFE00] text-black font-bold uppercase transition-all flex items-center gap-1.5';
+          content.classList.remove('hidden');
+        } else {
+          btn.className = 'tab-btn px-4 py-2 rounded-lg text-neutral-400 hover:text-white uppercase transition-all flex items-center gap-1.5';
+          content.classList.add('hidden');
+        }
+      });
+      if (tabId === 'traffic') fetchTrafficAnalytics();
+      if (tabId === 'audio') renderAudioCatalog();
+      if (tabId === 'audit') fetchAuditLogs();
+    }
+
+
+    // Country Flag Emoji Helper
+    function getCountryFlag(code) {
+      if (!code || code === 'N/A' || code === 'Unknown') return '🌐';
+      const c = code.toUpperCase();
+      const flags = {
+        'US': '🇺🇸', 'IN': '🇮🇳', 'GB': '🇬🇧', 'UK': '🇬🇧', 'CA': '🇨🇦',
+        'DE': '🇩🇪', 'FR': '🇫🇷', 'AU': '🇦🇺', 'JP': '🇯🇵', 'BR': '🇧🇷',
+        'NL': '🇳🇱', 'ES': '🇪🇸', 'IT': '🇮🇹', 'MX': '🇲🇽', 'ZA': '🇿🇦',
+        'NG': '🇳🇬', 'KE': '🇰🇪', 'SE': '🇸🇪', 'NO': '🇳🇴', 'CH': '🇨🇭'
+      };
+      if (flags[c]) return flags[c];
+      try {
+        return String.fromCodePoint(...[...c].map(x => 0x1F1E6 + x.charCodeAt(0) - 65));
+      } catch (e) {
+        return '🌐';
+      }
+    }
+
+    // Fetch Traffic Analytics & Geolocation Telemetry
+    async function fetchTrafficAnalytics() {
+      if (!adminToken) return;
+
+      try {
+        const res = await fetch('/api/admin?action=analytics', {
+          headers: { 'Authorization': `Bearer ${adminToken}` }
+        });
+        if (!res.ok) return;
+
+        const data = await res.json();
+        if (!data.success) return;
+
+        const summary = data.summary || {};
+        const topCountries = data.topCountries || [];
+        const topCities = data.topCities || [];
+        const topReferrers = data.topReferrers || [];
+        const topPages = data.topPages || [];
+        const recentVisitors = data.recentVisitors || [];
+
+        // Update Nav Count
+        const countBadge = document.getElementById('tab-traffic-count');
+        if (countBadge) countBadge.innerText = summary.totalViews || 0;
+
+        // Metric Cards
+        const totalViewsEl = document.getElementById('traffic-total-views');
+        if (totalViewsEl) totalViewsEl.innerText = (summary.totalViews || 0).toLocaleString();
+
+        const uniqueEl = document.getElementById('traffic-unique-visitors');
+        if (uniqueEl) uniqueEl.innerText = (summary.uniqueVisitors || 0).toLocaleString();
+
+        const topCountryEl = document.getElementById('traffic-top-country');
+        if (topCountryEl) {
+          const topC = topCountries[0];
+          topCountryEl.innerText = topC ? `${getCountryFlag(topC.country)} ${topC.country}` : 'None Yet';
+        }
+        const topCountryPct = document.getElementById('traffic-top-country-pct');
+        if (topCountryPct) {
+          const topC = topCountries[0];
+          topCountryPct.innerText = topC ? `${topC.percentage}% of total visits` : '0% of total visits';
+        }
+
+        const topSourceEl = document.getElementById('traffic-top-source');
+        if (topSourceEl) topSourceEl.innerText = summary.topSource || 'Direct';
+
+        const deviceSplit = document.getElementById('traffic-device-split');
+        if (deviceSplit) {
+          deviceSplit.innerText = `${summary.mobilePercentage || 0}% Mob / ${100 - (summary.mobilePercentage || 0)}% Dsk`;
+        }
+        const mobBar = document.getElementById('traffic-mobile-bar');
+        const dskBar = document.getElementById('traffic-desktop-bar');
+        if (mobBar && dskBar) {
+          mobBar.style.width = `${summary.mobilePercentage || 0}%`;
+          dskBar.style.width = `${100 - (summary.mobilePercentage || 0)}%`;
+        }
+
+        // Render Countries List
+        const countriesBox = document.getElementById('traffic-countries-container');
+        if (countriesBox) {
+          if (topCountries.length === 0) {
+            countriesBox.innerHTML = '<div class="py-6 text-center text-xs text-neutral-500 font-space">No geographical data recorded yet.</div>';
+          } else {
+            countriesBox.innerHTML = topCountries.map(c => `
+              <div class="flex items-center justify-between text-xs font-space">
+                <div class="flex items-center gap-2">
+                  <span class="text-base">${getCountryFlag(c.country)}</span>
+                  <span class="text-white font-bold">${escapeHtml(c.country)}</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="w-24 bg-[#1A1A24] h-1.5 rounded-full overflow-hidden hidden sm:block">
+                    <div class="bg-cyan-400 h-full rounded-full" style="width: ${c.percentage}%"></div>
+                  </div>
+                  <span class="text-cyan-400 font-bold">${c.count}</span>
+                  <span class="text-neutral-500 text-[10px] w-8 text-right">${c.percentage}%</span>
+                </div>
+              </div>
+            `).join('');
+          }
+        }
+
+        // Render Top Cities
+        const citiesBox = document.getElementById('traffic-cities-container');
+        if (citiesBox) {
+          if (topCities.length === 0) {
+            citiesBox.innerHTML = '<span class="text-neutral-500 text-xs font-space">Waiting for live location signals...</span>';
+          } else {
+            citiesBox.innerHTML = topCities.map(ct => `
+              <span class="px-2.5 py-1 rounded-lg bg-[#050508] border border-[#222230] text-neutral-300 font-space text-xs flex items-center gap-1.5">
+                <span class="text-cyan-400">📍</span>
+                <span>${escapeHtml(ct.city)}</span>
+                <span class="text-[#CBFE00] font-bold">(${ct.count})</span>
+              </span>
+            `).join('');
+          }
+        }
+
+        // Render Sources
+        const sourcesBox = document.getElementById('traffic-sources-container');
+        if (sourcesBox) {
+          if (topReferrers.length === 0) {
+            sourcesBox.innerHTML = '<div class="py-6 text-center text-xs text-neutral-500 font-space">No referral channels detected.</div>';
+          } else {
+            sourcesBox.innerHTML = topReferrers.map(rf => `
+              <div class="flex items-center justify-between text-xs font-space">
+                <div class="flex items-center gap-2">
+                  <span class="w-1.5 h-1.5 rounded-full ${rf.source.includes('Instagram') ? 'bg-pink-500' : rf.source.includes('Google') ? 'bg-emerald-400' : rf.source.includes('Spotify') ? 'bg-[#1DB954]' : 'bg-[#CBFE00]'}"></span>
+                  <span class="text-white">${escapeHtml(rf.source)}</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="w-24 bg-[#1A1A24] h-1.5 rounded-full overflow-hidden hidden sm:block">
+                    <div class="bg-[#CBFE00] h-full rounded-full" style="width: ${rf.percentage}%"></div>
+                  </div>
+                  <span class="text-white font-bold">${rf.count}</span>
+                  <span class="text-neutral-500 text-[10px] w-8 text-right">${rf.percentage}%</span>
+                </div>
+              </div>
+            `).join('');
+          }
+        }
+
+        // Render Pages
+        const pagesBox = document.getElementById('traffic-pages-container');
+        if (pagesBox) {
+          if (topPages.length === 0) {
+            pagesBox.innerHTML = '<div class="text-neutral-500 text-xs">No pages recorded yet.</div>';
+          } else {
+            pagesBox.innerHTML = topPages.map(pg => `
+              <div class="flex items-center justify-between py-1 border-b border-[#1A1A24]/50">
+                <span class="font-mono text-cyan-300 text-xs">${escapeHtml(pg.path)}</span>
+                <span class="text-neutral-400 text-xs">${pg.count} hits</span>
+              </div>
+            `).join('');
+          }
+        }
+
+        // Render Real-Time Log Stream Table
+        const tbody = document.getElementById('traffic-logs-tbody');
+        if (tbody) {
+          if (recentVisitors.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-neutral-500">No visitors logged yet. Telemetry active and waiting.</td></tr>';
+          } else {
+            tbody.innerHTML = recentVisitors.map(v => {
+              const dateStr = v.created_at ? new Date(v.created_at).toLocaleTimeString() : 'Just now';
+              const flag = getCountryFlag(v.country);
+              const loc = v.city && v.city !== 'Unknown' ? `${v.city}, ${v.country}` : v.country;
+              const isMob = v.device === 'Mobile';
+              return `
+                <tr class="hover:bg-[#12121A] transition-colors">
+                  <td class="py-2.5 px-4 text-neutral-400 text-[11px] font-mono">${dateStr}</td>
+                  <td class="py-2.5 px-4">
+                    <div class="flex items-center gap-1.5 text-white font-bold">
+                      <span>${flag}</span>
+                      <span>${escapeHtml(loc)}</span>
+                    </div>
+                  </td>
+                  <td class="py-2.5 px-4">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-[#050508] border border-[#222230] text-cyan-300">
+                      ${escapeHtml(v.path || '/')}
+                    </span>
+                  </td>
+                  <td class="py-2.5 px-4">
+                    <span class="px-2 py-0.5 rounded-full text-[10px] font-space ${v.referrer && v.referrer.includes('Direct') ? 'bg-neutral-800 text-neutral-300' : 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'}">
+                      ${escapeHtml(v.referrer || 'Direct')}
+                    </span>
+                  </td>
+                  <td class="py-2.5 px-4 text-neutral-400 text-[11px]">
+                    <span class="flex items-center gap-1">
+                      <span>${isMob ? '📱' : '💻'}</span>
+                      <span>${escapeHtml(v.device || 'Desktop')}</span>
+                    </span>
+                  </td>
+                </tr>
+              `;
+            }).join('');
+          }
+        }
+
+      } catch (err) {
+        console.error('[Traffic Analytics Fetch Error]:', err);
+      }
+    }
+
+    // Fetch Inquiries from API
+    async function fetchInquiries(isManual = false) {
+      if (!adminToken) return;
+
+      const refreshIcon = document.getElementById('refresh-icon');
+      if (refreshIcon) refreshIcon.classList.add('animate-spin');
+
+      try {
+        const res = await fetch('/api/admin?action=inquiries&limit=250', {
+          headers: {
+            'Authorization': `Bearer ${adminToken}`,
+            'x-admin-key': adminToken
+          }
+        });
+
+        if (res.status === 401) {
+          handleLogout();
+          return;
+        }
+
+        const data = await res.json();
+        if (data.success && Array.isArray(data.inquiries)) {
+          allInquiries = data.inquiries;
+          updateMetrics();
+          renderTable();
+          if (isManual) showToast(`Refreshed: ${allInquiries.length} transmissions loaded.`, 'success');
+        } else {
+          showToast(data.error || 'Failed to load inquiries.', 'error');
+        }
+      } catch (err) {
+        showToast('Error connecting to /api/admin.', 'error');
+      } finally {
+        if (refreshIcon) refreshIcon.classList.remove('animate-spin');
+      }
+    }
+
+    // Fetch Security Audit Logs
+    async function fetchAuditLogs() {
+      if (!adminToken) return;
+      const tbody = document.getElementById('audit-logs-tbody');
+
+      try {
+        const res = await fetch('/api/admin?action=audit_logs', {
+          headers: {
+            'Authorization': `Bearer ${adminToken}`
+          }
+        });
+        const data = await res.json();
+
+        if (data.success && Array.isArray(data.logs)) {
+          auditLogs = data.logs;
+          if (auditLogs.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-neutral-500">No audit events recorded yet.</td></tr>`;
+            return;
+          }
+
+          tbody.innerHTML = auditLogs.map(log => {
+            const dateStr = log.created_at ? new Date(log.created_at).toLocaleString() : 'N/A';
+            const isSuccess = log.event_type.includes('SUCCESS');
+            return `
+              <tr class="hover:bg-[#14141E] transition-colors">
+                <td class="py-2.5 px-4 text-neutral-400 whitespace-nowrap">${dateStr}</td>
+                <td class="py-2.5 px-4 font-bold text-white">
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-bold ${
+                    isSuccess ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' :
+                    'bg-rose-500/15 text-rose-400 border border-rose-500/30'
+                  }">
+                    ${escapeHtml(log.event_type)}
+                  </span>
+                </td>
+                <td class="py-2.5 px-4 text-[#CBFE00]">${escapeHtml(log.actor_email || 'anonymous')}</td>
+                <td class="py-2.5 px-4 text-neutral-400 font-mono">${escapeHtml(log.ip_address || '127.0.0.1')}</td>
+                <td class="py-2.5 px-4 text-neutral-500 max-w-xs truncate">${escapeHtml(JSON.stringify(log.metadata || {}))}</td>
+              </tr>
+            `;
+          }).join('');
+        }
+      } catch (err) {
+        tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-rose-400">Failed to load audit logs.</td></tr>`;
+      }
+    }
+
+    // Update KPI Metric Cards
+    function updateMetrics() {
+      const total = allInquiries.length;
+      const festival = allInquiries.filter(i => /festival/i.test(i.inquiry_type || '')).length;
+      const sync = allInquiries.filter(i => /sync/i.test(i.inquiry_type || '')).length;
+      const house = allInquiries.filter(i => /house|intimate|concert/i.test(i.inquiry_type || '')).length;
+
+      document.getElementById('stat-total').innerText = total;
+      document.getElementById('stat-festival').innerText = festival;
+      document.getElementById('stat-sync').innerText = sync;
+      document.getElementById('stat-house').innerText = house;
+      document.getElementById('tab-inquiries-count').innerText = total;
+      document.getElementById('total-count').innerText = total;
+    }
+
+    // Filter Logic
+    function setFilter(filter) {
+      currentFilter = filter;
+      document.querySelectorAll('#category-pills .filter-pill').forEach(pill => {
+        if (pill.getAttribute('data-filter') === filter) {
+          pill.className = 'filter-pill px-3 py-1.5 rounded-lg bg-[#CBFE00] text-black font-bold';
+        } else {
+          pill.className = 'filter-pill px-3 py-1.5 rounded-lg bg-[#050508] text-neutral-300 hover:text-white border border-[#222230]';
+        }
+      });
+      renderTable();
+    }
+
+    function handleSearch(query) {
+      searchQuery = query.toLowerCase().trim();
+      renderTable();
+    }
+
+    // Render Inquiries Table
+    function renderTable() {
+      const tbody = document.getElementById('inquiries-tbody');
+      const filteredCountEl = document.getElementById('filtered-count');
+
+      let list = allInquiries.filter(item => {
+        if (currentFilter !== 'ALL') {
+          if (currentFilter === 'Festival Booking' && !/festival/i.test(item.inquiry_type || '')) return false;
+          if (currentFilter === 'Sync Licensing' && !/sync/i.test(item.inquiry_type || '')) return false;
+          if (currentFilter === 'House Concert' && !/house|intimate|concert/i.test(item.inquiry_type || '')) return false;
+          if (currentFilter === 'General Professional Inquiry' && /festival|sync|house|intimate|concert/i.test(item.inquiry_type || '')) return false;
+        }
+
+        if (searchQuery) {
+          const matchName = (item.name || '').toLowerCase().includes(searchQuery);
+          const matchEmail = (item.email || '').toLowerCase().includes(searchQuery);
+          const matchType = (item.inquiry_type || '').toLowerCase().includes(searchQuery);
+          const matchMsg = (item.message || '').toLowerCase().includes(searchQuery);
+          const matchTimeline = (item.timeline || '').toLowerCase().includes(searchQuery);
+          if (!matchName && !matchEmail && !matchType && !matchMsg && !matchTimeline) return false;
+        }
+
+        return true;
+      });
+
+      filteredCountEl.innerText = list.length;
+
+      if (list.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="6" class="py-12 text-center text-neutral-500 font-space text-xs">
+              <svg class="w-8 h-8 mx-auto mb-2 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
+              <div>No inquiries match your active filter or search criteria.</div>
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      tbody.innerHTML = list.map(item => {
+        const rawDate = item.created_at ? new Date(item.created_at) : new Date();
+        const dateStr = rawDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+        const timeStr = rawDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        const typeBadge = getBadgeForType(item.inquiry_type);
+
+        const safeName = escapeHtml(item.name || 'Anonymous Inquirer');
+        const safeEmail = escapeHtml(item.email || 'No email');
+        const safeTimeline = item.timeline ? escapeHtml(item.timeline) : '<span class="text-neutral-600">N/A</span>';
+        const safeMsg = escapeHtml(item.message || '');
+        const msgExcerpt = safeMsg.length > 70 ? safeMsg.slice(0, 70) + '...' : safeMsg;
+
+        return `
+          <tr class="hover:bg-[#14141E] transition-colors group cursor-pointer" onclick="openModal('${item.id}')">
+            <td class="py-3 px-4 font-space text-xs text-neutral-400 whitespace-nowrap">
+              <div>${dateStr}</div>
+              <div class="text-[10px] text-neutral-600">${timeStr}</div>
+            </td>
+            <td class="py-3 px-4">
+              <div class="font-bold text-white text-sm">${safeName}</div>
+              <div class="font-space text-xs text-neutral-400 flex items-center gap-1.5 mt-0.5">
+                <span>${safeEmail}</span>
+              </div>
+            </td>
+            <td class="py-3 px-4 whitespace-nowrap">
+              ${typeBadge}
+            </td>
+            <td class="py-3 px-4 font-space text-xs text-neutral-300 whitespace-nowrap">
+              ${safeTimeline}
+            </td>
+            <td class="py-3 px-4 text-xs text-neutral-300 max-w-xs truncate font-kanit">
+              ${msgExcerpt}
+            </td>
+            <td class="py-3 px-4 text-right whitespace-nowrap" onclick="event.stopPropagation()">
+              <div class="flex items-center justify-end gap-1.5">
+                <button
+                  onclick="openModal('${item.id}')"
+                  class="px-2.5 py-1 rounded-lg bg-[#050508] hover:bg-[#1f1f2e] border border-[#222230] text-xs font-space text-neutral-300 hover:text-white"
+                  title="Inspect Transmission"
+                >
+                  View
+                </button>
+                <a
+                  href="mailto:${encodeURIComponent(item.email)}?subject=Re:%20${encodeURIComponent(item.inquiry_type || 'Inquiry')}%20%E2%80%94%20JayDyMilla%20Desk"
+                  class="px-2.5 py-1 rounded-lg bg-[#CBFE00]/10 hover:bg-[#CBFE00] text-[#CBFE00] hover:text-black border border-[#CBFE00]/30 font-space text-xs font-bold transition-all"
+                  title="Reply via Email"
+                >
+                  Reply
+                </a>
+                <button
+                  onclick="deleteInquiry('${item.id}')"
+                  class="px-2 py-1 rounded-lg hover:bg-rose-500/20 text-neutral-500 hover:text-rose-400 transition-colors"
+                  title="Delete record"
+                >
+                  <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+    }
+
+    function getBadgeForType(type = '') {
+      if (/festival/i.test(type)) {
+        return `<span class="px-2 py-0.5 rounded-full text-[10px] font-space font-bold uppercase bg-[#CBFE00]/15 text-[#CBFE00] border border-[#CBFE00]/40">Festival</span>`;
+      }
+      if (/sync/i.test(type)) {
+        return `<span class="px-2 py-0.5 rounded-full text-[10px] font-space font-bold uppercase bg-cyan-500/15 text-cyan-400 border border-cyan-500/40">Sync License</span>`;
+      }
+      if (/house|intimate|concert/i.test(type)) {
+        return `<span class="px-2 py-0.5 rounded-full text-[10px] font-space font-bold uppercase bg-amber-500/15 text-amber-400 border border-amber-500/40">House Concert</span>`;
+      }
+      return `<span class="px-2 py-0.5 rounded-full text-[10px] font-space font-bold uppercase bg-neutral-800 text-neutral-300 border border-neutral-700">General</span>`;
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function openModal(id) {
+      const item = allInquiries.find(i => i.id === id);
+      if (!item) return;
+
+      selectedInquiry = item;
+      const modal = document.getElementById('inquiry-modal');
+
+      document.getElementById('modal-name').innerText = item.name || 'Anonymous';
+      document.getElementById('modal-email').innerText = item.email || '';
+      document.getElementById('modal-email-link').href = `mailto:${item.email}`;
+      document.getElementById('modal-message').innerText = item.message || '';
+
+      const rawDate = item.created_at ? new Date(item.created_at) : new Date();
+      document.getElementById('modal-date').innerText = rawDate.toLocaleString();
+      document.getElementById('modal-category-badge').innerHTML = getBadgeForType(item.inquiry_type);
+
+      const timelineBox = document.getElementById('modal-timeline-box');
+      if (item.timeline) {
+        timelineBox.classList.remove('hidden');
+        document.getElementById('modal-timeline').innerText = item.timeline;
+      } else {
+        timelineBox.classList.add('hidden');
+      }
+
+      const replyDraft = `Hello ${item.name || 'there'},\n\nThank you for reaching out to the JayDyMilla executive desk regarding your inquiry (${item.inquiry_type || 'Performance/Licensing'}).\n\nWe have reviewed your request${item.timeline ? ` for timeline: ${item.timeline}` : ''} and would love to discuss this further.\n\nWarm regards,\nDr. Jay Miller & Executive Team\nJayDyMilla Official Platform\nmusic@jaydymilla.com\nhttps://jaydymilla.com`;
+
+      document.getElementById('modal-reply-preview').innerText = replyDraft;
+      const mailtoUrl = `mailto:${encodeURIComponent(item.email)}?subject=Re:%20${encodeURIComponent(item.inquiry_type || 'Inquiry')}%20%E2%80%94%20JayDyMilla%20Management%20Desk&body=${encodeURIComponent(replyDraft)}`;
+      document.getElementById('modal-reply-mailto-btn').href = mailtoUrl;
+
+      modal.classList.remove('hidden');
+    }
+
+    function closeModal() {
+      document.getElementById('inquiry-modal').classList.add('hidden');
+      selectedInquiry = null;
+    }
+
+    function copyModalEmail() {
+      if (!selectedInquiry) return;
+      navigator.clipboard.writeText(selectedInquiry.email);
+      showToast(`Copied ${selectedInquiry.email} to clipboard.`, 'success');
+    }
+
+    function copyReplyTemplate() {
+      const text = document.getElementById('modal-reply-preview').innerText;
+      navigator.clipboard.writeText(text);
+      showToast('Reply template copied to clipboard.', 'success');
+    }
+
+    async function deleteInquiry(id) {
+      if (!confirm('Are you sure you want to permanently delete this transmission from the database?')) {
+        return;
+      }
+
+      try {
+        const res = await fetch(`/api/admin?action=delete&id=${encodeURIComponent(id)}`, {
+          method: 'DELETE',
+          headers: {
+            'Authorization': `Bearer ${adminToken}`
+          }
+        });
+
+        const data = await res.json();
+        if (data.success) {
+          allInquiries = allInquiries.filter(i => i.id !== id);
+          updateMetrics();
+          renderTable();
+          showToast('Inquiry permanently removed from database.', 'success');
+        } else {
+          showToast(data.error || 'Failed to delete record.', 'error');
+        }
+      } catch (err) {
+        showToast('Error requesting deletion from /api/admin.', 'error');
+      }
+    }
+
+    async function deleteModalInquiry() {
+      if (!selectedInquiry) return;
+      const id = selectedInquiry.id;
+      closeModal();
+      await deleteInquiry(id);
+    }
+
+    function toggleExportMenu() {
+      document.getElementById('export-dropdown').classList.toggle('hidden');
+    }
+
+    function exportData(format) {
+      document.getElementById('export-dropdown').classList.add('hidden');
+      if (allInquiries.length === 0) {
+        showToast('No inquiries available to export.', 'error');
+        return;
+      }
+
+      const dateStr = new Date().toISOString().slice(0, 10);
+
+      if (format === 'json') {
+        const blob = new Blob([JSON.stringify(allInquiries, null, 2)], { type: 'application/json' });
+        downloadBlob(blob, `jaydymilla-inquiries-${dateStr}.json`);
+        showToast('Exported inquiries as JSON file.', 'success');
+      } else if (format === 'csv') {
+        const headers = ['id', 'created_at', 'name', 'email', 'inquiry_type', 'timeline', 'message'];
+        const csvRows = [headers.join(',')];
+
+        allInquiries.forEach(item => {
+          const row = headers.map(h => {
+            const val = item[h] ? String(item[h]).replace(/"/g, '""') : '';
+            return `"${val}"`;
+          });
+          csvRows.push(row.join(','));
+        });
+
+        const blob = new Blob([csvRows.join('\n')], { type: 'text/csv' });
+        downloadBlob(blob, `jaydymilla-inquiries-${dateStr}.csv`);
+        showToast('Exported inquiries as CSV file.', 'success');
+      }
+    }
+
+    function downloadBlob(blob, filename) {
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function recordButtonClick(variantName) {
+      buttonClicks++;
+      document.getElementById('button-click-counter').innerText = buttonClicks;
+      showToast(`Triggered: ${variantName} Arrow Reveal Button!`, 'success');
+    }
+
+    function renderAudioCatalog() {
+      const container = document.getElementById('tracks-container');
+      container.innerHTML = AUDIO_CATALOG.map(track => `
+        <div class="bg-[#050508] border border-[#1A1A24] rounded-xl p-3.5 flex items-center justify-between hover:border-[#CBFE00]/40 transition-colors">
+          <div class="flex items-center gap-3">
+            <button
+              onclick="playTrack('${track.file}', '${track.title}')"
+              class="w-9 h-9 rounded-lg bg-[#CBFE00] text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-transform"
+              title="Play Preview"
+            >
+              <svg class="w-4 h-4 fill-current ml-0.5" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+            </button>
+            <div>
+              <div class="font-bold text-sm text-white">${track.title}</div>
+              <div class="font-space text-xs text-neutral-500">/audio/${track.file} &bull; ${track.duration} &bull; ${track.size}</div>
+            </div>
+          </div>
+          <a
+            href="/audio/${track.file}"
+            download
+            class="px-3 py-1.5 rounded-lg bg-[#0D0D12] hover:bg-[#14141E] border border-[#222230] text-xs font-space text-neutral-300 hover:text-white"
+          >
+            Download MP3
+          </a>
+        </div>
+      `).join('');
+    }
+
+    function playTrack(file, title) {
+      const player = document.getElementById('admin-audio-player');
+      document.getElementById('active-track-name').innerText = title;
+      document.getElementById('active-track-file').innerText = `/audio/${file}`;
+      player.src = `/audio/${file}`;
+      player.play().catch(e => console.log('Audio autoplay prevented:', e));
+      showToast(`Playing ${title}`, 'info');
+    }
+
+    async function pingDatabaseHealth() {
+      const badge = document.getElementById('ping-latency-badge');
+      badge.innerText = 'Pinging...';
+      try {
+        const start = performance.now();
+        const res = await fetch('/api/admin?action=health', {
+          headers: {
+            'Authorization': `Bearer ${adminToken}`
+          }
+        });
+        const duration = Math.round(performance.now() - start);
+        if (res.ok) {
+          badge.innerText = `● ${duration} ms (Optimal)`;
+          showToast(`Supabase PostgreSQL ping successful: ${duration} ms`, 'success');
+        } else {
+          badge.innerText = '● Error';
+          showToast('Ping failed.', 'error');
+        }
+      } catch (e) {
+        badge.innerText = '● Unreachable';
+        showToast('Health ping request failed.', 'error');
+      }
+    }
+
+    // Keyboard Shortcuts
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+      if (e.key === '/' && document.activeElement !== document.getElementById('search-input')) {
+        e.preventDefault();
+        document.getElementById('search-input')?.focus();
+      }
+    });
+
+    window.addEventListener('click', (e) => {
+      if (!e.target.closest('#export-dropdown') && !e.target.closest('button[onclick="toggleExportMenu()"]')) {
+        document.getElementById('export-dropdown')?.classList.add('hidden');
+      }
+    });
+
+    // Init
+    window.addEventListener('DOMContentLoaded', () => {
+      const savedEmail = localStorage.getItem('jaydymilla_admin_email') || sessionStorage.getItem('jaydymilla_admin_email');
+      const emailInput = document.getElementById('admin-email-input');
+      if (emailInput && savedEmail) {
+        emailInput.value = savedEmail;
+      }
+      if (adminToken) {
+        document.getElementById('auth-lock-screen').classList.add('hidden');
+        if (savedEmail) document.getElementById('session-user-badge').innerText = savedEmail;
+        fetchInquiries();
+      }
+    });
+  </script>
+</body>
+</html>

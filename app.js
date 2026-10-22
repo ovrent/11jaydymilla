@@ -1341,6 +1341,28 @@
     requestAnimationFrame(masterTick);
   }
 
+
+  function initTrafficTelemetry() {
+    try {
+      if (window.location.pathname.startsWith('/admin')) return;
+      var payload = JSON.stringify({
+        path: window.location.pathname || '/',
+        referrer: document.referrer || 'Direct',
+        device: window.innerWidth <= 768 ? 'Mobile' : 'Desktop'
+      });
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon('/api/track', payload);
+      } else {
+        fetch('/api/track', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: payload,
+          keepalive: true
+        }).catch(function(){});
+      }
+    } catch (e) {}
+  }
+
   function boot() {
     initSmoothScroll();
     initCylinderMotion();
@@ -1350,6 +1372,7 @@
     initHeaderLifecycle();
     initInquiryForm();
     initNewReleasePopup();
+    initTrafficTelemetry();
 
     // Subpage optimization: Only run RAF if animated elements or Lenis exist
     const hasInteractiveMotion = !!(cylinderTrack || revealContainer || marqueeRow1 || lenis);
