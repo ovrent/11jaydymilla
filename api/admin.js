@@ -238,7 +238,7 @@ export default async function handler(req, res) {
       }
 
       // Security Whitelist Authorization Gate: Only authorized admin emails allowed
-      const AUTHORIZED_ADMINS = [ADMIN_EMAIL, 'music@jaydymilla.com'];
+      const AUTHORIZED_ADMINS = [ADMIN_EMAIL, 'music@jaydymilla.com', 'colorithms@gmail.com'];
       if (!AUTHORIZED_ADMINS.includes(verifiedEmail)) {
         recordFailedAttempt(clientIP);
         await recordAuditLog(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, 'GOOGLE_AUTH_UNAUTHORIZED_ACCOUNT', verifiedEmail, clientIP, userAgent, {
