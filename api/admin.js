@@ -517,6 +517,12 @@ export default async function handler(req, res) {
       const uniqueIps = new Set(rows.map(r => r.ip_hash).filter(Boolean));
       const uniqueVisitors = uniqueIps.size;
 
+      // Calculate today's traffic (Live calendar day)
+      const now = new Date();
+      const todayDateStr = now.toISOString().split('T')[0];
+      let todayViews = 0;
+      const todayUniqueIps = new Set();
+
       const countryCounts = {};
       const cityCounts = {};
       const referrerCounts = {};
@@ -525,6 +531,11 @@ export default async function handler(req, res) {
       let desktopCount = 0;
 
       rows.forEach(r => {
+        if (r.created_at && r.created_at.startsWith(todayDateStr)) {
+          todayViews++;
+          if (r.ip_hash) todayUniqueIps.add(r.ip_hash);
+        }
+
         const c = r.country || 'Unknown';
         countryCounts[c] = (countryCounts[c] || 0) + 1;
 
@@ -574,6 +585,8 @@ export default async function handler(req, res) {
         summary: {
           totalViews,
           uniqueVisitors,
+          todayViews,
+          todayUniqueVisitors: todayUniqueIps.size,
           topCountry: topCountries[0]?.country || 'N/A',
           topSource: topReferrers[0]?.source || 'Direct',
           mobileCount,

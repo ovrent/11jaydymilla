@@ -545,18 +545,22 @@
       <!-- Traffic Summary Metrics -->
       <div class="grid grid-cols-2 md:grid-cols-5 gap-3.5">
         <div class="bg-[#0D0D12] border border-[#1A1A24] p-4 rounded-xl relative overflow-hidden">
-          <div class="text-[10px] font-space uppercase tracking-widest text-neutral-400">Total Page Views</div>
-          <div id="traffic-total-views" class="text-2xl font-bold font-kanit text-white mt-1">0</div>
-          <div class="text-[10px] text-cyan-400 font-space mt-1 flex items-center gap-1">
-            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
-            Real-Time Edge Tracker
+          <div class="flex items-center justify-between">
+            <div class="text-[10px] font-space uppercase tracking-widest text-[#CBFE00]">Today's Clicks & Visits</div>
+            <span class="w-2 h-2 rounded-full bg-[#CBFE00] animate-ping"></span>
+          </div>
+          <div id="traffic-today-views" class="text-2xl font-bold font-kanit text-[#CBFE00] mt-1">0</div>
+          <div class="text-[10px] text-neutral-400 font-space mt-1">
+            <span id="traffic-today-unique" class="text-white font-bold">0</span> unique people today
           </div>
         </div>
 
         <div class="bg-[#0D0D12] border border-[#1A1A24] p-4 rounded-xl">
-          <div class="text-[10px] font-space uppercase tracking-widest text-neutral-400">Unique Visitors</div>
-          <div id="traffic-unique-visitors" class="text-2xl font-bold font-kanit text-[#CBFE00] mt-1">0</div>
-          <div class="text-[10px] text-neutral-500 font-space mt-1">Hashed Device IDs</div>
+          <div class="text-[10px] font-space uppercase tracking-widest text-neutral-400">Total All-Time Views</div>
+          <div id="traffic-total-views" class="text-2xl font-bold font-kanit text-white mt-1">0</div>
+          <div class="text-[10px] text-neutral-500 font-space mt-1">
+            <span id="traffic-unique-visitors" class="text-cyan-400 font-bold">0</span> all-time unique
+          </div>
         </div>
 
         <div class="bg-[#0D0D12] border border-[#1A1A24] p-4 rounded-xl">
@@ -1286,6 +1290,12 @@
         if (countBadge) countBadge.innerText = summary.totalViews || 0;
 
         // Metric Cards
+        const todayViewsEl = document.getElementById('traffic-today-views');
+        if (todayViewsEl) todayViewsEl.innerText = (summary.todayViews || 0).toLocaleString();
+
+        const todayUniqueEl = document.getElementById('traffic-today-unique');
+        if (todayUniqueEl) todayUniqueEl.innerText = (summary.todayUniqueVisitors || 0).toLocaleString();
+
         const totalViewsEl = document.getElementById('traffic-total-views');
         if (totalViewsEl) totalViewsEl.innerText = (summary.totalViews || 0).toLocaleString();
 
