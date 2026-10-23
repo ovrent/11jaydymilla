@@ -45,9 +45,22 @@
         }
       }
     }
+
   </script>
 
   <style>
+    /* Hide scrollbars for mobile horizontal swipe tabs */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .touch-target {
+      min-height: 44px;
+      touch-action: manipulation;
+    }
     /* Custom Scrollbars */
     ::-webkit-scrollbar {
       width: 6px;
@@ -402,30 +415,32 @@
       </div>
     </header>
 
-    <!-- Navigation Tabs -->
-    <nav class="flex flex-wrap items-center gap-2 border-b border-[#1A1A24] pb-2 font-space text-xs">
-      <button onclick="switchTab('inquiries')" id="tab-btn-inquiries" class="tab-btn px-4 py-2 rounded-lg bg-[#CBFE00] text-black font-bold uppercase transition-all">
-        Inquiries & Bookings (<span id="tab-inquiries-count">0</span>)
-      </button>
-      <button onclick="switchTab('traffic')" id="tab-btn-traffic" class="tab-btn px-4 py-2 rounded-lg text-neutral-400 hover:text-white uppercase transition-all flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-        <span>Visitor Traffic & Geolocation (<span id="tab-traffic-count">0</span>)</span>
-      </button>
-      <button onclick="switchTab('audit')" id="tab-btn-audit" class="tab-btn px-4 py-2 rounded-lg text-neutral-400 hover:text-white uppercase transition-all flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
-        <span>Security Audit Logs</span>
-      </button>
-      <button onclick="switchTab('buttons')" id="tab-btn-buttons" class="tab-btn px-4 py-2 rounded-lg text-neutral-400 hover:text-white uppercase transition-all flex items-center gap-1.5">
-        <span class="w-2 h-2 rounded-full bg-[#CBFE00]"></span>
-        <span>Originkit Buttons (/button)</span>
-      </button>
-      <button onclick="switchTab('audio')" id="tab-btn-audio" class="tab-btn px-4 py-2 rounded-lg text-neutral-400 hover:text-white uppercase transition-all">
-        Master Audio Catalog (5)
-      </button>
-      <button onclick="switchTab('diagnostics')" id="tab-btn-diagnostics" class="tab-btn px-4 py-2 rounded-lg text-neutral-400 hover:text-white uppercase transition-all">
-        System Health & Telemetry
-      </button>
-    </nav>
+    <!-- Navigation Tabs (Sticky Header for Desktop & Mobile) -->
+    <div class="sticky top-0 z-30 bg-[#050508]/95 backdrop-acrylic pt-2 pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 border-b border-[#1A1A24]">
+      <nav class="flex items-center gap-2 font-space text-xs overflow-x-auto no-scrollbar whitespace-nowrap scroll-smooth py-1">
+        <button onclick="switchTab('inquiries')" id="tab-btn-inquiries" class="tab-btn px-4 py-2.5 rounded-xl bg-[#CBFE00] text-black font-bold uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2">
+          <span>Inquiries & Bookings (<span id="tab-inquiries-count">0</span>)</span>
+        </button>
+        <button onclick="switchTab('traffic')" id="tab-btn-traffic" class="tab-btn px-4 py-2.5 rounded-xl text-neutral-400 hover:text-white uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
+          <span>Visitor Traffic & Geolocation (<span id="tab-traffic-count">0</span>)</span>
+        </button>
+        <button onclick="switchTab('audit')" id="tab-btn-audit" class="tab-btn px-4 py-2.5 rounded-xl text-neutral-400 hover:text-white uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+          <span>Security Audit Logs</span>
+        </button>
+        <button onclick="switchTab('buttons')" id="tab-btn-buttons" class="tab-btn px-4 py-2.5 rounded-xl text-neutral-400 hover:text-white uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-[#CBFE00]"></span>
+          <span>Originkit Buttons (/button)</span>
+        </button>
+        <button onclick="switchTab('audio')" id="tab-btn-audio" class="tab-btn px-4 py-2.5 rounded-xl text-neutral-400 hover:text-white uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2">
+          <span>Master Audio Catalog (5)</span>
+        </button>
+        <button onclick="switchTab('diagnostics')" id="tab-btn-diagnostics" class="tab-btn px-4 py-2.5 rounded-xl text-neutral-400 hover:text-white uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2">
+          <span>System Health & Telemetry</span>
+        </button>
+      </nav>
+    </div>
 
     <!-- =========================================================================
          TAB 1: INQUIRIES & TRANSMISSIONS WORKSPACE
@@ -500,9 +515,10 @@
         </div>
       </div>
 
-      <!-- Inquiries Table -->
+      <!-- Inquiries Table & Mobile Cards -->
       <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl overflow-hidden shadow-2xl">
-        <div class="overflow-x-auto">
+        <!-- Desktop Table View (Wide screens) -->
+        <div class="hidden md:block overflow-x-auto">
           <table class="w-full text-left text-sm font-kanit">
             <thead class="bg-[#050508] text-neutral-400 font-space text-[11px] uppercase tracking-wider border-b border-[#1A1A24]">
               <tr>
@@ -524,6 +540,14 @@
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <!-- Mobile Card Feed View (Phone screens: touch-friendly, no sideways scrolling) -->
+        <div id="inquiries-mobile-cards" class="md:hidden divide-y divide-[#1A1A24]">
+          <div class="py-12 px-4 text-center text-neutral-500 font-space text-xs">
+            <div class="inline-block animate-spin w-5 h-5 border-2 border-[#CBFE00] border-t-transparent rounded-full mb-2"></div>
+            <div>Loading inquiries...</div>
+          </div>
         </div>
 
         <!-- Table Footer / Count -->
@@ -652,7 +676,8 @@
           </button>
         </div>
 
-        <div class="overflow-x-auto">
+        <!-- Desktop Traffic Table -->
+        <div class="hidden md:block overflow-x-auto">
           <table class="w-full text-left font-space text-xs">
             <thead>
               <tr class="border-b border-[#1A1A24] text-neutral-500 uppercase text-[10px] tracking-wider">
@@ -669,6 +694,11 @@
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <!-- Mobile Traffic Feed Cards -->
+        <div id="traffic-mobile-cards" class="md:hidden divide-y divide-[#161622]">
+          <div class="py-8 text-center text-neutral-500 font-space text-xs">Loading real-time visitor activity...</div>
         </div>
       </div>
     </section>
@@ -699,8 +729,8 @@
           </button>
         </div>
 
-        <!-- Audit Table -->
-        <div class="overflow-x-auto">
+        <!-- Desktop Audit Table -->
+        <div class="hidden md:block overflow-x-auto">
           <table class="w-full text-left text-xs font-space">
             <thead class="bg-[#050508] text-neutral-400 uppercase tracking-wider border-b border-[#1A1A24]">
               <tr>
@@ -717,6 +747,11 @@
               </tr>
             </tbody>
           </table>
+        </div>
+
+        <!-- Mobile Audit Feed Cards -->
+        <div id="audit-mobile-cards" class="md:hidden divide-y divide-[#1A1A24]">
+          <div class="py-8 text-center text-neutral-500 font-space text-xs">Loading audit log entries...</div>
         </div>
       </div>
     </section>
@@ -1921,6 +1956,7 @@
         fetchInquiries();
       }
     });
+
   </script>
 </body>
 </html>
