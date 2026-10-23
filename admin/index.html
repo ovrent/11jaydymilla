@@ -1441,12 +1441,15 @@
           }
         }
 
-        // Render Real-Time Log Stream Table
+        // Render Real-Time Log Stream Table (Desktop) & Cards (Mobile)
         const tbody = document.getElementById('traffic-logs-tbody');
-        if (tbody) {
-          if (recentVisitors.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-neutral-500">No visitors logged yet. Telemetry active and waiting.</td></tr>';
-          } else {
+        const mobileTraffic = document.getElementById('traffic-mobile-cards');
+
+        if (recentVisitors.length === 0) {
+          if (tbody) tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-neutral-500">No visitors logged yet. Telemetry active and waiting.</td></tr>';
+          if (mobileTraffic) mobileTraffic.innerHTML = '<div class="py-8 text-center text-neutral-500 font-space text-xs">No visitors logged yet. Telemetry active and waiting.</div>';
+        } else {
+          if (tbody) {
             tbody.innerHTML = recentVisitors.map(v => {
               const dateStr = v.created_at ? new Date(v.created_at).toLocaleTimeString() : 'Just now';
               const flag = getCountryFlag(v.country);
@@ -1478,6 +1481,36 @@
                     </span>
                   </td>
                 </tr>
+              `;
+            }).join('');
+          }
+
+          if (mobileTraffic) {
+            mobileTraffic.innerHTML = recentVisitors.map(v => {
+              const dateStr = v.created_at ? new Date(v.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now';
+              const flag = getCountryFlag(v.country);
+              const loc = v.city && v.city !== 'Unknown' ? `${v.city}, ${v.country}` : v.country;
+              const isMob = v.device === 'Mobile';
+              return `
+                <div class="py-3 px-3 hover:bg-[#14141E] transition-colors flex items-center justify-between gap-3 text-xs font-space">
+                  <div class="flex items-center gap-2.5">
+                    <span class="text-xl flex-shrink-0">${flag}</span>
+                    <div>
+                      <div class="font-bold text-white">${escapeHtml(loc)}</div>
+                      <div class="text-[10px] text-neutral-400 flex items-center gap-1.5 mt-0.5">
+                        <span class="text-cyan-400">${escapeHtml(v.referrer || 'Direct')}</span>
+                        <span>&bull;</span>
+                        <span class="font-mono text-neutral-500">${escapeHtml(v.path || '/')}</span>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="text-right flex-shrink-0">
+                    <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isMob ? 'bg-cyan-500/10 text-cyan-400' : 'bg-[#CBFE00]/10 text-[#CBFE00]'}">
+                      ${isMob ? '📱 Mob' : '💻 Dsk'}
+                    </span>
+                    <div class="text-[10px] text-neutral-500 font-mono mt-1">${dateStr}</div>
+                  </div>
+                </div>
               `;
             }).join('');
           }
@@ -1539,11 +1572,14 @@
 
         if (data.success && Array.isArray(data.logs)) {
           auditLogs = data.logs;
-          if (auditLogs.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-neutral-500">No audit events recorded yet.</td></tr>`;
-            return;
-          }
+        const mobileAudit = document.getElementById('audit-mobile-cards');
+        if (auditLogs.length === 0) {
+          if (tbody) tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-neutral-500">No audit events recorded yet.</td></tr>`;
+          if (mobileAudit) mobileAudit.innerHTML = `<div class="py-6 text-center text-neutral-500 font-space text-xs">No audit events recorded yet.</div>`;
+          return;
+        }
 
+        if (tbody) {
           tbody.innerHTML = auditLogs.map(log => {
             const dateStr = log.created_at ? new Date(log.created_at).toLocaleString() : 'N/A';
             const isSuccess = log.event_type.includes('SUCCESS');
@@ -1565,6 +1601,31 @@
             `;
           }).join('');
         }
+
+        if (mobileAudit) {
+          mobileAudit.innerHTML = auditLogs.map(log => {
+            const dateStr = log.created_at ? new Date(log.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'N/A';
+            const isSuccess = log.event_type.includes('SUCCESS');
+            return `
+              <div class="p-3.5 hover:bg-[#14141E] transition-colors space-y-2 text-xs font-space">
+                <div class="flex items-center justify-between gap-2">
+                  <span class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-bold ${
+                    isSuccess ? 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30' :
+                    'bg-rose-500/15 text-rose-400 border border-rose-500/30'
+                  }">
+                    ${escapeHtml(log.event_type)}
+                  </span>
+                  <span class="text-[10px] font-mono text-neutral-500">${dateStr}</span>
+                </div>
+                <div class="flex items-center justify-between text-neutral-300">
+                  <span class="text-[#CBFE00] font-bold truncate">${escapeHtml(log.actor_email || 'anonymous')}</span>
+                  <span class="font-mono text-neutral-500 text-[11px]">${escapeHtml(log.ip_address || '127.0.0.1')}</span>
+                </div>
+              </div>
+            `;
+          }).join('');
+        }
+      }
       } catch (err) {
         tbody.innerHTML = `<tr><td colspan="5" class="py-6 text-center text-rose-400">Failed to load audit logs.</td></tr>`;
       }
@@ -1629,8 +1690,10 @@
       });
 
       filteredCountEl.innerText = list.length;
+    const mobileCards = document.getElementById('inquiries-mobile-cards');
 
-      if (list.length === 0) {
+    if (list.length === 0) {
+      if (tbody) {
         tbody.innerHTML = `
           <tr>
             <td colspan="6" class="py-12 text-center text-neutral-500 font-space text-xs">
@@ -1639,9 +1702,19 @@
             </td>
           </tr>
         `;
-        return;
       }
+      if (mobileCards) {
+        mobileCards.innerHTML = `
+          <div class="py-12 px-4 text-center text-neutral-500 font-space text-xs">
+            <svg class="w-8 h-8 mx-auto mb-2 text-neutral-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M20 13V6a2 2 0 00-2-2H6a2 2 0 00-2 2v7m16 0v5a2 2 0 01-2 2H6a2 2 0 01-2-2v-5m16 0h-2.586a1 1 0 00-.707.293l-2.414 2.414a1 1 0 01-.707.293h-3.172a1 1 0 01-.707-.293l-2.414-2.414A1 1 0 006.586 13H4"/></svg>
+            <div>No inquiries match your active filter or search criteria.</div>
+          </div>
+        `;
+      }
+      return;
+    }
 
+    if (tbody) {
       tbody.innerHTML = list.map(item => {
         const rawDate = item.created_at ? new Date(item.created_at) : new Date();
         const dateStr = rawDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
@@ -1679,14 +1752,14 @@
               <div class="flex items-center justify-end gap-1.5">
                 <button
                   onclick="openModal('${item.id}')"
-                  class="px-2.5 py-1 rounded-lg bg-[#050508] hover:bg-[#1f1f2e] border border-[#222230] text-xs font-space text-neutral-300 hover:text-white"
+                  class="px-2.5 py-1 rounded-lg bg-[#050508] hover:bg-[#1f1f2e] border border-[#222230] text-xs font-space text-white transition-colors"
                   title="Inspect Transmission"
                 >
                   View
                 </button>
                 <a
-                  href="mailto:${encodeURIComponent(item.email)}?subject=Re:%20${encodeURIComponent(item.inquiry_type || 'Inquiry')}%20%E2%80%94%20JayDyMilla%20Desk"
-                  class="px-2.5 py-1 rounded-lg bg-[#CBFE00]/10 hover:bg-[#CBFE00] text-[#CBFE00] hover:text-black border border-[#CBFE00]/30 font-space text-xs font-bold transition-all"
+                  href="mailto:${encodeURIComponent(item.email)}?subject=Re:%20${encodeURIComponent(item.inquiry_type || 'Booking')}%20Inquiry"
+                  class="px-2.5 py-1 rounded-lg bg-[#CBFE00]/10 hover:bg-[#CBFE00] text-[#CBFE00] hover:text-black border border-[#CBFE00]/20 font-space text-xs font-semibold transition-all"
                   title="Reply via Email"
                 >
                   Reply
@@ -1704,6 +1777,56 @@
         `;
       }).join('');
     }
+
+    if (mobileCards) {
+      mobileCards.innerHTML = list.map(item => {
+        const rawDate = item.created_at ? new Date(item.created_at) : new Date();
+        const dateStr = rawDate.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const timeStr = rawDate.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+        const typeBadge = getBadgeForType(item.inquiry_type);
+
+        const safeName = escapeHtml(item.name || 'Anonymous Inquirer');
+        const safeEmail = escapeHtml(item.email || 'No email');
+        const safeTimeline = item.timeline ? escapeHtml(item.timeline) : 'Flexible';
+        const safeMsg = escapeHtml(item.message || '');
+        const msgExcerpt = safeMsg.length > 90 ? safeMsg.slice(0, 90) + '...' : safeMsg;
+
+        return `
+          <div class="p-4 hover:bg-[#14141E] transition-colors space-y-3 cursor-pointer" onclick="openModal('${item.id}')">
+            <div class="flex items-center justify-between gap-2">
+              <div>${typeBadge}</div>
+              <span class="text-[11px] font-space text-neutral-400 font-mono">${dateStr} &bull; ${timeStr}</span>
+            </div>
+            <div>
+              <div class="font-bold text-white text-base font-kanit tracking-tight">${safeName}</div>
+              <div class="font-space text-xs text-[#CBFE00] flex items-center gap-1.5 mt-0.5">
+                <span>${safeEmail}</span>
+              </div>
+            </div>
+            <div class="text-xs text-neutral-300 bg-[#050508] p-3 rounded-xl border border-[#1A1A24] font-kanit line-clamp-3">
+              ${msgExcerpt}
+            </div>
+            <div class="flex items-center justify-between pt-1" onclick="event.stopPropagation()">
+              <div class="text-[11px] font-space text-neutral-400">
+                <span class="text-neutral-500">Timeline:</span> <span class="text-neutral-200">${safeTimeline}</span>
+              </div>
+              <div class="flex items-center gap-1.5">
+                <button onclick="openModal('${item.id}')" class="px-3 py-1.5 rounded-lg bg-[#050508] hover:bg-[#1f1f2e] border border-[#222230] text-xs font-space text-white">
+                  View
+                </button>
+                <a href="mailto:${encodeURIComponent(item.email)}?subject=Re:%20${encodeURIComponent(item.inquiry_type || 'JayDyMilla Booking')}" class="px-3 py-1.5 rounded-lg bg-[#CBFE00]/15 hover:bg-[#CBFE00] text-[#CBFE00] hover:text-black border border-[#CBFE00]/30 font-bold text-xs font-space transition-colors">
+                  Reply
+                </a>
+                <button onclick="deleteInquiry('${item.id}')" class="p-1.5 rounded-lg text-neutral-500 hover:text-rose-400 hover:bg-rose-500/10 transition-colors" title="Delete">
+                  <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+  }
 
     function getBadgeForType(type = '') {
       if (/festival/i.test(type)) {

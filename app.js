@@ -1097,7 +1097,23 @@
             throw new Error(data.error || 'API response indicated failure');
           }
         } else {
-          throw new Error('API dispatch returned status ' + response.status);
+          const errData = await response.json().catch(() => ({}));
+          if (response.status === 429) {
+            // Strict Rate Limiting: inform user directly without attempting unauthorized database fallback
+            if (errorBanner && errorText) {
+              errorText.textContent = errData.error || 'Too many submissions from this network. Please wait 15 minute(s) before submitting again.';
+              errorBanner.classList.remove('hidden');
+              errorBanner.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+            isSubmitting = false;
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.removeAttribute('aria-busy');
+              submitBtn.innerHTML = originalBtnHtml;
+            }
+            return;
+          }
+          throw new Error(errData.error || ('API dispatch returned status ' + response.status));
         }
       } catch (apiErr) {
         console.warn('[Inquiry API dispatch failed, initiating Supabase direct fallback]:', apiErr);
@@ -1113,7 +1129,7 @@
             body: JSON.stringify({
               name,
               email,
-              inquiry_type: inquiryType,
+              inquiry_type: inquiryType || 'General Professional Inquiry',
               timeline: timeline || null,
               message
             })
