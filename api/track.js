@@ -3,6 +3,27 @@
 
 import crypto from 'node:crypto';
 
+
+// In-Memory Telemetry Rate Throttle (Prevents database exhaustion & hit flooding)
+const trackRateLimits = new Map();
+const MAX_TRACK_PER_MIN = 30;
+const TRACK_WINDOW_MS = 60 * 1000;
+
+function checkTrackThrottle(ip) {
+  const now = Date.now();
+  const rec = trackRateLimits.get(ip) || { count: 0, resetAt: now + TRACK_WINDOW_MS };
+  if (now > rec.resetAt) {
+    rec.count = 0;
+    rec.resetAt = now + TRACK_WINDOW_MS;
+  }
+  if (rec.count >= MAX_TRACK_PER_MIN) {
+    return false;
+  }
+  rec.count += 1;
+  trackRateLimits.set(ip, rec);
+  return true;
+}
+
 export default async function handler(req, res) {
   // CORS Configuration
   const origin = req.headers.origin;
@@ -31,6 +52,11 @@ export default async function handler(req, res) {
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
+  const clientIP = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket?.remoteAddress || '127.0.0.1';
+  if (!checkTrackThrottle(clientIP)) {
+    return res.status(200).json({ success: true, throttled: true });
   }
 
   try {

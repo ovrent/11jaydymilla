@@ -1,6 +1,28 @@
 // api/inquiry.js - Vercel Serverless Function
 // Handles inquiry submissions: saves to Supabase and dispatches Resend notification emails.
 
+
+// In-Memory Rate Limiting for Public Inquiries (Mitigates email bombing & quota exhaustion)
+const inquiryRateLimits = new Map();
+const MAX_INQUIRIES_PER_IP = 5;
+const INQUIRY_WINDOW_MS = 15 * 60 * 1000; // 15 minutes
+
+function checkInquiryRateLimit(ip) {
+  const now = Date.now();
+  const record = inquiryRateLimits.get(ip) || { count: 0, resetAt: now + INQUIRY_WINDOW_MS };
+  if (now > record.resetAt) {
+    record.count = 0;
+    record.resetAt = now + INQUIRY_WINDOW_MS;
+  }
+  if (record.count >= MAX_INQUIRIES_PER_IP) {
+    const remainingMins = Math.ceil((record.resetAt - now) / 60000);
+    return { allowed: false, remainingMins };
+  }
+  record.count += 1;
+  inquiryRateLimits.set(ip, record);
+  return { allowed: true };
+}
+
 export default async function handler(req, res) {
   // Restricted CORS Configuration
   const origin = req.headers.origin;
@@ -32,6 +54,14 @@ export default async function handler(req, res) {
 
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
+  const clientIP = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket?.remoteAddress || '127.0.0.1';
+  const rateCheck = checkInquiryRateLimit(clientIP);
+  if (!rateCheck.allowed) {
+    return res.status(429).json({
+      error: `Too many submissions from this network. Please wait ${rateCheck.remainingMins} minute(s) before submitting again.`
+    });
   }
 
   try {

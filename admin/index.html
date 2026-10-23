@@ -1789,7 +1789,11 @@
 
         allInquiries.forEach(item => {
           const row = headers.map(h => {
-            const val = item[h] ? String(item[h]).replace(/"/g, '""') : '';
+            let val = item[h] ? String(item[h]).replace(/"/g, '""') : '';
+            // Neutralize CSV / Spreadsheet Formula Injection (CWE-1236)
+            if (/^[=+\-@\t\r]/.test(val)) {
+              val = "'" + val;
+            }
             return `"${val}"`;
           });
           csvRows.push(row.join(','));
