@@ -202,23 +202,19 @@ export default async function handler(req, res) {
   const action = req.query.action || (body && body.action) || 'inquiries';
 
   // =========================================================================
-  // EMERGENCY ADMIN ACCESS LOCKDOWN: All previous admin access revoked by owner.
-  // Awaiting new authorized administrator email.
+  // EXECUTIVE ACCESS AUTHORIZATION
+  // Sole authorized administrator email: music@jaydymilla.com
   // =========================================================================
-  const ADMIN_LOCKDOWN = true;
-  const AUTHORIZED_ADMINS = []; // All previous emails revoked
+  const ADMIN_LOCKDOWN = false;
+  const AUTHORIZED_ADMINS = ['music@jaydymilla.com'];
 
   // =========================================================================
   // 1. GOOGLE SIGN-IN AUTHENTICATION (OAuth 2.0 / Google Identity Services)
   // =========================================================================
   if (action === 'google_login' && req.method === 'POST') {
-    if (ADMIN_LOCKDOWN || AUTHORIZED_ADMINS.length === 0) {
+    if (ADMIN_LOCKDOWN) {
       recordFailedAttempt(clientIP);
-      await recordAuditLog(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, 'AUTH_BLOCKED_LOCKDOWN', 'google_auth_attempt', clientIP, userAgent);
-      return res.status(403).json({
-        success: false,
-        error: 'Access Denied: All admin portal access has been locked by owner. Waiting for new authorized admin email.'
-      });
+      return res.status(403).json({ success: false, error: 'Access Denied: Portal is locked.' });
     }
     const rateCheck = await checkPersistentRateLimit(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, clientIP);
     if (!rateCheck.allowed) {
@@ -252,8 +248,7 @@ export default async function handler(req, res) {
         return res.status(403).json({ success: false, error: 'Unverified Google account rejected.' });
       }
 
-      // Security Whitelist Authorization Gate: Only authorized admin emails allowed
-      const AUTHORIZED_ADMINS = [ADMIN_EMAIL, 'music@jaydymilla.com', 'colorithms@gmail.com'];
+      // Security Whitelist Authorization Gate: Sole authorized admin email
       if (!AUTHORIZED_ADMINS.includes(verifiedEmail)) {
         recordFailedAttempt(clientIP);
         await recordAuditLog(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, 'GOOGLE_AUTH_UNAUTHORIZED_ACCOUNT', verifiedEmail, clientIP, userAgent, {
@@ -317,14 +312,9 @@ export default async function handler(req, res) {
   // 2. MASTER SECURE PASSWORD LOGIN (Supabase Database + Salted Hash)
   // =========================================================================
   if (action === 'login' && req.method === 'POST') {
-    if (ADMIN_LOCKDOWN || AUTHORIZED_ADMINS.length === 0) {
-      const attemptedEmail = (body?.email || ADMIN_EMAIL).trim().toLowerCase();
+    if (ADMIN_LOCKDOWN) {
       recordFailedAttempt(clientIP);
-      await recordAuditLog(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, 'AUTH_BLOCKED_LOCKDOWN', attemptedEmail, clientIP, userAgent);
-      return res.status(403).json({
-        success: false,
-        error: 'Access Denied: All admin portal access has been locked by owner. Waiting for new authorized admin email.'
-      });
+      return res.status(403).json({ success: false, error: 'Access Denied: Portal is locked.' });
     }
 
     const rateCheck = await checkPersistentRateLimit(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, clientIP);
@@ -337,6 +327,15 @@ export default async function handler(req, res) {
 
     if (!attemptedPassword) {
       return res.status(400).json({ success: false, error: 'Password is required' });
+    }
+
+    if (!AUTHORIZED_ADMINS.includes(attemptedEmail)) {
+      recordFailedAttempt(clientIP);
+      await recordAuditLog(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, 'UNAUTHORIZED_EMAIL_ATTEMPT', attemptedEmail, clientIP, userAgent);
+      return res.status(403).json({
+        success: false,
+        error: `Access Denied: Email account (${attemptedEmail}) is not authorized for executive access.`
+      });
     }
 
     const hashedInput = crypto.createHash('sha256').update(attemptedPassword).digest('hex');
