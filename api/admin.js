@@ -202,9 +202,24 @@ export default async function handler(req, res) {
   const action = req.query.action || (body && body.action) || 'inquiries';
 
   // =========================================================================
+  // EMERGENCY ADMIN ACCESS LOCKDOWN: All previous admin access revoked by owner.
+  // Awaiting new authorized administrator email.
+  // =========================================================================
+  const ADMIN_LOCKDOWN = true;
+  const AUTHORIZED_ADMINS = []; // All previous emails revoked
+
+  // =========================================================================
   // 1. GOOGLE SIGN-IN AUTHENTICATION (OAuth 2.0 / Google Identity Services)
   // =========================================================================
   if (action === 'google_login' && req.method === 'POST') {
+    if (ADMIN_LOCKDOWN || AUTHORIZED_ADMINS.length === 0) {
+      recordFailedAttempt(clientIP);
+      await recordAuditLog(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, 'AUTH_BLOCKED_LOCKDOWN', 'google_auth_attempt', clientIP, userAgent);
+      return res.status(403).json({
+        success: false,
+        error: 'Access Denied: All admin portal access has been locked by owner. Waiting for new authorized admin email.'
+      });
+    }
     const rateCheck = await checkPersistentRateLimit(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, clientIP);
     if (!rateCheck.allowed) {
       return res.status(429).json({ success: false, error: rateCheck.error });
@@ -302,6 +317,16 @@ export default async function handler(req, res) {
   // 2. MASTER SECURE PASSWORD LOGIN (Supabase Database + Salted Hash)
   // =========================================================================
   if (action === 'login' && req.method === 'POST') {
+    if (ADMIN_LOCKDOWN || AUTHORIZED_ADMINS.length === 0) {
+      const attemptedEmail = (body?.email || ADMIN_EMAIL).trim().toLowerCase();
+      recordFailedAttempt(clientIP);
+      await recordAuditLog(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, 'AUTH_BLOCKED_LOCKDOWN', attemptedEmail, clientIP, userAgent);
+      return res.status(403).json({
+        success: false,
+        error: 'Access Denied: All admin portal access has been locked by owner. Waiting for new authorized admin email.'
+      });
+    }
+
     const rateCheck = await checkPersistentRateLimit(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, clientIP);
     if (!rateCheck.allowed) {
       return res.status(429).json({ success: false, error: rateCheck.error });
@@ -409,6 +434,7 @@ export default async function handler(req, res) {
   // 3. TOKEN VALIDATION (JWT & MASTER KEY VERIFICATION)
   // =========================================================================
   function getValidatedSession() {
+    if (ADMIN_LOCKDOWN) return null;
     const authHeader = req.headers.authorization;
     const rawToken = authHeader?.startsWith('Bearer ') ? authHeader.substring(7).trim() : null;
 

@@ -209,6 +209,15 @@
         </div>
       </div>
 
+      <!-- Emergency Security Status Notice -->
+      <div class="mb-5 p-3 rounded-xl bg-red-950/50 border border-red-500/50 flex items-center gap-3">
+        <span class="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse flex-shrink-0"></span>
+        <div class="text-[11px] font-space text-red-200 leading-tight">
+          <strong class="text-red-400 font-bold uppercase tracking-wider block">Access Locked by Owner</strong>
+          All previous credentials revoked. Awaiting new authorized administrator registration.
+        </div>
+      </div>
+
       <!-- Google Sign-In Primary CTA -->
       <div class="space-y-3">
         <button
@@ -1536,8 +1545,9 @@
           }
         });
 
-        if (res.status === 401) {
+        if (res.status === 401 || res.status === 403) {
           handleLogout();
+          showToast("Access Locked: All credentials revoked by owner.", "error");
           return;
         }
 
