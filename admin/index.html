@@ -418,170 +418,46 @@
     <!-- Navigation Tabs (Sticky Header for Desktop & Mobile) -->
     <div class="sticky top-0 z-30 bg-[#050508]/95 backdrop-acrylic pt-2 pb-2 -mx-4 px-4 sm:mx-0 sm:px-0 border-b border-[#1A1A24]">
       <nav class="flex items-center gap-2 font-space text-xs overflow-x-auto no-scrollbar whitespace-nowrap scroll-smooth py-1">
-        <button onclick="switchTab('inquiries')" id="tab-btn-inquiries" class="tab-btn px-4 py-2.5 rounded-xl bg-[#CBFE00] text-black font-bold uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2">
-          <span>Inquiries & Bookings (<span id="tab-inquiries-count">0</span>)</span>
+        <!-- Master Overview (All Live Data) -->
+        <button onclick="switchTab('overview')" id="tab-btn-overview" class="tab-btn px-4 py-2.5 rounded-xl bg-[#CBFE00] text-black font-bold uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2 shadow-lg">
+          <span class="w-2 h-2 rounded-full bg-black animate-ping"></span>
+          <span>⚡ MASTER OVERVIEW (LIVE)</span>
         </button>
+
+        <!-- Traffic & Real IP Intelligence -->
         <button onclick="switchTab('traffic')" id="tab-btn-traffic" class="tab-btn px-4 py-2.5 rounded-xl text-neutral-400 hover:text-white uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-cyan-400 animate-pulse"></span>
-          <span>Visitor Traffic & Geolocation (<span id="tab-traffic-count">0</span>)</span>
+          <span>Visitor Traffic &amp; IP Stream (<span id="tab-traffic-count">...</span>)</span>
         </button>
+
+        <!-- Inquiries & Bookings -->
+        <button onclick="switchTab('inquiries')" id="tab-btn-inquiries" class="tab-btn px-4 py-2.5 rounded-xl text-neutral-400 hover:text-white uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+          <span>Inquiries &amp; Bookings (<span id="tab-inquiries-count">...</span>)</span>
+        </button>
+
+        <!-- Audio Catalog -->
+        <button onclick="switchTab('audio')" id="tab-btn-audio" class="tab-btn px-4 py-2.5 rounded-xl text-neutral-400 hover:text-white uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2">
+          <span>🎵 Master Audio Catalog (5)</span>
+        </button>
+
+        <!-- Security Audit Logs -->
         <button onclick="switchTab('audit')" id="tab-btn-audit" class="tab-btn px-4 py-2.5 rounded-xl text-neutral-400 hover:text-white uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2">
           <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
           <span>Security Audit Logs</span>
         </button>
-        <button onclick="switchTab('buttons')" id="tab-btn-buttons" class="tab-btn px-4 py-2.5 rounded-xl text-neutral-400 hover:text-white uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2">
-          <span class="w-2 h-2 rounded-full bg-[#CBFE00]"></span>
-          <span>Originkit Buttons (/button)</span>
-        </button>
-        <button onclick="switchTab('audio')" id="tab-btn-audio" class="tab-btn px-4 py-2.5 rounded-xl text-neutral-400 hover:text-white uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2">
-          <span>Master Audio Catalog (5)</span>
-        </button>
+
+        <!-- System Diagnostics -->
         <button onclick="switchTab('diagnostics')" id="tab-btn-diagnostics" class="tab-btn px-4 py-2.5 rounded-xl text-neutral-400 hover:text-white uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2">
-          <span>System Health & Telemetry</span>
+          <span>🩺 System Health</span>
         </button>
       </nav>
     </div>
 
     <!-- =========================================================================
-         TAB 1: INQUIRIES & TRANSMISSIONS WORKSPACE
-         ========================================================================= -->
-    <section id="tab-content-inquiries" class="space-y-6">
-      <!-- Live Visitor Traffic Quick-Access Banner -->
-      <div onclick="switchTab('traffic')" class="cursor-pointer p-4 rounded-2xl bg-gradient-to-r from-[#0D0D14] via-[#0E1724] to-[#0D0D14] border border-cyan-500/40 hover:border-cyan-400 transition-all group flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
-        <div class="flex items-center gap-3">
-          <span class="w-3 h-3 rounded-full bg-cyan-400 animate-ping flex-shrink-0"></span>
-          <div>
-            <div class="text-xs font-space font-bold text-white flex items-center gap-2 flex-wrap">
-              <span class="text-cyan-400">⚡ LIVE VISITOR TRAFFIC &amp; IP INTELLIGENCE</span>
-              <span class="px-2 py-0.5 rounded-full text-[10px] bg-cyan-500/20 text-cyan-300 font-mono font-bold" id="banner-traffic-count">Loading Live Hits...</span>
-            </div>
-            <p class="text-[11px] font-space text-neutral-400 mt-0.5">Click here to see user IP addresses, countries, cities, and real-time button clicks</p>
-          </div>
-        </div>
-        <div class="flex items-center gap-2 text-cyan-400 text-xs font-space font-bold group-hover:translate-x-1 transition-transform flex-shrink-0">
-          <span>Open Traffic Tab &rarr;</span>
-        </div>
-      </div>
-
-      <!-- Metric Cards Grid -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <!-- Total Inquiries -->
-        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-4 relative overflow-hidden card-neon-hover transition-all">
-          <div class="text-[11px] font-space uppercase tracking-wider text-neutral-400">Total Transmissions</div>
-          <div id="stat-total" class="text-3xl font-bold font-kanit text-white mt-1">--</div>
-          <div class="text-[10px] font-space text-[#CBFE00] mt-1 flex items-center gap-1">
-            <span>● All-Time Logged</span>
-          </div>
-        </div>
-
-        <!-- Festival Bookings -->
-        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-4 relative overflow-hidden card-neon-hover transition-all">
-          <div class="text-[11px] font-space uppercase tracking-wider text-neutral-400">Festival Bookings</div>
-          <div id="stat-festival" class="text-3xl font-bold font-kanit text-[#CBFE00] mt-1">--</div>
-          <div class="text-[10px] font-space text-neutral-400 mt-1">Live gig offers</div>
-        </div>
-
-        <!-- Sync Licensing -->
-        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-4 relative overflow-hidden card-neon-hover transition-all">
-          <div class="text-[11px] font-space uppercase tracking-wider text-neutral-400">Sync Licensing</div>
-          <div id="stat-sync" class="text-3xl font-bold font-kanit text-cyan-400 mt-1">--</div>
-          <div class="text-[10px] font-space text-neutral-400 mt-1">Film / TV / Games / Ads</div>
-        </div>
-
-        <!-- House / Listening -->
-        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-4 relative overflow-hidden card-neon-hover transition-all">
-          <div class="text-[11px] font-space uppercase tracking-wider text-neutral-400">House &amp; Intimate</div>
-          <div id="stat-house" class="text-3xl font-bold font-kanit text-amber-400 mt-1">--</div>
-          <div class="text-[10px] font-space text-neutral-400 mt-1">Acoustic &amp; Listening Rooms</div>
-        </div>
-      </div>
-
-      <!-- Controls & Filter Toolbar -->
-      <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <!-- Search Field -->
-        <div class="relative flex-1 max-w-md">
-          <svg class="w-4 h-4 text-neutral-500 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
-          <input
-            type="text"
-            id="search-input"
-            oninput="handleSearch(this.value)"
-            placeholder="Search by name, email, timeline or message..."
-            class="w-full pl-10 pr-4 py-2.5 bg-[#050508] border border-[#222230] rounded-xl text-white placeholder-neutral-500 text-sm font-space focus:outline-none focus:border-[#CBFE00]"
-          >
-          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-space text-neutral-600 border border-neutral-800 rounded px-1.5 py-0.5">/</span>
-        </div>
-
-        <!-- Category Filter Pills -->
-        <div class="flex flex-wrap items-center gap-1.5 font-space text-xs" id="category-pills">
-          <button onclick="setFilter('ALL')" data-filter="ALL" class="filter-pill px-3 py-1.5 rounded-lg bg-[#CBFE00] text-black font-bold">
-            All
-          </button>
-          <button onclick="setFilter('Festival Booking')" data-filter="Festival Booking" class="filter-pill px-3 py-1.5 rounded-lg bg-[#050508] text-neutral-300 hover:text-white border border-[#222230]">
-            Festivals
-          </button>
-          <button onclick="setFilter('Sync Licensing')" data-filter="Sync Licensing" class="filter-pill px-3 py-1.5 rounded-lg bg-[#050508] text-neutral-300 hover:text-white border border-[#222230]">
-            Sync
-          </button>
-          <button onclick="setFilter('House Concert')" data-filter="House Concert" class="filter-pill px-3 py-1.5 rounded-lg bg-[#050508] text-neutral-300 hover:text-white border border-[#222230]">
-            House Concerts
-          </button>
-          <button onclick="setFilter('General Professional Inquiry')" data-filter="General Professional Inquiry" class="filter-pill px-3 py-1.5 rounded-lg bg-[#050508] text-neutral-300 hover:text-white border border-[#222230]">
-            General
-          </button>
-        </div>
-      </div>
-
-      <!-- Inquiries Table & Mobile Cards -->
-      <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl overflow-hidden shadow-2xl">
-        <!-- Desktop Table View (Wide screens) -->
-        <div class="hidden md:block overflow-x-auto">
-          <table class="w-full text-left text-sm font-kanit">
-            <thead class="bg-[#050508] text-neutral-400 font-space text-[11px] uppercase tracking-wider border-b border-[#1A1A24]">
-              <tr>
-                <th class="py-3 px-4">Date</th>
-                <th class="py-3 px-4">Inquirer</th>
-                <th class="py-3 px-4">Category</th>
-                <th class="py-3 px-4">Timeline</th>
-                <th class="py-3 px-4">Message Preview</th>
-                <th class="py-3 px-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="inquiries-tbody" class="divide-y divide-[#1A1A24]">
-              <!-- Loading Skeleton Rows -->
-              <tr>
-                <td colspan="6" class="py-12 text-center text-neutral-500 font-space text-xs">
-                  <div class="inline-block animate-spin w-5 h-5 border-2 border-[#CBFE00] border-t-transparent rounded-full mb-2"></div>
-                  <div>Loading live transmissions from Supabase...</div>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <!-- Mobile Card Feed View (Phone screens: touch-friendly, no sideways scrolling) -->
-        <div id="inquiries-mobile-cards" class="md:hidden divide-y divide-[#1A1A24]">
-          <div class="py-12 px-4 text-center text-neutral-500 font-space text-xs">
-            <div class="inline-block animate-spin w-5 h-5 border-2 border-[#CBFE00] border-t-transparent rounded-full mb-2"></div>
-            <div>Loading inquiries...</div>
-          </div>
-        </div>
-
-        <!-- Table Footer / Count -->
-        <div class="px-4 py-3 bg-[#050508] border-t border-[#1A1A24] flex items-center justify-between text-xs font-space text-neutral-500">
-          <div>
-            Showing <span id="filtered-count" class="text-white font-bold">0</span> of <span id="total-count" class="text-white">0</span> transmissions
-          </div>
-          <div class="text-[11px]">
-            Encrypted API Transport &bull; PostgreSQL 15 Active
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- =========================================================================
          TAB: VISITOR TRAFFIC & GEOLOCATION TELEMETRY
          ========================================================================= -->
-    <section id="tab-content-traffic" class="hidden space-y-6">
+    <section id="tab-content-traffic" class="space-y-6">
       <!-- Traffic Summary Metrics -->
       <div class="grid grid-cols-2 md:grid-cols-5 gap-3.5">
         <!-- Card 1: Today's Clicks & Visits -->
@@ -767,6 +643,142 @@
         <!-- Mobile Traffic Feed Cards -->
         <div id="traffic-mobile-cards" class="md:hidden divide-y divide-[#161622]">
           <div class="py-8 text-center text-neutral-500 font-space text-xs">Loading real-time visitor activity...</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- =========================================================================
+         TAB 1: INQUIRIES & TRANSMISSIONS WORKSPACE
+         ========================================================================= -->
+    <section id="tab-content-inquiries" class="space-y-6">
+      <!-- Live Visitor Traffic Quick-Access Banner -->
+      <div onclick="switchTab('traffic')" class="cursor-pointer p-4 rounded-2xl bg-gradient-to-r from-[#0D0D14] via-[#0E1724] to-[#0D0D14] border border-cyan-500/40 hover:border-cyan-400 transition-all group flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-lg">
+        <div class="flex items-center gap-3">
+          <span class="w-3 h-3 rounded-full bg-cyan-400 animate-ping flex-shrink-0"></span>
+          <div>
+            <div class="text-xs font-space font-bold text-white flex items-center gap-2 flex-wrap">
+              <span class="text-cyan-400">⚡ LIVE VISITOR TRAFFIC &amp; IP INTELLIGENCE</span>
+              <span class="px-2 py-0.5 rounded-full text-[10px] bg-cyan-500/20 text-cyan-300 font-mono font-bold" id="banner-traffic-count">Loading Live Hits...</span>
+            </div>
+            <p class="text-[11px] font-space text-neutral-400 mt-0.5">Click here to see user IP addresses, countries, cities, and real-time button clicks</p>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 text-cyan-400 text-xs font-space font-bold group-hover:translate-x-1 transition-transform flex-shrink-0">
+          <span>Open Traffic Tab &rarr;</span>
+        </div>
+      </div>
+
+      <!-- Metric Cards Grid -->
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        <!-- Total Inquiries -->
+        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-4 relative overflow-hidden card-neon-hover transition-all">
+          <div class="text-[11px] font-space uppercase tracking-wider text-neutral-400">Total Transmissions</div>
+          <div id="stat-total" class="text-3xl font-bold font-kanit text-white mt-1">--</div>
+          <div class="text-[10px] font-space text-[#CBFE00] mt-1 flex items-center gap-1">
+            <span>● All-Time Logged</span>
+          </div>
+        </div>
+
+        <!-- Festival Bookings -->
+        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-4 relative overflow-hidden card-neon-hover transition-all">
+          <div class="text-[11px] font-space uppercase tracking-wider text-neutral-400">Festival Bookings</div>
+          <div id="stat-festival" class="text-3xl font-bold font-kanit text-[#CBFE00] mt-1">--</div>
+          <div class="text-[10px] font-space text-neutral-400 mt-1">Live gig offers</div>
+        </div>
+
+        <!-- Sync Licensing -->
+        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-4 relative overflow-hidden card-neon-hover transition-all">
+          <div class="text-[11px] font-space uppercase tracking-wider text-neutral-400">Sync Licensing</div>
+          <div id="stat-sync" class="text-3xl font-bold font-kanit text-cyan-400 mt-1">--</div>
+          <div class="text-[10px] font-space text-neutral-400 mt-1">Film / TV / Games / Ads</div>
+        </div>
+
+        <!-- House / Listening -->
+        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-4 relative overflow-hidden card-neon-hover transition-all">
+          <div class="text-[11px] font-space uppercase tracking-wider text-neutral-400">House &amp; Intimate</div>
+          <div id="stat-house" class="text-3xl font-bold font-kanit text-amber-400 mt-1">--</div>
+          <div class="text-[10px] font-space text-neutral-400 mt-1">Acoustic &amp; Listening Rooms</div>
+        </div>
+      </div>
+
+      <!-- Controls & Filter Toolbar -->
+      <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-4 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <!-- Search Field -->
+        <div class="relative flex-1 max-w-md">
+          <svg class="w-4 h-4 text-neutral-500 absolute left-3.5 top-1/2 -translate-y-1/2" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/></svg>
+          <input
+            type="text"
+            id="search-input"
+            oninput="handleSearch(this.value)"
+            placeholder="Search by name, email, timeline or message..."
+            class="w-full pl-10 pr-4 py-2.5 bg-[#050508] border border-[#222230] rounded-xl text-white placeholder-neutral-500 text-sm font-space focus:outline-none focus:border-[#CBFE00]"
+          >
+          <span class="absolute right-3 top-1/2 -translate-y-1/2 text-[10px] font-space text-neutral-600 border border-neutral-800 rounded px-1.5 py-0.5">/</span>
+        </div>
+
+        <!-- Category Filter Pills -->
+        <div class="flex flex-wrap items-center gap-1.5 font-space text-xs" id="category-pills">
+          <button onclick="setFilter('ALL')" data-filter="ALL" class="filter-pill px-3 py-1.5 rounded-lg bg-[#CBFE00] text-black font-bold">
+            All
+          </button>
+          <button onclick="setFilter('Festival Booking')" data-filter="Festival Booking" class="filter-pill px-3 py-1.5 rounded-lg bg-[#050508] text-neutral-300 hover:text-white border border-[#222230]">
+            Festivals
+          </button>
+          <button onclick="setFilter('Sync Licensing')" data-filter="Sync Licensing" class="filter-pill px-3 py-1.5 rounded-lg bg-[#050508] text-neutral-300 hover:text-white border border-[#222230]">
+            Sync
+          </button>
+          <button onclick="setFilter('House Concert')" data-filter="House Concert" class="filter-pill px-3 py-1.5 rounded-lg bg-[#050508] text-neutral-300 hover:text-white border border-[#222230]">
+            House Concerts
+          </button>
+          <button onclick="setFilter('General Professional Inquiry')" data-filter="General Professional Inquiry" class="filter-pill px-3 py-1.5 rounded-lg bg-[#050508] text-neutral-300 hover:text-white border border-[#222230]">
+            General
+          </button>
+        </div>
+      </div>
+
+      <!-- Inquiries Table & Mobile Cards -->
+      <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl overflow-hidden shadow-2xl">
+        <!-- Desktop Table View (Wide screens) -->
+        <div class="hidden md:block overflow-x-auto">
+          <table class="w-full text-left text-sm font-kanit">
+            <thead class="bg-[#050508] text-neutral-400 font-space text-[11px] uppercase tracking-wider border-b border-[#1A1A24]">
+              <tr>
+                <th class="py-3 px-4">Date</th>
+                <th class="py-3 px-4">Inquirer</th>
+                <th class="py-3 px-4">Category</th>
+                <th class="py-3 px-4">Timeline</th>
+                <th class="py-3 px-4">Message Preview</th>
+                <th class="py-3 px-4 text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="inquiries-tbody" class="divide-y divide-[#1A1A24]">
+              <!-- Loading Skeleton Rows -->
+              <tr>
+                <td colspan="6" class="py-12 text-center text-neutral-500 font-space text-xs">
+                  <div class="inline-block animate-spin w-5 h-5 border-2 border-[#CBFE00] border-t-transparent rounded-full mb-2"></div>
+                  <div>Loading live transmissions from Supabase...</div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Mobile Card Feed View (Phone screens: touch-friendly, no sideways scrolling) -->
+        <div id="inquiries-mobile-cards" class="md:hidden divide-y divide-[#1A1A24]">
+          <div class="py-12 px-4 text-center text-neutral-500 font-space text-xs">
+            <div class="inline-block animate-spin w-5 h-5 border-2 border-[#CBFE00] border-t-transparent rounded-full mb-2"></div>
+            <div>Loading inquiries...</div>
+          </div>
+        </div>
+
+        <!-- Table Footer / Count -->
+        <div class="px-4 py-3 bg-[#050508] border-t border-[#1A1A24] flex items-center justify-between text-xs font-space text-neutral-500">
+          <div>
+            Showing <span id="filtered-count" class="text-white font-bold">0</span> of <span id="total-count" class="text-white">0</span> transmissions
+          </div>
+          <div class="text-[11px]">
+            Encrypted API Transport &bull; PostgreSQL 15 Active
+          </div>
         </div>
       </div>
     </section>
@@ -1333,21 +1345,57 @@
 
     // Switch Tabs
     function switchTab(tabId) {
-      ['inquiries', 'traffic', 'audit', 'buttons', 'audio', 'diagnostics'].forEach(id => {
+      const allTabs = ['overview', 'traffic', 'inquiries', 'audit', 'audio', 'diagnostics'];
+      allTabs.forEach(id => {
         const btn = document.getElementById(`tab-btn-${id}`);
-        const content = document.getElementById(`tab-content-${id}`);
-        if (!btn || !content) return;
+        if (!btn) return;
         if (id === tabId) {
-          btn.className = 'tab-btn px-4 py-2 rounded-lg bg-[#CBFE00] text-black font-bold uppercase transition-all flex items-center gap-1.5';
-          content.classList.remove('hidden');
+          btn.className = 'tab-btn px-4 py-2.5 rounded-xl bg-[#CBFE00] text-black font-bold uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2 shadow-lg';
         } else {
-          btn.className = 'tab-btn px-4 py-2 rounded-lg text-neutral-400 hover:text-white uppercase transition-all flex items-center gap-1.5';
-          content.classList.add('hidden');
+          btn.className = 'tab-btn px-4 py-2.5 rounded-xl text-neutral-400 hover:text-white uppercase transition-all whitespace-nowrap flex-shrink-0 flex items-center gap-2';
         }
       });
-      if (tabId === 'traffic') fetchTrafficAnalytics();
-      if (tabId === 'audio') renderAudioCatalog();
-      if (tabId === 'audit') fetchAuditLogs();
+
+      const inqContent = document.getElementById('tab-content-inquiries');
+      const trafContent = document.getElementById('tab-content-traffic');
+      const auditContent = document.getElementById('tab-content-audit');
+      const audioContent = document.getElementById('tab-content-audio');
+      const diagContent = document.getElementById('tab-content-diagnostics');
+
+      // Hide secondary panels by default
+      if (auditContent) auditContent.classList.add('hidden');
+      if (audioContent) audioContent.classList.add('hidden');
+      if (diagContent) diagContent.classList.add('hidden');
+
+      if (tabId === 'overview') {
+        // Show BOTH Traffic & Inquiries together on Master Overview!
+        if (trafContent) trafContent.classList.remove('hidden');
+        if (inqContent) inqContent.classList.remove('hidden');
+        fetchTrafficAnalytics();
+        fetchInquiries();
+      } else if (tabId === 'traffic') {
+        if (trafContent) trafContent.classList.remove('hidden');
+        if (inqContent) inqContent.classList.add('hidden');
+        fetchTrafficAnalytics();
+      } else if (tabId === 'inquiries') {
+        if (trafContent) trafContent.classList.add('hidden');
+        if (inqContent) inqContent.classList.remove('hidden');
+        fetchInquiries();
+      } else if (tabId === 'audio') {
+        if (trafContent) trafContent.classList.add('hidden');
+        if (inqContent) inqContent.classList.add('hidden');
+        if (audioContent) audioContent.classList.remove('hidden');
+        renderAudioCatalog();
+      } else if (tabId === 'audit') {
+        if (trafContent) trafContent.classList.add('hidden');
+        if (inqContent) inqContent.classList.add('hidden');
+        if (auditContent) auditContent.classList.remove('hidden');
+        fetchAuditLogs();
+      } else if (tabId === 'diagnostics') {
+        if (trafContent) trafContent.classList.add('hidden');
+        if (inqContent) inqContent.classList.add('hidden');
+        if (diagContent) diagContent.classList.remove('hidden');
+      }
     }
 
 
