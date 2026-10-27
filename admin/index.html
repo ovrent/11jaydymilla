@@ -643,6 +643,37 @@
         <!-- Mobile Traffic Feed Cards -->
         <div id="traffic-mobile-cards" class="md:hidden divide-y divide-[#161622]">
           <div class="py-8 text-center text-neutral-500 font-space text-xs">Loading real-time visitor activity...</div>
+
+          <!-- 5. Originkit Venom Symbiote Button (/venom-button, /battenmakdi) -->
+          <div class="col-span-1 md:col-span-2 bg-[#050508] border border-[#CBFE00]/40 rounded-2xl p-6 space-y-4 hover:border-[#CBFE00] transition-colors shadow-[0_0_30px_rgba(203,254,0,0.06)]">
+            <div class="flex items-center justify-between">
+              <div>
+                <div class="flex items-center gap-2">
+                  <h3 class="font-bold font-kanit text-base text-white">5. Originkit Venom Button (WebGL Symbiote Physics)</h3>
+                  <span class="px-2 py-0.5 rounded text-[10px] font-space font-bold uppercase bg-[#CBFE00]/15 text-[#CBFE00] border border-[#CBFE00]/40">
+                    /battenmakdi /venom-button
+                  </span>
+                </div>
+                <p class="text-xs font-space text-neutral-400 mt-1">Live WebGL2 raymarching shader with spider glove cursor & dynamic symbiote tendrils snapping to cursor</p>
+              </div>
+              <span class="text-[10px] font-space text-[#CBFE00] border border-[#CBFE00]/30 rounded px-2.5 py-1 uppercase font-bold">New Component</span>
+            </div>
+
+            <div class="h-[320px] w-full flex items-center justify-center bg-[#000000] rounded-xl border border-dashed border-[#222230] relative overflow-hidden">
+              <div 
+                data-originkit-venom 
+                data-label="WE ARE VENOM // ORIGINKIT LAB" 
+                data-shine="#CBFE00" 
+                data-goo-color="#050508" 
+                data-size="76" 
+                data-strands="9" 
+                data-reach="180" 
+                data-cursor="glove" 
+                class="w-full h-full flex items-center justify-center cursor-none"
+              ></div>
+            </div>
+          </div>
+
         </div>
       </div>
     </section>
@@ -2287,5 +2318,8 @@
     });
 
   </script>
+  <!-- Originkit Venom Button Component Bundle -->
+  <script src="/components/originkit/ui/venom-button.bundle.js" defer></script>
+
 </body>
 </html>

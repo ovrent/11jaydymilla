@@ -189,6 +189,7 @@
         <!-- Desktop Navigation Links -->
         <nav class="hidden lg:flex items-center gap-7 font-kanit font-semibold text-xs tracking-[0.08em] uppercase">
           <a href="#cinematic-motion" class="nav-link">Experience</a>
+          <a href="#venom-showcase" class="nav-link text-[#CBFE00] flex items-center gap-1"><span>🕷️</span><span>Venom CTA</span></a>
           <a href="#story" class="nav-link">Story</a>
           <a href="#catalog" class="nav-link">Releases</a>
           <a href="#studio" class="nav-link">Studio</a>
@@ -225,7 +226,8 @@
     </div>
     <nav class="flex flex-col gap-5 py-8 font-kanit font-bold text-lg tracking-wide uppercase">
       <a href="#cinematic-motion" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">01 / Experience</a>
-      <a href="#story" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">02 / Artist Story</a>
+      <a href="#venom-showcase" class="mobile-nav-link text-[#CBFE00] hover:text-white transition-colors">02 / Venom Symbiote 🕷️</a>
+      <a href="#story" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">03 / Artist Story</a>
       <a href="#catalog" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">03 / Release Catalog</a>
       <a href="#studio" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">04 / Studio & Gear</a>
       <a href="#global-dance" class="mobile-nav-link text-white/80 hover:text-[#CBFE00] transition-colors">05 / Global Rhythm</a>
@@ -379,6 +381,62 @@
         </div>
 
       </div>
+    </div>
+  </section>
+
+
+  <!-- ========================================================================
+       VENOM SYMBIOTE INTERACTIVE CTA SHOWCASE (/venom-button, /battenmakdi)
+       ======================================================================== -->
+  <section id="venom-showcase" class="py-20 sm:py-28 bg-[#000000] border-t border-white/10 relative overflow-hidden" aria-label="Originkit Venom Button Interactive Showcase">
+    <div class="inner-container">
+      
+      <div class="text-center max-w-3xl mx-auto mb-10">
+        <div class="inline-flex items-center gap-2 font-space text-xs text-[#CBFE00] font-semibold tracking-widest uppercase mb-3 px-3.5 py-1.5 rounded-full bg-[#CBFE00]/10 border border-[#CBFE00]/30 shadow-[0_0_20px_rgba(203,254,0,0.15)]">
+          <span class="w-2 h-2 rounded-full bg-[#CBFE00] animate-ping"></span>
+          <span>ORIGINKIT • VENOM BUTTON COMPONENT (/battenmakdi)</span>
+        </div>
+        <h2 class="stealth-heading text-3xl sm:text-4xl md:text-5xl uppercase mb-4">
+          THE SYMBIOTE FREQUENCY
+        </h2>
+        <p class="font-kanit text-white/70 text-base sm:text-lg max-w-xl mx-auto">
+          Hover your cursor near the button to awaken the living symbiote mass. Watch the tendrils stretch, reach, grip, and snap to your pointer with WebGL2 physics.
+        </p>
+      </div>
+
+      <!-- Main Stage Interactive Venom Button -->
+      <div class="stealth-card p-4 sm:p-8 bg-[#050508] border-[#CBFE00]/30 relative rounded-3xl overflow-hidden shadow-[0_0_60px_rgba(203,254,0,0.12)]">
+        <div class="w-full h-[380px] sm:h-[450px] flex items-center justify-center relative rounded-2xl overflow-hidden bg-black/95 border border-white/10">
+          <div 
+            data-originkit-venom 
+            data-label="WE ARE VENOM // BOOK 2026 TOUR" 
+            data-shine="#CBFE00" 
+            data-goo-color="#050508" 
+            data-size="80" 
+            data-strands="9" 
+            data-reach="190" 
+            data-cursor="glove" 
+            data-target="#booking"
+            class="w-full h-full flex items-center justify-center"
+          ></div>
+        </div>
+        
+        <div class="flex flex-wrap items-center justify-between gap-4 mt-6 pt-6 border-t border-white/10 font-space text-xs text-white/60">
+          <div class="flex items-center gap-2">
+            <span class="text-cyan-400">🕷️</span>
+            <span>CUSTOM ROBOTIC / SPIDER GLOVE CURSOR ACTIVE</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-[#CBFE00]">⚡</span>
+            <span>ACID LIME SPECULAR GLINT (#CBFE00)</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-pink-400">🧪</span>
+            <span>REAL-TIME WEBGL2 RAYMARCHING PHYSICS</span>
+          </div>
+        </div>
+      </div>
+
     </div>
   </section>
 
@@ -1567,5 +1625,8 @@
 
   <!-- Application Logic -->
   <script src="app.js?v=10"></script>
+  <!-- Originkit Venom Button Component Bundle -->
+  <script src="components/originkit/ui/venom-button.bundle.js" defer></script>
+
 </body>
 </html>

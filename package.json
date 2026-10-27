@@ -1,0 +1,25 @@
+{
+  "name": "11jaydymilla",
+  "version": "1.0.0",
+  "description": "[![Live Website](https://img.shields.io/badge/Production-Live%20on%20jaydymilla.com-success?style=for-the-badge&logo=vercel)](https://jaydymilla.com)\r [![GitHub Repository](https://img.shields.io/badge/GitHub-ovrent%2F11jaydymilla-181717?style=for-the-badge&logo=github)](https://github.com/ovrent/11jaydymilla)\r [![MusicBrainz](https://img.shields.io/badge/MusicBrainz-Verified%20Entity-EB743B?style=for-the-badge&logo=musicbrainz)](https://musicbrainz.org/artist/80288c08-98f3-4cfa-81dc-a3bad4fc603c)\r [![Database](https://img.shields.io/badge/Supabase-PostgreSQL%20Active-3ECF8E?style=for-the-badge&logo=supabase)](https://supabase.com)",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ovrent/11jaydymilla.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/ovrent/11jaydymilla/issues"
+  },
+  "homepage": "https://github.com/ovrent/11jaydymilla#readme",
+  "dependencies": {
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1"
+  }
+}
