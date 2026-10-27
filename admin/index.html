@@ -568,37 +568,51 @@
     <section id="tab-content-traffic" class="hidden space-y-6">
       <!-- Traffic Summary Metrics -->
       <div class="grid grid-cols-2 md:grid-cols-5 gap-3.5">
+        <!-- Card 1: Today's Clicks & Visits -->
         <div class="bg-[#0D0D12] border border-[#1A1A24] p-4 rounded-xl relative overflow-hidden">
           <div class="flex items-center justify-between">
-            <div class="text-[10px] font-space uppercase tracking-widest text-[#CBFE00]">Today's Clicks & Visits</div>
+            <div class="text-[10px] font-space uppercase tracking-widest text-[#CBFE00]">Today's Activity</div>
             <span class="w-2 h-2 rounded-full bg-[#CBFE00] animate-ping"></span>
           </div>
-          <div id="traffic-today-views" class="text-2xl font-bold font-kanit text-[#CBFE00] mt-1">0</div>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span id="traffic-today-views" class="text-2xl font-bold font-kanit text-[#CBFE00]">0</span>
+            <span class="text-xs text-neutral-400 font-space">views</span>
+            <span class="text-neutral-600">/</span>
+            <span id="traffic-today-clicks" class="text-xl font-bold font-kanit text-cyan-400">0</span>
+            <span class="text-xs text-neutral-400 font-space">clicks</span>
+          </div>
           <div class="text-[10px] text-neutral-400 font-space mt-1">
             <span id="traffic-today-unique" class="text-white font-bold">0</span> unique people today
           </div>
         </div>
 
+        <!-- Card 2: Total Clicks & Engagement -->
         <div class="bg-[#0D0D12] border border-[#1A1A24] p-4 rounded-xl">
-          <div class="text-[10px] font-space uppercase tracking-widest text-neutral-400">Total All-Time Views</div>
-          <div id="traffic-total-views" class="text-2xl font-bold font-kanit text-white mt-1">0</div>
+          <div class="text-[10px] font-space uppercase tracking-widest text-neutral-400">Total User Clicks</div>
+          <div class="flex items-baseline gap-2 mt-1">
+            <span id="traffic-total-clicks" class="text-2xl font-bold font-kanit text-cyan-400">0</span>
+            <span id="traffic-ctr" class="text-xs font-bold text-[#CBFE00] font-space">(0% CTR)</span>
+          </div>
           <div class="text-[10px] text-neutral-500 font-space mt-1">
-            <span id="traffic-unique-visitors" class="text-cyan-400 font-bold">0</span> all-time unique
+            <span id="traffic-total-views" class="text-white font-bold">0</span> all-time views
           </div>
         </div>
 
+        <!-- Card 3: Top Clicked Feature -->
         <div class="bg-[#0D0D12] border border-[#1A1A24] p-4 rounded-xl">
-          <div class="text-[10px] font-space uppercase tracking-widest text-neutral-400">Top Country</div>
-          <div id="traffic-top-country" class="text-xl font-bold font-kanit text-white mt-1 truncate">Loading...</div>
+          <div class="text-[10px] font-space uppercase tracking-widest text-neutral-400">Top Clicked Action</div>
+          <div id="traffic-top-click" class="text-sm font-bold font-kanit text-white mt-1 truncate">None Yet</div>
+          <div id="traffic-top-click-sub" class="text-[10px] text-[#CBFE00] font-space mt-1 truncate">Most clicked CTA / track</div>
+        </div>
+
+        <!-- Card 4: Top Geographical Hotspot -->
+        <div class="bg-[#0D0D12] border border-[#1A1A24] p-4 rounded-xl">
+          <div class="text-[10px] font-space uppercase tracking-widest text-neutral-400">Top Country & City</div>
+          <div id="traffic-top-country" class="text-lg font-bold font-kanit text-white mt-1 truncate">Loading...</div>
           <div id="traffic-top-country-pct" class="text-[10px] text-emerald-400 font-space mt-1">0% of total visits</div>
         </div>
 
-        <div class="bg-[#0D0D12] border border-[#1A1A24] p-4 rounded-xl">
-          <div class="text-[10px] font-space uppercase tracking-widest text-neutral-400">Top Acquisition Source</div>
-          <div id="traffic-top-source" class="text-xl font-bold font-kanit text-cyan-400 mt-1 truncate">Direct</div>
-          <div class="text-[10px] text-neutral-500 font-space mt-1">Organic / Social / Direct</div>
-        </div>
-
+        <!-- Card 5: Device Platform -->
         <div class="bg-[#0D0D12] border border-[#1A1A24] p-4 rounded-xl col-span-2 md:col-span-1">
           <div class="text-[10px] font-space uppercase tracking-widest text-neutral-400">Device Platform</div>
           <div class="flex items-center justify-between mt-1">
@@ -611,16 +625,53 @@
         </div>
       </div>
 
-      <!-- Top Origins & Acquisition Breakdown Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <!-- Geolocation by Country & City -->
+      <!-- Strategic Website Growth Ideas Card -->
+      <div class="bg-gradient-to-r from-[#0D0D12] via-[#10141A] to-[#0D0D12] border border-[#CBFE00]/30 rounded-2xl p-6 relative overflow-hidden">
+        <div class="flex items-center justify-between pb-4 mb-4 border-b border-[#1A1A24]">
+          <div class="flex items-center gap-2.5">
+            <span class="text-xl">💡</span>
+            <div>
+              <h3 class="text-base font-bold font-kanit text-white">Website Growth & Fan Action Recommendations</h3>
+              <p class="text-[11px] font-space text-neutral-400">Automated insights based on visitor locations, IP addresses & click patterns</p>
+            </div>
+          </div>
+          <span class="px-2.5 py-1 rounded-full text-[10px] font-space font-bold uppercase bg-[#CBFE00]/15 text-[#CBFE00] border border-[#CBFE00]/40">
+            Growth AI
+          </span>
+        </div>
+
+        <div id="traffic-growth-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3.5">
+          <div class="p-3.5 rounded-xl bg-[#050508]/80 border border-[#222230] text-xs font-space text-neutral-400">
+            Analyzing audience telemetry...
+          </div>
+        </div>
+      </div>
+
+      <!-- Origins, Clicks & Channels Breakdown Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- 1. Top Clicked Buttons & CTA Conversions -->
+        <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-6">
+          <div class="flex items-center justify-between pb-4 mb-4 border-b border-[#1A1A24]">
+            <div class="flex items-center gap-2">
+              <span class="text-lg">🖱️</span>
+              <h3 class="text-base font-bold font-kanit text-white">Top Clicked Buttons</h3>
+            </div>
+            <span class="text-[10px] font-space text-neutral-500 uppercase tracking-widest">Clicks</span>
+          </div>
+
+          <div class="space-y-3" id="traffic-clicks-container">
+            <div class="py-8 text-center text-xs text-neutral-500 font-space">Listening for user clicks...</div>
+          </div>
+        </div>
+
+        <!-- 2. Geolocation by Country & City -->
         <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-6">
           <div class="flex items-center justify-between pb-4 mb-4 border-b border-[#1A1A24]">
             <div class="flex items-center gap-2">
               <span class="text-lg">🌍</span>
-              <h3 class="text-base font-bold font-kanit text-white">Visitor Origins (Country & City)</h3>
+              <h3 class="text-base font-bold font-kanit text-white">Visitor Origins</h3>
             </div>
-            <span class="text-[10px] font-space text-neutral-500 uppercase tracking-widest">Global Telemetry</span>
+            <span class="text-[10px] font-space text-neutral-500 uppercase tracking-widest">Locations</span>
           </div>
 
           <div class="space-y-3" id="traffic-countries-container">
@@ -635,14 +686,14 @@
           </div>
         </div>
 
-        <!-- Acquisition Sources & Popular Pages -->
+        <!-- 3. Acquisition Sources & Popular Pages -->
         <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-6">
           <div class="flex items-center justify-between pb-4 mb-4 border-b border-[#1A1A24]">
             <div class="flex items-center gap-2">
               <span class="text-lg">🔗</span>
-              <h3 class="text-base font-bold font-kanit text-white">Acquisition Sources & Pages</h3>
+              <h3 class="text-base font-bold font-kanit text-white">Traffic Sources</h3>
             </div>
-            <span class="text-[10px] font-space text-neutral-500 uppercase tracking-widest">Referrals</span>
+            <span class="text-[10px] font-space text-neutral-500 uppercase tracking-widest">Channels</span>
           </div>
 
           <div class="space-y-3" id="traffic-sources-container">
@@ -658,17 +709,17 @@
         </div>
       </div>
 
-      <!-- Real-Time Visitor Log Stream Table -->
+      <!-- Real-Time Visitor & Click Log Stream Table -->
       <div class="bg-[#0D0D12] border border-[#1A1A24] rounded-2xl p-6">
         <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-4 pb-4 border-b border-[#1A1A24]">
           <div>
             <div class="flex items-center gap-2">
-              <h3 class="text-lg font-bold font-kanit text-white">Real-Time Visitor Log Stream</h3>
+              <h3 class="text-lg font-bold font-kanit text-white">Real-Time Visitor & Click Log Stream</h3>
               <span class="px-2 py-0.5 rounded-full text-[10px] font-space font-bold uppercase bg-cyan-500/15 text-cyan-400 border border-cyan-500/30">
                 Live Edge Hits
               </span>
             </div>
-            <p class="text-xs font-space text-neutral-400 mt-1">Latest inbound requests captured across JayDyMilla digital domains</p>
+            <p class="text-xs font-space text-neutral-400 mt-1">Live incoming clicks, IP addresses, location signals, and device platforms</p>
           </div>
           <button onclick="fetchTrafficAnalytics()" class="px-3.5 py-1.5 rounded-lg bg-[#14141E] hover:bg-[#1E1E2C] border border-[#222232] text-xs font-space text-white flex items-center gap-2 transition-all">
             <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
@@ -682,15 +733,16 @@
             <thead>
               <tr class="border-b border-[#1A1A24] text-neutral-500 uppercase text-[10px] tracking-wider">
                 <th class="py-3 px-4">Timestamp</th>
+                <th class="py-3 px-4">IP Address</th>
                 <th class="py-3 px-4">Visitor Origin</th>
-                <th class="py-3 px-4">Page Visited</th>
+                <th class="py-3 px-4">Action / Event</th>
                 <th class="py-3 px-4">Source Channel</th>
                 <th class="py-3 px-4">Device Platform</th>
               </tr>
             </thead>
             <tbody id="traffic-logs-tbody" class="divide-y divide-[#161622]">
               <tr>
-                <td colspan="5" class="py-8 text-center text-neutral-500 font-space">Loading real-time visitor activity...</td>
+                <td colspan="6" class="py-8 text-center text-neutral-500 font-space">Loading real-time visitor activity...</td>
               </tr>
             </tbody>
           </table>
@@ -1316,26 +1368,43 @@
         const summary = data.summary || {};
         const topCountries = data.topCountries || [];
         const topCities = data.topCities || [];
+        const topClicks = data.topClicks || [];
         const topReferrers = data.topReferrers || [];
         const topPages = data.topPages || [];
+        const growthInsights = data.growthInsights || [];
         const recentVisitors = data.recentVisitors || [];
 
         // Update Nav Count
         const countBadge = document.getElementById('tab-traffic-count');
-        if (countBadge) countBadge.innerText = summary.totalViews || 0;
+        if (countBadge) countBadge.innerText = (summary.totalViews || 0) + (summary.totalClicks || 0);
 
         // Metric Cards
         const todayViewsEl = document.getElementById('traffic-today-views');
         if (todayViewsEl) todayViewsEl.innerText = (summary.todayViews || 0).toLocaleString();
 
+        const todayClicksEl = document.getElementById('traffic-today-clicks');
+        if (todayClicksEl) todayClicksEl.innerText = (summary.todayClicks || 0).toLocaleString();
+
         const todayUniqueEl = document.getElementById('traffic-today-unique');
         if (todayUniqueEl) todayUniqueEl.innerText = (summary.todayUniqueVisitors || 0).toLocaleString();
+
+        const totalClicksEl = document.getElementById('traffic-total-clicks');
+        if (totalClicksEl) totalClicksEl.innerText = (summary.totalClicks || 0).toLocaleString();
+
+        const ctrEl = document.getElementById('traffic-ctr');
+        if (ctrEl) ctrEl.innerText = `(${summary.ctr || 0}% CTR)`;
 
         const totalViewsEl = document.getElementById('traffic-total-views');
         if (totalViewsEl) totalViewsEl.innerText = (summary.totalViews || 0).toLocaleString();
 
-        const uniqueEl = document.getElementById('traffic-unique-visitors');
-        if (uniqueEl) uniqueEl.innerText = (summary.uniqueVisitors || 0).toLocaleString();
+        const topClickEl = document.getElementById('traffic-top-click');
+        if (topClickEl) topClickEl.innerText = summary.topClickLabel || 'None Yet';
+
+        const topClickSubEl = document.getElementById('traffic-top-click-sub');
+        if (topClickSubEl) {
+          const topCk = topClicks[0];
+          topClickSubEl.innerText = topCk ? `${topCk.count} clicks (${topCk.percentage}%)` : 'Most clicked CTA';
+        }
 
         const topCountryEl = document.getElementById('traffic-top-country');
         if (topCountryEl) {
@@ -1345,11 +1414,8 @@
         const topCountryPct = document.getElementById('traffic-top-country-pct');
         if (topCountryPct) {
           const topC = topCountries[0];
-          topCountryPct.innerText = topC ? `${topC.percentage}% of total visits` : '0% of total visits';
+          topCountryPct.innerText = topC ? `${topC.percentage}% of total audience` : '0% of total visits';
         }
-
-        const topSourceEl = document.getElementById('traffic-top-source');
-        if (topSourceEl) topSourceEl.innerText = summary.topSource || 'Direct';
 
         const deviceSplit = document.getElementById('traffic-device-split');
         if (deviceSplit) {
@@ -1360,6 +1426,48 @@
         if (mobBar && dskBar) {
           mobBar.style.width = `${summary.mobilePercentage || 0}%`;
           dskBar.style.width = `${100 - (summary.mobilePercentage || 0)}%`;
+        }
+
+        // Render Growth Insights
+        const growthBox = document.getElementById('traffic-growth-container');
+        if (growthBox) {
+          if (growthInsights.length === 0) {
+            growthBox.innerHTML = '<div class="p-3.5 rounded-xl bg-[#050508]/80 border border-[#222230] text-xs font-space text-neutral-500">Gathering telemetry patterns to generate actionable fan growth tips...</div>';
+          } else {
+            growthBox.innerHTML = growthInsights.map(g => `
+              <div class="p-4 rounded-xl bg-[#050508]/80 border border-[#222230] hover:border-[#CBFE00]/40 transition-colors">
+                <div class="flex items-center gap-2 mb-2">
+                  <span class="text-base">${g.icon}</span>
+                  <div class="font-bold text-xs text-white font-kanit">${escapeHtml(g.title)}</div>
+                </div>
+                <p class="text-[11px] text-neutral-400 leading-relaxed font-space">${escapeHtml(g.advice)}</p>
+              </div>
+            `).join('');
+          }
+        }
+
+        // Render Top Clicked Buttons
+        const clicksBox = document.getElementById('traffic-clicks-container');
+        if (clicksBox) {
+          if (topClicks.length === 0) {
+            clicksBox.innerHTML = '<div class="py-6 text-center text-xs text-neutral-500 font-space">No user button clicks captured yet.</div>';
+          } else {
+            clicksBox.innerHTML = topClicks.map(ck => `
+              <div class="flex items-center justify-between text-xs font-space">
+                <div class="flex items-center gap-2 truncate max-w-[170px]" title="${escapeHtml(ck.label)}">
+                  <span class="text-cyan-400">🖱️</span>
+                  <span class="text-white font-bold truncate">${escapeHtml(ck.label)}</span>
+                </div>
+                <div class="flex items-center gap-3">
+                  <div class="w-16 bg-[#1A1A24] h-1.5 rounded-full overflow-hidden hidden sm:block">
+                    <div class="bg-cyan-400 h-full rounded-full" style="width: ${ck.percentage}%"></div>
+                  </div>
+                  <span class="text-cyan-400 font-bold">${ck.count}</span>
+                  <span class="text-neutral-500 text-[10px] w-7 text-right">${ck.percentage}%</span>
+                </div>
+              </div>
+            `).join('');
+          }
         }
 
         // Render Countries List
@@ -1375,10 +1483,10 @@
                   <span class="text-white font-bold">${escapeHtml(c.country)}</span>
                 </div>
                 <div class="flex items-center gap-3">
-                  <div class="w-24 bg-[#1A1A24] h-1.5 rounded-full overflow-hidden hidden sm:block">
-                    <div class="bg-cyan-400 h-full rounded-full" style="width: ${c.percentage}%"></div>
+                  <div class="w-20 bg-[#1A1A24] h-1.5 rounded-full overflow-hidden hidden sm:block">
+                    <div class="bg-[#CBFE00] h-full rounded-full" style="width: ${c.percentage}%"></div>
                   </div>
-                  <span class="text-cyan-400 font-bold">${c.count}</span>
+                  <span class="text-[#CBFE00] font-bold">${c.count}</span>
                   <span class="text-neutral-500 text-[10px] w-8 text-right">${c.percentage}%</span>
                 </div>
               </div>
@@ -1415,7 +1523,7 @@
                   <span class="text-white">${escapeHtml(rf.source)}</span>
                 </div>
                 <div class="flex items-center gap-3">
-                  <div class="w-24 bg-[#1A1A24] h-1.5 rounded-full overflow-hidden hidden sm:block">
+                  <div class="w-16 bg-[#1A1A24] h-1.5 rounded-full overflow-hidden hidden sm:block">
                     <div class="bg-[#CBFE00] h-full rounded-full" style="width: ${rf.percentage}%"></div>
                   </div>
                   <span class="text-white font-bold">${rf.count}</span>
@@ -1446,18 +1554,37 @@
         const mobileTraffic = document.getElementById('traffic-mobile-cards');
 
         if (recentVisitors.length === 0) {
-          if (tbody) tbody.innerHTML = '<tr><td colspan="5" class="py-8 text-center text-neutral-500">No visitors logged yet. Telemetry active and waiting.</td></tr>';
+          if (tbody) tbody.innerHTML = '<tr><td colspan="6" class="py-8 text-center text-neutral-500">No visitors logged yet. Telemetry active and waiting.</td></tr>';
           if (mobileTraffic) mobileTraffic.innerHTML = '<div class="py-8 text-center text-neutral-500 font-space text-xs">No visitors logged yet. Telemetry active and waiting.</div>';
         } else {
           if (tbody) {
             tbody.innerHTML = recentVisitors.map(v => {
               const dateStr = v.created_at ? new Date(v.created_at).toLocaleTimeString() : 'Just now';
               const flag = getCountryFlag(v.country);
-              const loc = v.city && v.city !== 'Unknown' ? `${v.city}, ${v.country}` : v.country;
+              const loc = v.city && v.city !== 'Unknown' ? `${v.city}, ${v.country}` : (v.country || 'Global');
               const isMob = v.device === 'Mobile';
+              const isClick = v.event_type && v.event_type !== 'pageview';
+              
+              // Event Badge
+              let eventBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-[#050508] border border-[#222230] text-neutral-400">👁️ ${escapeHtml(v.path || '/')}</span>`;
+              if (v.event_type === 'audio_play') {
+                eventBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-space bg-cyan-500/15 text-cyan-400 border border-cyan-500/30 font-bold">🎵 ${escapeHtml(v.event_label || 'Played Audio')}</span>`;
+              } else if (v.event_type === 'booking_intent') {
+                eventBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-space bg-[#CBFE00]/15 text-[#CBFE00] border border-[#CBFE00]/30 font-bold">🎫 ${escapeHtml(v.event_label || 'Booking Intent')}</span>`;
+              } else if (v.event_type === 'social_click') {
+                eventBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-space bg-purple-500/15 text-purple-400 border border-purple-500/30 font-bold">🔗 ${escapeHtml(v.event_label || 'Social Link')}</span>`;
+              } else if (isClick) {
+                eventBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-space bg-blue-500/15 text-blue-400 border border-blue-500/30">🖱️ ${escapeHtml(v.event_label || 'Clicked Button')}</span>`;
+              }
+
+              const ipDisplay = v.ip_address || v.ip_hash || '127.0.0.1';
+
               return `
                 <tr class="hover:bg-[#12121A] transition-colors">
                   <td class="py-2.5 px-4 text-neutral-400 text-[11px] font-mono">${dateStr}</td>
+                  <td class="py-2.5 px-4 font-mono text-[11px] text-amber-300 font-bold">
+                    <span class="px-2 py-0.5 rounded bg-[#050508] border border-[#222230]">${escapeHtml(ipDisplay)}</span>
+                  </td>
                   <td class="py-2.5 px-4">
                     <div class="flex items-center gap-1.5 text-white font-bold">
                       <span>${flag}</span>
@@ -1465,9 +1592,7 @@
                     </div>
                   </td>
                   <td class="py-2.5 px-4">
-                    <span class="px-2 py-0.5 rounded text-[10px] font-mono bg-[#050508] border border-[#222230] text-cyan-300">
-                      ${escapeHtml(v.path || '/')}
-                    </span>
+                    ${eventBadge}
                   </td>
                   <td class="py-2.5 px-4">
                     <span class="px-2 py-0.5 rounded-full text-[10px] font-space ${v.referrer && v.referrer.includes('Direct') ? 'bg-neutral-800 text-neutral-300' : 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30'}">
@@ -1489,35 +1614,38 @@
             mobileTraffic.innerHTML = recentVisitors.map(v => {
               const dateStr = v.created_at ? new Date(v.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : 'Just now';
               const flag = getCountryFlag(v.country);
-              const loc = v.city && v.city !== 'Unknown' ? `${v.city}, ${v.country}` : v.country;
+              const loc = v.city && v.city !== 'Unknown' ? `${v.city}, ${v.country}` : (v.country || 'Global');
               const isMob = v.device === 'Mobile';
+              const ipDisplay = v.ip_address || v.ip_hash || '127.0.0.1';
+              const isClick = v.event_type && v.event_type !== 'pageview';
+
               return `
                 <div class="py-3 px-3 hover:bg-[#14141E] transition-colors flex items-center justify-between gap-3 text-xs font-space">
                   <div class="flex items-center gap-2.5">
                     <span class="text-xl flex-shrink-0">${flag}</span>
                     <div>
-                      <div class="font-bold text-white">${escapeHtml(loc)}</div>
+                      <div class="font-bold text-white flex items-center gap-2">
+                        <span>${escapeHtml(loc)}</span>
+                        <span class="text-[10px] font-mono text-amber-300 font-bold bg-[#050508] px-1.5 py-0.2 rounded border border-[#222230]">${escapeHtml(ipDisplay)}</span>
+                      </div>
                       <div class="text-[10px] text-neutral-400 flex items-center gap-1.5 mt-0.5">
-                        <span class="text-cyan-400">${escapeHtml(v.referrer || 'Direct')}</span>
+                        <span class="${isClick ? 'text-cyan-400 font-bold' : 'text-neutral-500'}">${escapeHtml(v.event_label || v.path || '/')}</span>
                         <span>&bull;</span>
-                        <span class="font-mono text-neutral-500">${escapeHtml(v.path || '/')}</span>
+                        <span>${escapeHtml(v.referrer || 'Direct')}</span>
                       </div>
                     </div>
                   </div>
                   <div class="text-right flex-shrink-0">
-                    <span class="px-2 py-0.5 rounded text-[10px] font-bold ${isMob ? 'bg-cyan-500/10 text-cyan-400' : 'bg-[#CBFE00]/10 text-[#CBFE00]'}">
-                      ${isMob ? '📱 Mob' : '💻 Dsk'}
-                    </span>
-                    <div class="text-[10px] text-neutral-500 font-mono mt-1">${dateStr}</div>
+                    <div class="text-[10px] text-neutral-500 font-mono">${dateStr}</div>
+                    <div class="text-[10px] text-neutral-400 mt-0.5">${isMob ? '📱 Mobile' : '💻 Desktop'}</div>
                   </div>
                 </div>
               `;
             }).join('');
           }
         }
-
       } catch (err) {
-        console.error('[Traffic Analytics Fetch Error]:', err);
+        console.error('Traffic analytics error:', err);
       }
     }
 

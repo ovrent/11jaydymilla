@@ -525,10 +525,10 @@ export default async function handler(req, res) {
       return res.status(200).json({ success: true, stats });
     }
 
-    // Traffic Analytics & Geolocation Telemetry
+    // Traffic Analytics, IP Intelligence & Click Event Telemetry
     if (action === 'analytics' && req.method === 'GET') {
       const trafficResp = await fetch(
-        `${SUPABASE_URL}/rest/v1/visitor_traffic?select=*&order=created_at.desc&limit=500`,
+        `${SUPABASE_URL}/rest/v1/visitor_traffic?select=*&order=created_at.desc&limit=1000`,
         {
           headers: {
             'apikey': SUPABASE_SERVICE_ROLE_KEY,
@@ -538,28 +538,62 @@ export default async function handler(req, res) {
       );
       const rows = trafficResp.ok ? await trafficResp.json() : [];
 
-      const totalViews = rows.length;
-      const uniqueIps = new Set(rows.map(r => r.ip_hash).filter(Boolean));
+      const totalRecords = rows.length;
+      const uniqueIps = new Set(rows.map(r => r.ip_address || r.ip_hash).filter(Boolean));
       const uniqueVisitors = uniqueIps.size;
 
-      // Calculate today's traffic (Live calendar day)
+      // Clicks vs Views breakdown
+      let totalClicks = 0;
+      let totalPageviews = 0;
+      let todayViews = 0;
+      let todayClicks = 0;
+      const todayUniqueIps = new Set();
+
       const now = new Date();
       const todayDateStr = now.toISOString().split('T')[0];
-      let todayViews = 0;
-      const todayUniqueIps = new Set();
 
       const countryCounts = {};
       const cityCounts = {};
       const referrerCounts = {};
       const pageCounts = {};
+      const clickCounts = {};
+      const ipCounts = {};
       let mobileCount = 0;
       let desktopCount = 0;
 
       rows.forEach(r => {
-        if (r.created_at && r.created_at.startsWith(todayDateStr)) {
-          todayViews++;
-          if (r.ip_hash) todayUniqueIps.add(r.ip_hash);
+        const isToday = r.created_at && r.created_at.startsWith(todayDateStr);
+        const isClick = r.event_type && r.event_type !== 'pageview';
+
+        if (isClick) {
+          totalClicks++;
+          if (isToday) todayClicks++;
+          const label = r.event_label || r.event_type || 'Generic Click';
+          clickCounts[label] = (clickCounts[label] || 0) + 1;
+        } else {
+          totalPageviews++;
+          if (isToday) todayViews++;
         }
+
+        if (isToday) {
+          const ipKey = r.ip_address || r.ip_hash;
+          if (ipKey) todayUniqueIps.add(ipKey);
+        }
+
+        // IP Aggregation
+        const clientIp = r.ip_address || r.ip_hash || '127.0.0.1';
+        if (!ipCounts[clientIp]) {
+          ipCounts[clientIp] = {
+            ip: clientIp,
+            hits: 0,
+            clicks: 0,
+            country: r.country || 'Unknown',
+            city: r.city || 'Unknown',
+            lastSeen: r.created_at
+          };
+        }
+        ipCounts[clientIp].hits++;
+        if (isClick) ipCounts[clientIp].clicks++;
 
         const c = r.country || 'Unknown';
         countryCounts[c] = (countryCounts[c] || 0) + 1;
@@ -581,7 +615,7 @@ export default async function handler(req, res) {
         .map(([country, count]) => ({
           country,
           count,
-          percentage: totalViews > 0 ? Math.round((count / totalViews) * 100) : 0
+          percentage: totalRecords > 0 ? Math.round((count / totalRecords) * 100) : 0
         }))
         .sort((a, b) => b.count - a.count)
         .slice(0, 8);
@@ -591,11 +625,20 @@ export default async function handler(req, res) {
         .sort((a, b) => b.count - a.count)
         .slice(0, 8);
 
+      const topClicks = Object.entries(clickCounts)
+        .map(([label, count]) => ({
+          label,
+          count,
+          percentage: totalClicks > 0 ? Math.round((count / totalClicks) * 100) : 0
+        }))
+        .sort((a, b) => b.count - a.count)
+        .slice(0, 8);
+
       const topReferrers = Object.entries(referrerCounts)
         .map(([source, count]) => ({
           source,
           count,
-          percentage: totalViews > 0 ? Math.round((count / totalViews) * 100) : 0
+          percentage: totalRecords > 0 ? Math.round((count / totalRecords) * 100) : 0
         }))
         .sort((a, b) => b.count - a.count)
         .slice(0, 6);
@@ -605,24 +648,76 @@ export default async function handler(req, res) {
         .sort((a, b) => b.count - a.count)
         .slice(0, 5);
 
+      const topIps = Object.values(ipCounts)
+        .sort((a, b) => b.hits - a.hits)
+        .slice(0, 10);
+
+      // Strategic Growth Insights
+      const growthInsights = [];
+      const topCountry = topCountries[0]?.country;
+      const topCity = topCities[0]?.city;
+      if (topCountry && topCountry !== 'Unknown') {
+        growthInsights.push({
+          type: 'geo',
+          icon: '🌍',
+          title: `High Fan Concentration in ${topCity || topCountry}`,
+          advice: `${topCountries[0].percentage}% of total audience interest comes from ${topCity || topCountry}. Pitch festival promoters and live venues in this region for your next tour dates.`
+        });
+      }
+
+      if (topClicks.length > 0) {
+        growthInsights.push({
+          type: 'engagement',
+          icon: '🔥',
+          title: `Highest Interest: "${topClicks[0].label}"`,
+          advice: `"${topClicks[0].label}" has captured ${topClicks[0].count} clicks (${topClicks[0].percentage}% of total interaction). Make this button or track even more prominent on your hero header.`
+        });
+      }
+
+      const mobilePct = totalRecords > 0 ? Math.round((mobileCount / totalRecords) * 100) : 0;
+      if (mobilePct > 55) {
+        growthInsights.push({
+          type: 'device',
+          icon: '📱',
+          title: `Mobile Dominant Audience (${mobilePct}%)`,
+          advice: `Over half your listeners visit on smartphones. Ensure your Spotify / Instagram links and audio previews require 0 scrolling on mobile.`
+        });
+      }
+
+      if (topReferrers.length > 0 && topReferrers[0].source !== 'Direct') {
+        growthInsights.push({
+          type: 'acquisition',
+          icon: '🚀',
+          title: `Top Growth Channel: ${topReferrers[0].source}`,
+          advice: `${topReferrers[0].source} is your primary acquisition funnel (${topReferrers[0].percentage}%). Double down on posting short-form clips and story updates on this platform.`
+        });
+      }
+
       return res.status(200).json({
         success: true,
         summary: {
-          totalViews,
+          totalViews: totalPageviews || totalRecords,
+          totalClicks,
+          ctr: totalPageviews > 0 ? Math.round((totalClicks / totalPageviews) * 100) : 0,
           uniqueVisitors,
           todayViews,
+          todayClicks,
           todayUniqueVisitors: todayUniqueIps.size,
           topCountry: topCountries[0]?.country || 'N/A',
           topSource: topReferrers[0]?.source || 'Direct',
+          topClickLabel: topClicks[0]?.label || 'None Yet',
           mobileCount,
           desktopCount,
-          mobilePercentage: totalViews > 0 ? Math.round((mobileCount / totalViews) * 100) : 0
+          mobilePercentage: mobilePct
         },
         topCountries,
         topCities,
+        topClicks,
         topReferrers,
         topPages,
-        recentVisitors: rows.slice(0, 30)
+        topIps,
+        growthInsights,
+        recentVisitors: rows.slice(0, 50)
       });
     }
 

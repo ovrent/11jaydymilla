@@ -1,12 +1,11 @@
 // api/track.js - Vercel Serverless Function
-// High-performance, privacy-friendly visitor geolocation & traffic telemetry tracker
+// High-performance visitor geolocation, IP address intelligence & click event telemetry
 
 import crypto from 'node:crypto';
 
-
 // In-Memory Telemetry Rate Throttle (Prevents database exhaustion & hit flooding)
 const trackRateLimits = new Map();
-const MAX_TRACK_PER_MIN = 30;
+const MAX_TRACK_PER_MIN = 60;
 const TRACK_WINDOW_MS = 60 * 1000;
 
 function checkTrackThrottle(ip) {
@@ -54,7 +53,12 @@ export default async function handler(req, res) {
     return res.status(405).json({ error: 'Method Not Allowed' });
   }
 
-  const clientIP = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket?.remoteAddress || '127.0.0.1';
+  const clientIP = req.headers['x-forwarded-for']?.split(',')[0].trim() ||
+                   req.headers['x-real-ip'] ||
+                   req.connection?.remoteAddress ||
+                   req.socket?.remoteAddress ||
+                   '127.0.0.1';
+
   if (!checkTrackThrottle(clientIP)) {
     return res.status(200).json({ success: true, throttled: true });
   }
@@ -69,7 +73,7 @@ export default async function handler(req, res) {
       }
     }
 
-    const { path, referrer, device } = body || {};
+    const { path, referrer, device, event_type, event_label } = body || {};
 
     // Don't track admin portal visits to preserve clean visitor metrics
     if (path && path.startsWith('/admin')) {
@@ -78,12 +82,11 @@ export default async function handler(req, res) {
 
     // Geolocation from Vercel Edge Headers
     const country = req.headers['x-vercel-ip-country'] || 'US';
-    const city = req.headers['x-vercel-ip-city'] ? decodeURIComponent(req.headers['x-vercel-ip-city']) : 'New York';
-    const region = req.headers['x-vercel-ip-country-region'] || 'NY';
+    const city = req.headers['x-vercel-ip-city'] ? decodeURIComponent(req.headers['x-vercel-ip-city']) : 'Unknown';
+    const region = req.headers['x-vercel-ip-country-region'] || '';
     const userAgent = req.headers['user-agent'] || 'Unknown';
 
     // Privacy-preserving unique visitor IP hash
-    const clientIP = req.headers['x-forwarded-for']?.split(',')[0].trim() || req.socket?.remoteAddress || '127.0.0.1';
     const ipHash = crypto.createHash('sha256').update(clientIP + 'traffic_salt_2026').digest('hex').substring(0, 16);
 
     // Normalize referrer
@@ -106,18 +109,19 @@ export default async function handler(req, res) {
     }
 
     const SUPABASE_URL = process.env.SUPABASE_URL || 'https://hzjzrnliyilimzpymldt.supabase.co';
-    const SUPABASE_ANON_KEY = process.env.SUPABASE_ANON_KEY || 'sb_publishable_NcJDQyR6YNG_A4Klm1B32A_-bOqwDk8';
+    const SUPABASE_SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
 
-    // Insert telemetry record into Supabase
+    // Insert rich telemetry record into Supabase
     await fetch(`${SUPABASE_URL}/rest/v1/visitor_traffic`, {
       method: 'POST',
       headers: {
-        'apikey': SUPABASE_ANON_KEY,
-        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'apikey': SUPABASE_SERVICE_ROLE_KEY,
+        'Authorization': `Bearer ${SUPABASE_SERVICE_ROLE_KEY}`,
         'Content-Type': 'application/json',
         'Prefer': 'return=minimal'
       },
       body: JSON.stringify({
+        ip_address: clientIP,
         ip_hash: ipHash,
         country: country.toUpperCase(),
         city: city,
@@ -125,13 +129,14 @@ export default async function handler(req, res) {
         path: String(path || '/').substring(0, 100),
         referrer: cleanSource,
         device: device === 'Mobile' ? 'Mobile' : 'Desktop',
-        user_agent: userAgent.substring(0, 255)
+        user_agent: userAgent.substring(0, 255),
+        event_type: String(event_type || 'pageview').substring(0, 50),
+        event_label: String(event_label || '').substring(0, 150)
       })
     });
 
-    return res.status(200).json({ success: true });
+    return res.status(200).json({ success: true, tracked: true });
   } catch (err) {
-    // Fail silently without disrupting user browsing experience
     console.error('[Traffic Tracking Exception]:', err);
     return res.status(200).json({ success: false });
   }

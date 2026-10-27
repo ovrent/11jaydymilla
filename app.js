@@ -1358,13 +1358,15 @@
   }
 
 
-  function initTrafficTelemetry() {
+  function sendTelemetry(eventType, eventLabel) {
     try {
       if (window.location.pathname.startsWith('/admin')) return;
       var payload = JSON.stringify({
         path: window.location.pathname || '/',
         referrer: document.referrer || 'Direct',
-        device: window.innerWidth <= 768 ? 'Mobile' : 'Desktop'
+        device: window.innerWidth <= 768 ? 'Mobile' : 'Desktop',
+        event_type: eventType || 'pageview',
+        event_label: (eventLabel || '').substring(0, 150)
       });
       if (navigator.sendBeacon) {
         navigator.sendBeacon('/api/track', payload);
@@ -1377,6 +1379,78 @@
         }).catch(function(){});
       }
     } catch (e) {}
+  }
+
+  function initTrafficTelemetry() {
+    // 1. Initial Pageview
+    sendTelemetry('pageview', 'Pageview: ' + (window.location.pathname || '/'));
+
+    // 2. Global Event & Click Telemetry Listener
+    var lastClickTime = 0;
+    var lastClickTarget = '';
+
+    document.addEventListener('click', function(e) {
+      try {
+        var target = e.target.closest('button, a, .track-play-btn, .btn-lime, .nav-link, input[type="submit"]');
+        if (!target) return;
+
+        // Skip admin actions
+        if (window.location.pathname.startsWith('/admin')) return;
+
+        // Debounce repeated clicks within 400ms
+        var now = Date.now();
+        var targetId = target.id || target.className || target.innerText || '';
+        if (now - lastClickTime < 400 && targetId === lastClickTarget) return;
+        lastClickTime = now;
+        lastClickTarget = targetId;
+
+        var eventType = 'click';
+        var eventLabel = '';
+
+        // Audio Play Click
+        if (target.classList.contains('track-play-btn') || target.classList.contains('track-play-btn-inline') || target.dataset.trackId) {
+          eventType = 'audio_play';
+          var trackId = target.dataset.trackId || 'audio_track';
+          eventLabel = 'Play Track: ' + trackId;
+        }
+        // Booking / Inquiry Intent
+        else if ((target.getAttribute('href') && target.getAttribute('href').indexOf('booking') !== -1) || target.id === 'submit-inquiry-btn' || target.classList.contains('btn-lime')) {
+          eventType = 'booking_intent';
+          var text = (target.innerText || target.getAttribute('aria-label') || 'Booking CTA').trim();
+          eventLabel = 'Booking: ' + (text.length > 40 ? text.substring(0, 40) + '...' : text);
+        }
+        // Social Media Link or Navigation Link
+        else if (target.tagName === 'A' && target.href) {
+          var href = target.href.toLowerCase();
+          if (href.indexOf('spotify.com') !== -1) {
+            eventType = 'social_click';
+            eventLabel = 'Stream on Spotify';
+          } else if (href.indexOf('instagram.com') !== -1) {
+            eventType = 'social_click';
+            eventLabel = 'Profile: Instagram';
+          } else if (href.indexOf('youtube.com') !== -1) {
+            eventType = 'social_click';
+            eventLabel = 'Watch on YouTube';
+          } else if (href.indexOf('soundcloud.com') !== -1) {
+            eventType = 'social_click';
+            eventLabel = 'SoundCloud Stream';
+          } else if (href.indexOf('#') !== -1) {
+            eventType = 'nav_click';
+            eventLabel = 'Nav Anchor: ' + target.getAttribute('href');
+          } else {
+            var labelText = (target.innerText || target.getAttribute('aria-label') || target.href).trim();
+            eventLabel = 'Link: ' + (labelText.length > 50 ? labelText.substring(0, 50) + '...' : labelText);
+          }
+        }
+        // Generic Button
+        else {
+          var btnText = (target.innerText || target.getAttribute('aria-label') || target.id || 'Button').trim();
+          eventLabel = 'Button: ' + (btnText.length > 50 ? btnText.substring(0, 50) + '...' : btnText);
+        }
+
+        sendTelemetry(eventType, eventLabel);
+      } catch (err) {}
+    }, { passive: true });
   }
 
   function boot() {
